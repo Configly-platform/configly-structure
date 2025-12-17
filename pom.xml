@@ -8,7 +8,7 @@
         <version>4.0.0</version>
         <relativePath/>
     </parent>
-    <groupId>github.saqie</groupId>
+    <groupId>pl.feature.toggle.service</groupId>
     <artifactId>feature-toggle-configuration</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>configuration</name>
