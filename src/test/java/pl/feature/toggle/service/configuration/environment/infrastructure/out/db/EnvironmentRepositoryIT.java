@@ -1,10 +1,5 @@
 package pl.feature.toggle.service.configuration.environment.infrastructure.out.db;
 
-import com.ftaas.domain.environment.EnvironmentId;
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectDescription;
-import com.ftaas.domain.project.ProjectId;
-import com.ftaas.domain.project.ProjectName;
 import pl.feature.toggle.service.configuration.AbstractITTest;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
@@ -14,6 +9,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 import java.util.UUID;
 

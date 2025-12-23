@@ -1,8 +1,5 @@
 package pl.feature.toggle.service.configuration.project.infrastructure.out.db;
 
-import com.ftaas.domain.project.ProjectDescription;
-import com.ftaas.domain.project.ProjectId;
-import com.ftaas.domain.project.ProjectName;
 import pl.feature.toggle.service.configuration.AbstractITTest;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
@@ -10,6 +7,9 @@ import pl.feature.toggle.service.configuration.project.domain.exception.ProjectA
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

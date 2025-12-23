@@ -1,8 +1,8 @@
 package pl.feature.toggle.service.configuration.project.application.port.out;
 
-import com.ftaas.domain.project.ProjectName;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import com.ftaas.domain.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 import java.util.Optional;
 

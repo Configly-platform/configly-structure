@@ -1,8 +1,8 @@
 package pl.feature.toggle.service.configuration.project.application.port.in;
 
-import com.ftaas.domain.project.ProjectDescription;
-import com.ftaas.domain.project.ProjectName;
 import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.CreateProjectDto;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 public record CreateProjectCommand(
         ProjectName name,

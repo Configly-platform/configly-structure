@@ -1,9 +1,9 @@
 package pl.feature.toggle.service.configuration.environment.domain;
 
-import com.ftaas.domain.environment.EnvironmentId;
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectId;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentCommand;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectId;
 
 public record Environment(
         EnvironmentId id,

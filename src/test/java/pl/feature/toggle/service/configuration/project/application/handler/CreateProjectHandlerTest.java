@@ -1,17 +1,17 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
-import com.ftaas.contracts.event.projects.ProjectCreated;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import pl.feature.toggle.service.contracts.event.projects.ProjectCreated;
 
-import static com.ftaas.contracts.topic.KafkaTopic.PROJECT_ENV;
 import static pl.feature.toggle.service.configuration.builder.FakeCreateProjectCommandBuilder.createProjectCommandBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 
 class CreateProjectHandlerTest extends AbstractUnitTest {
 

@@ -1,8 +1,5 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
-import com.ftaas.domain.environment.EnvironmentId;
-import com.ftaas.domain.project.ProjectId;
-import github.saqie.ftaasoutbox.api.OutboxWriter;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentCommand;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
@@ -12,9 +9,12 @@ import pl.feature.toggle.service.configuration.environment.domain.exception.Envi
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
-import static com.ftaas.contracts.topic.KafkaTopic.PROJECT_ENV;
 import static pl.feature.toggle.service.configuration.environment.application.handler.EnvironmentHandlerEventMapper.createEnvironmentCreatedEvent;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 
 
 @AllArgsConstructor

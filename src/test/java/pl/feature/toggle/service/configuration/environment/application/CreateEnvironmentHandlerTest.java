@@ -1,6 +1,5 @@
 package pl.feature.toggle.service.configuration.environment.application;
 
-import com.ftaas.contracts.event.projects.EnvironmentCreated;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.environment.application.handler.EnvironmentHandlerFacade;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
@@ -10,13 +9,14 @@ import pl.feature.toggle.service.configuration.project.domain.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated;
 
 import java.util.UUID;
 
-import static com.ftaas.contracts.topic.KafkaTopic.PROJECT_ENV;
 import static pl.feature.toggle.service.configuration.builder.FakeCreateEnvironmentCommandBuilder.createEnvironmentCommandBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 
 class CreateEnvironmentHandlerTest extends AbstractUnitTest {
 

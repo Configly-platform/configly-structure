@@ -1,9 +1,9 @@
 package pl.feature.toggle.service.configuration.project.domain;
 
-import com.ftaas.domain.project.ProjectDescription;
-import com.ftaas.domain.project.ProjectId;
-import com.ftaas.domain.project.ProjectName;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectCommand;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 public record Project(
         ProjectId id,

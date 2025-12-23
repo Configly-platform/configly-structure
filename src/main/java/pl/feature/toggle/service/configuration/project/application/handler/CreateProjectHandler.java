@@ -1,7 +1,5 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
-import com.ftaas.domain.project.ProjectId;
-import github.saqie.ftaasoutbox.api.OutboxWriter;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
@@ -9,9 +7,11 @@ import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
-import static com.ftaas.contracts.topic.KafkaTopic.PROJECT_ENV;
 import static pl.feature.toggle.service.configuration.project.application.handler.ProjectHandlerEventMapper.createProjectCreatedEvent;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 
 @AllArgsConstructor
 class CreateProjectHandler implements CreateProjectUseCase {

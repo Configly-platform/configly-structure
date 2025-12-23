@@ -1,12 +1,12 @@
 package pl.feature.toggle.service.configuration.environment.infrastructure.out.db;
 
-import com.ftaas.domain.environment.EnvironmentId;
-import github.saqie.ftaas.jooq.tables.records.EnvironmentsRecord;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectId;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.tables.records.EnvironmentsRecord;
 
 import java.time.OffsetDateTime;
 

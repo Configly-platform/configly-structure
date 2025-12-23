@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.domain.exception;
 
-import com.ftaas.domain.environment.EnvironmentId;
+
+import pl.feature.toggle.service.model.environment.EnvironmentId;
 
 public class EnvironmentNotFoundException extends RuntimeException {
     public EnvironmentNotFoundException(final EnvironmentId environmentId) {

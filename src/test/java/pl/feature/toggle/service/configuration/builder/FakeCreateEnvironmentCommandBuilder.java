@@ -1,7 +1,7 @@
 package pl.feature.toggle.service.configuration.builder;
 
-import com.ftaas.domain.project.ProjectId;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentCommand;
+import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.UUID;
 

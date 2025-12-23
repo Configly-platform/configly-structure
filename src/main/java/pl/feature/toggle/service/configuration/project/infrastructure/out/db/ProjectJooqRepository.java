@@ -1,17 +1,17 @@
 package pl.feature.toggle.service.configuration.project.infrastructure.out.db;
 
-import com.ftaas.domain.project.ProjectName;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import com.ftaas.domain.project.ProjectId;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 import java.util.Optional;
 
-import static github.saqie.ftaas.jooq.tables.Projects.PROJECTS;
 import static pl.feature.toggle.service.configuration.project.infrastructure.out.db.ProjectMapper.toRecord;
+import static pl.feature.toggle.service.tables.Projects.PROJECTS;
 
 @AllArgsConstructor
 final class ProjectJooqRepository implements ProjectRepository {

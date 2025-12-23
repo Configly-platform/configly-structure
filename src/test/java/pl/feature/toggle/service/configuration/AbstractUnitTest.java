@@ -1,16 +1,16 @@
 package pl.feature.toggle.service.configuration;
 
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectDescription;
-import com.ftaas.domain.project.ProjectId;
-import com.ftaas.domain.project.ProjectName;
-import github.saqie.ftaasoutbox.FakeOutboxWriter;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.infrastructure.FakeEnvironmentRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.infrastructure.FakeProjectRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.outbox.FakeOutboxWriter;
 
 public abstract class AbstractUnitTest {
 

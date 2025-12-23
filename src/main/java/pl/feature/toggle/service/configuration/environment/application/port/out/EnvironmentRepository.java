@@ -1,9 +1,9 @@
 package pl.feature.toggle.service.configuration.environment.application.port.out;
 
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectId;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
-import com.ftaas.domain.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.Optional;
 

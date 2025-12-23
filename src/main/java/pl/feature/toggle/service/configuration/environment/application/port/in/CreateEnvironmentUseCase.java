@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.application.port.in;
 
-import com.ftaas.domain.environment.EnvironmentId;
+
+import pl.feature.toggle.service.model.environment.EnvironmentId;
 
 public interface CreateEnvironmentUseCase {
 

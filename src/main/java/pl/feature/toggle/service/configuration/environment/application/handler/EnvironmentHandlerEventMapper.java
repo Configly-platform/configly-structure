@@ -1,9 +1,10 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
-import com.ftaas.contracts.event.projects.EnvironmentCreated;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
+import pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated;
 
-import static com.ftaas.contracts.event.projects.EnvironmentCreated.environmentCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated.environmentCreatedEventBuilder;
+
 
 final class EnvironmentHandlerEventMapper {
 

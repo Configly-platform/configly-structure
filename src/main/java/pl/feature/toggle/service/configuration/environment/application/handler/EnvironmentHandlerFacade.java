@@ -1,11 +1,11 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
-import github.saqie.ftaasoutbox.api.OutboxWriter;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public final class EnvironmentHandlerFacade {

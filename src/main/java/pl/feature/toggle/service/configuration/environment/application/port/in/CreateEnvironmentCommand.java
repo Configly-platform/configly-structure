@@ -1,8 +1,8 @@
 package pl.feature.toggle.service.configuration.environment.application.port.in;
 
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectId;
 import pl.feature.toggle.service.configuration.environment.infrastructure.in.rest.dto.CreateEnvironmentDto;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.UUID;
 

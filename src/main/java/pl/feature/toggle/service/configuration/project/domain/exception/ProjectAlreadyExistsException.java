@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.domain.exception;
 
-import com.ftaas.domain.project.ProjectName;
+
+import pl.feature.toggle.service.model.project.ProjectName;
 
 public class ProjectAlreadyExistsException extends RuntimeException {
     public ProjectAlreadyExistsException(ProjectName projectName) {

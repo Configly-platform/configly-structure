@@ -1,9 +1,9 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
-import com.ftaas.contracts.event.projects.ProjectCreated;
 import pl.feature.toggle.service.configuration.project.domain.Project;
+import pl.feature.toggle.service.contracts.event.projects.ProjectCreated;
 
-import static com.ftaas.contracts.event.projects.ProjectCreated.projectCreatedEventBuilder;
+import static pl.feature.toggle.service.contracts.event.projects.ProjectCreated.projectCreatedEventBuilder;
 
 final class ProjectHandlerEventMapper {
 

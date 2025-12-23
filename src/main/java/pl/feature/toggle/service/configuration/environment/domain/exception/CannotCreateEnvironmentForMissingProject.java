@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.domain.exception;
 
-import com.ftaas.domain.project.ProjectId;
+
+import pl.feature.toggle.service.model.project.ProjectId;
 
 public class CannotCreateEnvironmentForMissingProject extends RuntimeException {
 

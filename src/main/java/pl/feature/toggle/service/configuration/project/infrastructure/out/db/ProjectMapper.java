@@ -1,12 +1,12 @@
 package pl.feature.toggle.service.configuration.project.infrastructure.out.db;
 
-import github.saqie.ftaas.jooq.tables.records.ProjectsRecord;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import com.ftaas.domain.project.ProjectDescription;
-import com.ftaas.domain.project.ProjectId;
-import com.ftaas.domain.project.ProjectName;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.tables.records.ProjectsRecord;
 
 import java.time.OffsetDateTime;
 

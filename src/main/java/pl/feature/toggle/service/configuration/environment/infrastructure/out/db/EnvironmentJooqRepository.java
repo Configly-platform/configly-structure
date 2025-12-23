@@ -1,18 +1,18 @@
 package pl.feature.toggle.service.configuration.environment.infrastructure.out.db;
 
-import com.ftaas.domain.environment.EnvironmentName;
-import com.ftaas.domain.project.ProjectId;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
-import com.ftaas.domain.environment.EnvironmentId;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.Optional;
 
-import static github.saqie.ftaas.jooq.tables.Environments.ENVIRONMENTS;
 import static pl.feature.toggle.service.configuration.environment.infrastructure.out.db.EnvironmentMapper.toRecord;
+import static pl.feature.toggle.service.tables.Environments.ENVIRONMENTS;
 
 @AllArgsConstructor
 final class EnvironmentJooqRepository implements EnvironmentRepository {
