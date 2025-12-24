@@ -18,13 +18,14 @@ class EnvironmentHandlerEventMapperTest extends AbstractUnitTest {
         var environment = createEnvironment(projectId, "TEST");
 
         // when
-        var result = EnvironmentHandlerEventMapper.createEnvironmentCreatedEvent(environment);
+        var result = EnvironmentHandlerEventMapper.createEnvironmentCreatedEvent(environment, actorProvider.current());
 
         // then
         assertThat(result.environmentId()).isEqualTo(environment.id().uuid());
         assertThat(result.projectId()).isEqualTo(UUID.fromString(projectId));
         assertThat(result.environmentName()).isEqualTo(environment.name().value());
         assertThat(result.eventId()).isNotNull();
+        assertThat(result.metadata()).isEqualTo(metadata());
     }
 
 }

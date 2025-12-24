@@ -5,6 +5,7 @@ import pl.feature.toggle.service.configuration.project.application.port.in.Creat
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.feature.toggle.service.model.security.ActorProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 @Configuration("projectApplicationConfig")
@@ -13,9 +14,10 @@ class Config {
     @Bean
     CreateProjectUseCase createProjectUseCase(
             ProjectRepository projectRepository,
-            OutboxWriter outboxWriter
+            OutboxWriter outboxWriter,
+            ActorProvider actorProvider
     ) {
-        return ProjectHandlerFacade.createProjectUseCase(projectRepository, outboxWriter);
+        return ProjectHandlerFacade.createProjectUseCase(projectRepository, outboxWriter, actorProvider);
     }
 
 }

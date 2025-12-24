@@ -1,5 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
+import lombok.AllArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentCommand;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
@@ -7,10 +9,9 @@ import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotCreateEnvironmentForMissingProject;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
-import lombok.AllArgsConstructor;
-import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.security.ActorProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.environment.application.handler.EnvironmentHandlerEventMapper.createEnvironmentCreatedEvent;
@@ -23,6 +24,7 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
     private final EnvironmentRepository environmentRepository;
     private final ProjectRepository projectRepository;
     private final OutboxWriter outboxWriter;
+    private final ActorProvider actorProvider;
 
     @Override
     @Transactional
@@ -33,7 +35,7 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
 
         var environmentId = environmentRepository.save(environment);
 
-        var event = createEnvironmentCreatedEvent(environment);
+        var event = createEnvironmentCreatedEvent(environment, actorProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());
 
         return environmentId;

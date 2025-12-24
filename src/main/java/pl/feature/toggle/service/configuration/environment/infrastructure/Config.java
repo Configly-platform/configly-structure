@@ -6,6 +6,7 @@ import pl.feature.toggle.service.configuration.environment.application.port.out.
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.feature.toggle.service.model.security.ActorProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 @Configuration("environmentApplicationConfig")
@@ -15,9 +16,10 @@ class Config {
     CreateEnvironmentUseCase createEnvironmentUseCase(
             EnvironmentRepository environmentRepository,
             ProjectRepository projectRepository,
-            OutboxWriter outboxWriter
+            OutboxWriter outboxWriter,
+            ActorProvider actorProvider
     ) {
-        return EnvironmentHandlerFacade.createEnvironmentUseCase(environmentRepository, projectRepository, outboxWriter);
+        return EnvironmentHandlerFacade.createEnvironmentUseCase(environmentRepository, projectRepository, outboxWriter, actorProvider);
     }
 
 }

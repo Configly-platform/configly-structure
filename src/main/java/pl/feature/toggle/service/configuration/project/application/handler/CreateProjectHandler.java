@@ -8,6 +8,7 @@ import pl.feature.toggle.service.configuration.project.domain.exception.ProjectA
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.security.ActorProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.project.application.handler.ProjectHandlerEventMapper.createProjectCreatedEvent;
@@ -16,8 +17,9 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 @AllArgsConstructor
 class CreateProjectHandler implements CreateProjectUseCase {
 
-    ProjectRepository projectRepository;
-    OutboxWriter outboxWriter;
+    private final ProjectRepository projectRepository;
+    private final OutboxWriter outboxWriter;
+    private final ActorProvider actorProvider;
 
     @Override
     @Transactional
@@ -28,7 +30,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
 
         var projectId = projectRepository.save(project);
 
-        var event = createProjectCreatedEvent(project);
+        var event = createProjectCreatedEvent(project, actorProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());
 
         return projectId;
