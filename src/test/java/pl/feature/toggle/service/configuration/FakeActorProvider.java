@@ -1,7 +1,8 @@
 package pl.feature.toggle.service.configuration;
 
-import pl.feature.toggle.service.model.security.Actor;
-import pl.feature.toggle.service.model.security.ActorProvider;
+
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.actor.ActorProvider;
 
 public class FakeActorProvider implements ActorProvider {
     @Override

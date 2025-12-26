@@ -1,5 +1,6 @@
 package pl.feature.toggle.service.configuration.security;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -11,6 +12,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.context.annotation.RequestScope;
+import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 
 import java.util.Collection;
 import java.util.Map;
@@ -25,7 +28,7 @@ class SecurityConfig {
     private static final String ROLES_CLAIM = "roles";
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain securityFilterChain(HttpSecurity http) {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
@@ -39,6 +42,12 @@ class SecurityConfig {
     @Bean
     Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
         return jwt -> new JwtAuthenticationToken(jwt, extractRealmRoles(jwt));
+    }
+
+    @Bean
+    @RequestScope
+    CorrelationProvider correlationProvider(HttpServletRequest request) {
+        return new HttpCorrelationProvider(request);
     }
 
     private Collection<SimpleGrantedAuthority> extractRealmRoles(Jwt jwt) {

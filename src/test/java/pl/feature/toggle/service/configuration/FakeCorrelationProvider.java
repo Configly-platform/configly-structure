@@ -1,0 +1,11 @@
+package pl.feature.toggle.service.configuration;
+
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
+import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
+
+public class FakeCorrelationProvider implements CorrelationProvider {
+    @Override
+    public CorrelationId current() {
+        return CorrelationId.of("test");
+    }
+}

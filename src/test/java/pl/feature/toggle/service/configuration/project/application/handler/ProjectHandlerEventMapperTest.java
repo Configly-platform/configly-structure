@@ -16,7 +16,7 @@ class ProjectHandlerEventMapperTest extends AbstractUnitTest {
         var project = createProject("TEST", "TEST");
 
         // when
-        var result = ProjectHandlerEventMapper.createProjectCreatedEvent(project, actorProvider.current());
+        var result = ProjectHandlerEventMapper.createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
 
         // then
         assertThat(result.projectId()).isEqualTo(project.id().uuid());

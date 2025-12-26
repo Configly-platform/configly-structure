@@ -19,6 +19,7 @@ public abstract class AbstractUnitTest {
     protected FakeEnvironmentRepository environmentRepository;
     protected FakeOutboxWriter outboxWriter;
     protected FakeActorProvider actorProvider;
+    protected FakeCorrelationProvider correlationProvider;
 
     @BeforeEach
     void setUp() {
@@ -26,6 +27,7 @@ public abstract class AbstractUnitTest {
         projectRepository = new FakeProjectRepository();
         environmentRepository = new FakeEnvironmentRepository();
         actorProvider = new FakeActorProvider();
+        correlationProvider = new FakeCorrelationProvider();
     }
 
     @AfterEach
@@ -52,7 +54,7 @@ public abstract class AbstractUnitTest {
     }
 
     protected Metadata metadata() {
-        return Metadata.create(actorProvider.current().actorId().value(), actorProvider.current().username().value());
+        return Metadata.create(actorProvider.current().actorId().value(), actorProvider.current().username().value(), correlationProvider.current().value());
     }
 
 }
