@@ -16,7 +16,7 @@ final class EnvironmentHandlerEventMapper {
                 .environmentId(environment.id().uuid())
                 .projectId(environment.projectId().uuid())
                 .environmentName(environment.name().value())
-                .metadata(Metadata.create(actor.actorId().value(), actor.username().value(), correlationId.value()))
+                .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
 

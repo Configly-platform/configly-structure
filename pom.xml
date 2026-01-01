@@ -17,7 +17,7 @@
         <jooq.version>3.20.6</jooq.version>
         <outbox.version>1.0.1</outbox.version>
         <contracts.version>1.0.0-6-SNAPSHOT</contracts.version>
-        <model.version>1.0.0-9-SNAPSHOT</model.version>
+        <model.version>1.0.0-10-SNAPSHOT</model.version>
     </properties>
     <dependencies>
         <dependency>

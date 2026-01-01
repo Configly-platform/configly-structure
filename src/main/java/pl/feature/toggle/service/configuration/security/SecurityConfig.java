@@ -13,6 +13,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.context.annotation.RequestScope;
+import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 
 import java.util.Collection;
@@ -42,6 +43,11 @@ class SecurityConfig {
     @Bean
     Converter<Jwt, ? extends AbstractAuthenticationToken> jwtAuthenticationConverter() {
         return jwt -> new JwtAuthenticationToken(jwt, extractRealmRoles(jwt));
+    }
+
+    @Bean
+    ActorProvider actorProvider() {
+        return new JwtActorProvider();
     }
 
     @Bean

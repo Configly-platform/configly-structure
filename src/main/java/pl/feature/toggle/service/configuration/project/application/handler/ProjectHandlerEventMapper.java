@@ -10,11 +10,11 @@ import static pl.feature.toggle.service.contracts.event.projects.ProjectCreated.
 
 final class ProjectHandlerEventMapper {
 
-    static ProjectCreated createProjectCreatedEvent(Project project, Actor actor,  CorrelationId correlationId) {
+    static ProjectCreated createProjectCreatedEvent(Project project, Actor actor, CorrelationId correlationId) {
         return projectCreatedEventBuilder()
                 .projectName(project.name().value())
                 .projectId(project.id().uuid())
-                .metadata(Metadata.create(actor.actorId().value(), actor.username().value(), correlationId.value()))
+                .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
 

@@ -4,14 +4,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.stereotype.Component;
 import pl.feature.toggle.service.model.security.actor.*;
 
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
 class JwtActorProvider implements ActorProvider {
 
     private static final String ROLE_PREFIX = "ROLE_";
