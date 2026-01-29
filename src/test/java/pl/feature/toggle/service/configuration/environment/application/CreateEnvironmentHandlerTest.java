@@ -9,7 +9,7 @@ import pl.feature.toggle.service.configuration.project.domain.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.feature.toggle.service.contracts.event.projects.EnvironmentCreated;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated;
 
 import java.util.UUID;
 

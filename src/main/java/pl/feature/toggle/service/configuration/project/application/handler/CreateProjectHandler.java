@@ -1,6 +1,6 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
-import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectCommand;
+import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
@@ -12,7 +12,7 @@ import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
-import static pl.feature.toggle.service.configuration.project.application.handler.ProjectHandlerEventMapper.createProjectCreatedEvent;
+import static pl.feature.toggle.service.configuration.project.application.handler.EventMapper.createProjectCreatedEvent;
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 
 @AllArgsConstructor
@@ -26,7 +26,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
     @Override
     @Transactional
     public ProjectId handle(CreateProjectCommand command) {
-        var project = Project.create(command);
+        var project = Project.create(command.name(), command.description());
 
         validate(project);
 

@@ -6,7 +6,7 @@ import pl.feature.toggle.service.configuration.project.domain.exception.ProjectA
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import pl.feature.toggle.service.contracts.event.projects.ProjectCreated;
+import pl.feature.toggle.service.contracts.event.project.ProjectCreated;
 
 import static pl.feature.toggle.service.configuration.builder.FakeCreateProjectCommandBuilder.createProjectCommandBuilder;
 import static org.assertj.core.api.Assertions.assertThat;

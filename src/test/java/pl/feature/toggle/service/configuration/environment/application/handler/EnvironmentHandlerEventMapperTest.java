@@ -25,7 +25,7 @@ class EnvironmentHandlerEventMapperTest extends AbstractUnitTest {
         assertThat(result.projectId()).isEqualTo(UUID.fromString(projectId));
         assertThat(result.environmentName()).isEqualTo(environment.name().value());
         assertThat(result.eventId()).isNotNull();
-        assertThat(result.metadata()).isEqualTo(metadata());
+        assertThat(result.metadata()).isEqualTo(metadata(result.metadata().occurredAt()));
     }
 
 }

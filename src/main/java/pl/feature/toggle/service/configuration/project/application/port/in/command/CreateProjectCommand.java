@@ -1,6 +1,6 @@
-package pl.feature.toggle.service.configuration.project.application.port.in;
+package pl.feature.toggle.service.configuration.project.application.port.in.command;
 
-import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.CreateProjectDto;
+import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectName;
 
@@ -9,7 +9,7 @@ public record CreateProjectCommand(
         ProjectDescription description
 ) {
 
-    public static CreateProjectCommand from(CreateProjectDto dto) {
+    public static CreateProjectCommand from(ProjectSnapshotDto dto) {
         return new CreateProjectCommand(ProjectName.create(dto.name()), ProjectDescription.create(dto.description()));
     }
 

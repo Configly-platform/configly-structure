@@ -16,4 +16,8 @@ public interface EnvironmentRepository {
     boolean existsByProjectIdAndName(ProjectId projectId, EnvironmentName environmentName);
 
     boolean exists(EnvironmentId environmentId);
+
+    void archiveAllByProjectId(ProjectId projectId);
+
+    void restoreAllByProjectId(ProjectId projectId);
 }

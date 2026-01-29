@@ -2,7 +2,7 @@ package pl.feature.toggle.service.configuration.project.infrastructure.in.rest.d
 
 import jakarta.validation.constraints.NotEmpty;
 
-public record CreateProjectDto(
+public record ProjectSnapshotDto(
         @NotEmpty
         String name,
         @NotEmpty

@@ -13,6 +13,8 @@ import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
 import pl.feature.toggle.service.outbox.FakeOutboxWriter;
 
+import java.time.LocalDateTime;
+
 public abstract class AbstractUnitTest {
 
     protected FakeProjectRepository projectRepository;
@@ -53,8 +55,8 @@ public abstract class AbstractUnitTest {
         environmentRepository.save(environment);
     }
 
-    protected Metadata metadata() {
-        return Metadata.create(actorProvider.current().actorId().value(), actorProvider.current().username().value(), correlationProvider.current().value());
+    protected Metadata metadata(LocalDateTime time) {
+        return new Metadata(actorProvider.current().actorId().value(), actorProvider.current().username().value(), time, correlationProvider.current().value());
     }
 
 }

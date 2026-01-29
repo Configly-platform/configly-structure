@@ -6,7 +6,7 @@ import pl.feature.toggle.service.configuration.AbstractUnitTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class ProjectHandlerEventMapperTest extends AbstractUnitTest {
+class EventMapperTest extends AbstractUnitTest {
 
     @Test
     @DisplayName("Should map Project to ProjectCreated event")
@@ -15,13 +15,12 @@ class ProjectHandlerEventMapperTest extends AbstractUnitTest {
         var project = createProject("TEST", "TEST");
 
         // when
-        var result = ProjectHandlerEventMapper.createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
+        var result = EventMapper.createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
 
         // then
         assertThat(result.projectId()).isEqualTo(project.id().uuid());
         assertThat(result.projectName()).isEqualTo(project.name().value());
         assertThat(result.eventId()).isNotNull();
-        assertThat(result.metadata()).isEqualTo(metadata());
-        // TODO FIX
+        assertThat(result.metadata()).isEqualTo(metadata(result.metadata().occurredAt()));
     }
 }

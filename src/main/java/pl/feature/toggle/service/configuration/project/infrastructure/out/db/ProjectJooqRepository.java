@@ -33,6 +33,14 @@ final class ProjectJooqRepository implements ProjectRepository {
     }
 
     @Override
+    public void update(Project project) {
+        dslContext.update(PROJECTS)
+                .set(toRecord(project))
+                .where(PROJECTS.ID.eq(project.id().uuid()))
+                .execute();
+    }
+
+    @Override
     public boolean exists(ProjectId projectId) {
         return dslContext.fetchExists(
                 dslContext.selectFrom(PROJECTS)
@@ -51,5 +59,12 @@ final class ProjectJooqRepository implements ProjectRepository {
                 .where(PROJECTS.ID.eq(projectId.uuid()))
                 .fetchOptional()
                 .map(ProjectMapper::toDomain);
+    }
+
+    @Override
+    public void delete(Project project) {
+        dslContext.deleteFrom(PROJECTS)
+                .where(PROJECTS.ID.eq(project.id().uuid()))
+                .execute();
     }
 }

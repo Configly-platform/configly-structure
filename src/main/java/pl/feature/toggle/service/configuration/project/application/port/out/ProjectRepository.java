@@ -10,9 +10,13 @@ public interface ProjectRepository {
 
     ProjectId save(Project project);
 
+    void update(Project project);
+
     boolean exists(ProjectId projectId);
 
     boolean existsByName(ProjectName name);
 
     Optional<Project> findById(ProjectId projectId);
+
+    void delete(Project project);
 }

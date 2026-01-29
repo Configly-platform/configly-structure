@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.application.port.in;
 
 
+import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 public interface CreateProjectUseCase {

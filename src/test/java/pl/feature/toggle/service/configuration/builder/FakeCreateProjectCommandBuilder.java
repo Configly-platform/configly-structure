@@ -1,6 +1,6 @@
 package pl.feature.toggle.service.configuration.builder;
 
-import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectCommand;
+import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 
 public class FakeCreateProjectCommandBuilder {
 
