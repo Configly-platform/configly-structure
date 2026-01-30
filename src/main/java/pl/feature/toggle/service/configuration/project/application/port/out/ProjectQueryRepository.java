@@ -6,11 +6,7 @@ import pl.feature.toggle.service.model.project.ProjectName;
 
 import java.util.Optional;
 
-public interface ProjectRepository {
-
-    ProjectId save(Project project);
-
-    void update(Project project);
+public interface ProjectQueryRepository {
 
     boolean exists(ProjectId projectId);
 
@@ -18,5 +14,4 @@ public interface ProjectRepository {
 
     Optional<Project> findById(ProjectId projectId);
 
-    void delete(Project project);
 }

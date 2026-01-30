@@ -3,9 +3,10 @@ package pl.feature.toggle.service.configuration;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.infrastructure.FakeEnvironmentRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.infrastructure.FakeProjectRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import pl.feature.toggle.service.configuration.project.infrastructure.ProjectCommandRepositoryStub;
+import pl.feature.toggle.service.configuration.project.infrastructure.ProjectQueryRepositoryStub;
 import pl.feature.toggle.service.contracts.shared.Metadata;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectDescription;
@@ -17,7 +18,8 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractUnitTest {
 
-    protected FakeProjectRepository projectRepository;
+    protected ProjectCommandRepositoryStub projectCommandRepositoryStub;
+    protected ProjectQueryRepositoryStub projectQueryRepositoryStub;
     protected FakeEnvironmentRepository environmentRepository;
     protected FakeOutboxWriter outboxWriter;
     protected FakeActorProvider actorProvider;
@@ -26,7 +28,8 @@ public abstract class AbstractUnitTest {
     @BeforeEach
     void setUp() {
         outboxWriter = new FakeOutboxWriter();
-        projectRepository = new FakeProjectRepository();
+        projectCommandRepositoryStub = new ProjectCommandRepositoryStub();
+        projectQueryRepositoryStub = new ProjectQueryRepositoryStub();
         environmentRepository = new FakeEnvironmentRepository();
         actorProvider = new FakeActorProvider();
         correlationProvider = new FakeCorrelationProvider();
@@ -34,7 +37,8 @@ public abstract class AbstractUnitTest {
 
     @AfterEach
     void tearDown() {
-        projectRepository.clear();
+        projectCommandRepositoryStub.reset();
+        projectQueryRepositoryStub.reset();
         outboxWriter.clear();
         environmentRepository.clear();
     }
@@ -48,7 +52,7 @@ public abstract class AbstractUnitTest {
     }
 
     protected void insertProject(Project project) {
-        projectRepository.save(project);
+        projectCommandRepositoryStub.save(project);
     }
 
     protected void insertEnvironment(Environment environment) {

@@ -19,7 +19,8 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
 
     @BeforeEach
     void setUp() {
-        sut = ProjectHandlerFacade.createProjectUseCase(projectRepository, outboxWriter, actorProvider, correlationProvider);
+        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositoryStub, projectQueryRepositoryStub,
+                outboxWriter, actorProvider, correlationProvider);
     }
 
     @Test
@@ -30,13 +31,14 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
                 .withName("TEST")
                 .withDescription("TEST")
                 .build();
+        projectQueryRepositoryStub.existsByName(false);
 
         // when
         var result = sut.handle(command);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(projectRepository.exists(result)).isTrue();
+        assertThat(projectCommandRepositoryStub.getSaved()).isNotNull();
         assertContainsProjectCreatedEvent();
     }
 
@@ -44,8 +46,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
     @DisplayName("Should not create a new project when project with given name already exists")
     void test02() {
         // given
-        var project = createProject("TEST", "TEST");
-        projectRepository.save(project);
+        projectQueryRepositoryStub.existsByName(true);
 
         var command = createProjectCommandBuilder()
                 .withName("TEST")

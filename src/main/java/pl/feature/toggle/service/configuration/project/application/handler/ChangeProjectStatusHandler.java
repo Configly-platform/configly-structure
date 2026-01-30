@@ -5,7 +5,8 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeStatusCommand;
 import pl.feature.toggle.service.configuration.project.application.port.out.EnvironmentStatusCascadePort;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 import pl.feature.toggle.service.configuration.project.domain.Status;
@@ -21,7 +22,8 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 @AllArgsConstructor
 class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectCommandRepository projectCommandRepository;
+    private final ProjectQueryRepository projectQueryRepository;
     private final ActorProvider actorProvider;
     private final CorrelationProvider correlationProvider;
     private final OutboxWriter outboxWriter;
@@ -39,7 +41,7 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
 
         var updatedProject = updateResult.project();
 
-        projectRepository.update(updatedProject);
+        projectCommandRepository.update(updatedProject);
         changeEnvironmentsStatus(updatedProject);
 
         var event = createProjectStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
@@ -62,7 +64,7 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
     }
 
     private Project loadProject(ProjectId projectId) {
-        return projectRepository.findById(projectId)
+        return projectQueryRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
     }
 }

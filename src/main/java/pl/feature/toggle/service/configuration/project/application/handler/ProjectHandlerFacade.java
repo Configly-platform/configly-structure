@@ -4,7 +4,8 @@ import pl.feature.toggle.service.configuration.project.application.port.in.Chang
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.out.EnvironmentStatusCascadePort;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
@@ -15,31 +16,34 @@ import pl.feature.toggle.service.outbox.api.OutboxWriter;
 public final class ProjectHandlerFacade {
 
     public static CreateProjectUseCase createProjectUseCase(
-            ProjectRepository projectRepository,
+            ProjectCommandRepository projectCommandRepository,
+            ProjectQueryRepository projectQueryRepository,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider
     ) {
-        return new CreateProjectHandler(projectRepository, outboxWriter, actorProvider, correlationProvider);
+        return new CreateProjectHandler(projectCommandRepository, projectQueryRepository, outboxWriter, actorProvider, correlationProvider);
     }
 
     public static UpdateProjectUseCase updateProjectUseCase(
-            ProjectRepository projectRepository,
+            ProjectCommandRepository projectCommandRepository,
+            ProjectQueryRepository projectQueryRepository,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider
     ) {
-        return new UpdateProjectHandler(projectRepository, actorProvider, correlationProvider, outboxWriter);
+        return new UpdateProjectHandler(projectCommandRepository, projectQueryRepository, actorProvider, correlationProvider, outboxWriter);
     }
 
     public static ChangeProjectStatusUseCase changeProjectStatusUseCase(
-            ProjectRepository projectRepository,
+            ProjectCommandRepository projectCommandRepository,
+            ProjectQueryRepository projectQueryRepository,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider,
             EnvironmentStatusCascadePort environmentStatusCascadePort
     ) {
-        return new ChangeProjectStatusHandler(projectRepository, actorProvider,
+        return new ChangeProjectStatusHandler(projectCommandRepository, projectQueryRepository, actorProvider,
                 correlationProvider, outboxWriter, environmentStatusCascadePort);
     }
 

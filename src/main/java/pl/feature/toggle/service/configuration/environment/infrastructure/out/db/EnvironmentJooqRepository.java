@@ -50,4 +50,14 @@ final class EnvironmentJooqRepository implements EnvironmentRepository {
     public boolean exists(EnvironmentId environmentId) {
         return dsl.fetchExists(ENVIRONMENTS, ENVIRONMENTS.ID.eq(environmentId.uuid()));
     }
+
+    @Override
+    public void archiveAllByProjectId(ProjectId projectId) {
+
+    }
+
+    @Override
+    public void restoreAllByProjectId(ProjectId projectId) {
+
+    }
 }

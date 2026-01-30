@@ -8,7 +8,7 @@ import pl.feature.toggle.service.configuration.environment.application.port.out.
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotCreateEnvironmentForMissingProject;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
@@ -23,7 +23,7 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
 
     private final EnvironmentRepository environmentRepository;
-    private final ProjectRepository projectRepository;
+    private final ProjectQueryRepository projectRepository;
     private final OutboxWriter outboxWriter;
     private final ActorProvider actorProvider;
     private final CorrelationProvider correlationProvider;

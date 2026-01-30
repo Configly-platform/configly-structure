@@ -25,7 +25,7 @@ class CreateEnvironmentHandlerTest extends AbstractUnitTest {
 
     @BeforeEach
     void setUp() {
-        sut = EnvironmentHandlerFacade.createEnvironmentUseCase(environmentRepository, projectRepository, outboxWriter, actorProvider,
+        sut = EnvironmentHandlerFacade.createEnvironmentUseCase(environmentRepository, projectQueryRepositoryStub, outboxWriter, actorProvider,
                 correlationProvider);
         project = createProject("TEST", "TEST");
         insertProject(project);

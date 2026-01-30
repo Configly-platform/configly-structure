@@ -3,7 +3,8 @@ package pl.feature.toggle.service.configuration.project.application.handler;
 import lombok.AllArgsConstructor;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.UpdateProjectCommand;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -17,7 +18,8 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 @AllArgsConstructor
 class UpdateProjectHandler implements UpdateProjectUseCase {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectCommandRepository projectCommandRepository;
+    private final ProjectQueryRepository projectQueryRepository;
     private final ActorProvider actorProvider;
     private final CorrelationProvider correlationProvider;
     private final OutboxWriter outboxWriter;
@@ -35,14 +37,14 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
             return;
         }
 
-        projectRepository.update(updateResult.project());
+        projectCommandRepository.update(updateResult.project());
 
         var event = createProjectUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());
     }
 
     private Project loadProject(ProjectId projectId) {
-        return projectRepository.findById(projectId)
+        return projectQueryRepository.findById(projectId)
                 .orElseThrow(() -> new ProjectNotFoundException(projectId));
     }
 }

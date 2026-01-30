@@ -2,7 +2,8 @@ package pl.feature.toggle.service.configuration.project.application.handler;
 
 import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import lombok.AllArgsConstructor;
@@ -18,7 +19,8 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 @AllArgsConstructor
 class CreateProjectHandler implements CreateProjectUseCase {
 
-    private final ProjectRepository projectRepository;
+    private final ProjectCommandRepository projectCommandRepository;
+    private final ProjectQueryRepository projectQueryRepository;
     private final OutboxWriter outboxWriter;
     private final ActorProvider actorProvider;
     private final CorrelationProvider correlationProvider;
@@ -30,12 +32,12 @@ class CreateProjectHandler implements CreateProjectUseCase {
 
         validate(project);
 
-        var projectId = projectRepository.save(project);
+        projectCommandRepository.save(project);
 
         var event = createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());
 
-        return projectId;
+        return project.id();
     }
 
     private void validate(Project project) {
@@ -43,7 +45,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
     }
 
     private void validateUniqueName(Project project) {
-        if (projectRepository.existsByName(project.name())) {
+        if (projectQueryRepository.existsByName(project.name())) {
             throw new ProjectAlreadyExistsException(project.name());
         }
     }

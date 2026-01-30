@@ -36,6 +36,16 @@ public class FakeEnvironmentRepository implements EnvironmentRepository {
         return environments.containsKey(environmentId);
     }
 
+    @Override
+    public void archiveAllByProjectId(ProjectId projectId) {
+
+    }
+
+    @Override
+    public void restoreAllByProjectId(ProjectId projectId) {
+
+    }
+
     public void clear() {
         environments.clear();
     }

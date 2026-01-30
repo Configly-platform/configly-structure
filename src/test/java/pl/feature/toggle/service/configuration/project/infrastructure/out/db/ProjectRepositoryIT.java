@@ -1,7 +1,8 @@
 package pl.feature.toggle.service.configuration.project.infrastructure.out.db;
 
 import pl.feature.toggle.service.configuration.AbstractITTest;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
+import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import org.junit.jupiter.api.DisplayName;
@@ -17,17 +18,20 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 class ProjectRepositoryIT extends AbstractITTest {
 
     @Autowired
-    private ProjectRepository sut;
+    private ProjectCommandRepository commandRepository;
+
+    @Autowired
+    private ProjectQueryRepository queryRepository;
 
     @Test
     @DisplayName("Should save and load project")
     void test01() {
         // given
         var project = createProject("TEST", "TEST");
-        var projectId = sut.save(project);
+        commandRepository.save(project);
 
         // when
-        var loaded = sut.findById(projectId).orElseThrow();
+        var loaded = queryRepository.findById(project.id()).orElseThrow();
 
         // then
         assertThat(project.name()).isEqualTo(loaded.name());
@@ -40,10 +44,10 @@ class ProjectRepositoryIT extends AbstractITTest {
     void test02() {
         // given
         var project = createProject("TEST", "TEST");
-        var projectId = sut.save(project);
+        commandRepository.save(project);
 
         // when
-        var exists = sut.exists(projectId);
+        var exists = queryRepository.exists(project.id());
 
         // then
         assertThat(exists).isTrue();
@@ -54,7 +58,7 @@ class ProjectRepositoryIT extends AbstractITTest {
     void test02b() {
         var randomId = ProjectId.create();
 
-        var exists = sut.exists(randomId);
+        var exists = queryRepository.exists(randomId);
 
         assertThat(exists).isFalse();
     }
@@ -64,10 +68,10 @@ class ProjectRepositoryIT extends AbstractITTest {
     void test03() {
         // given
         var project = createProject("TEST", "TEST");
-        sut.save(project);
+        commandRepository.save(project);
 
         // when
-        var exists = sut.existsByName(project.name());
+        var exists = queryRepository.existsByName(project.name());
 
         // then
         assertThat(exists).isTrue();
@@ -80,7 +84,7 @@ class ProjectRepositoryIT extends AbstractITTest {
         var projectName = ProjectName.create("TEST");
 
         // when
-        var exists = sut.existsByName(projectName);
+        var exists = queryRepository.existsByName(projectName);
 
         // then
         assertThat(exists).isFalse();
@@ -93,10 +97,10 @@ class ProjectRepositoryIT extends AbstractITTest {
         var project1 = createProject("TEST", "TEST1");
         var project2 = createProject("TEST", "TEST2");
 
-        sut.save(project1);
+        commandRepository.save(project1);
 
         // when / then
-        assertThatThrownBy(() -> sut.save(project2))
+        assertThatThrownBy(() -> commandRepository.save(project2))
                 .isInstanceOf(ProjectAlreadyExistsException.class);
     }
 
