@@ -6,7 +6,7 @@ import pl.feature.toggle.service.configuration.project.domain.Project;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProjectCommandRepositoryStub implements ProjectCommandRepository {
+public class ProjectCommandRepositorySpy implements ProjectCommandRepository {
 
     private final List<Project> saved = new ArrayList<>();
     private final List<Project> updated = new ArrayList<>();

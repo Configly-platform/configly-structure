@@ -1,10 +1,8 @@
 package pl.feature.toggle.service.configuration.environment.infrastructure.out.db;
 
 import pl.feature.toggle.service.configuration.AbstractITTest;
-import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
-import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

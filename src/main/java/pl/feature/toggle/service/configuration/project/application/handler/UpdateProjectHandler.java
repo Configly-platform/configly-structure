@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
 import lombok.AllArgsConstructor;
+import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.UpdateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
@@ -20,13 +21,15 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
     private final ProjectQueryRepository projectQueryRepository;
+    private final ProjectPolicyFacade projectPolicyFacade;
     private final ActorProvider actorProvider;
     private final CorrelationProvider correlationProvider;
     private final OutboxWriter outboxWriter;
 
     @Override
     public void handle(UpdateProjectCommand command) {
-        var project = loadProject(command.projectId());
+        var project = projectQueryRepository.getOrThrow(command.projectId());
+        projectPolicyFacade.ensureUpdateAllowed(command.name());
 
         var updateResult = project.update(
                 command.name(),
@@ -41,10 +44,5 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
 
         var event = createProjectUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());
-    }
-
-    private Project loadProject(ProjectId projectId) {
-        return projectQueryRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
     }
 }

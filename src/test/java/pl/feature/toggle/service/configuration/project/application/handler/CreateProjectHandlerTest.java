@@ -19,7 +19,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
 
     @BeforeEach
     void setUp() {
-        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositoryStub, projectQueryRepositoryStub,
+        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub,
                 outboxWriter, actorProvider, correlationProvider);
     }
 
@@ -38,7 +38,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
 
         // then
         assertThat(result).isNotNull();
-        assertThat(projectCommandRepositoryStub.getSaved()).isNotNull();
+        assertThat(projectCommandRepositorySpy.getSaved()).isNotNull();
         assertContainsProjectCreatedEvent();
     }
 

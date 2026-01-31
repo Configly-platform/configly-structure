@@ -1,14 +1,15 @@
 package pl.feature.toggle.service.configuration.project.infrastructure;
 
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import pl.feature.toggle.service.configuration.project.application.handler.ProjectHandlerFacade;
+import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.out.EnvironmentStatusCascadePort;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
@@ -20,11 +21,12 @@ class Config {
     CreateProjectUseCase createProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
+            ProjectPolicyFacade projectPolicyFacade,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider
     ) {
-        return ProjectHandlerFacade.createProjectUseCase(projectCommandRepository, projectQueryRepository,
+        return ProjectHandlerFacade.createProjectUseCase(projectCommandRepository, projectQueryRepository, projectPolicyFacade,
                 outboxWriter, actorProvider, correlationProvider);
     }
 
@@ -32,12 +34,13 @@ class Config {
     UpdateProjectUseCase updateProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
+            ProjectPolicyFacade projectPolicyFacade,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider
     ) {
         return ProjectHandlerFacade.updateProjectUseCase(projectCommandRepository, projectQueryRepository,
-                outboxWriter, actorProvider, correlationProvider);
+                projectPolicyFacade, outboxWriter, actorProvider, correlationProvider);
     }
 
     @Bean

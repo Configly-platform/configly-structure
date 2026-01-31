@@ -1,6 +1,6 @@
 package pl.feature.toggle.service.configuration.builder;
 
-import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentCommand;
+import pl.feature.toggle.service.configuration.environment.application.port.in.command.CreateEnvironmentCommand;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.UUID;

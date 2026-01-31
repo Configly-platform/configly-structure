@@ -1,10 +1,11 @@
 package pl.feature.toggle.service.configuration.environment.domain.exception;
 
-import pl.feature.toggle.service.configuration.environment.domain.Environment;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectId;
 
 public class EnvironmentAlreadyExistsException extends RuntimeException {
-    public EnvironmentAlreadyExistsException(final Environment environment) {
+    public EnvironmentAlreadyExistsException(EnvironmentName environmentName, ProjectId projectId) {
         super(String.format("Environment with name '%s' already exists for project '%s' ",
-                environment.name().value(), environment.projectId().toString()));
+                environmentName.value(), projectId.idAsString()));
     }
 }

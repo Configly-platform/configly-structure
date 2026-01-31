@@ -1,5 +1,6 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
+import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
@@ -18,21 +19,23 @@ public final class ProjectHandlerFacade {
     public static CreateProjectUseCase createProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
+            ProjectPolicyFacade projectPolicyFacade,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider
     ) {
-        return new CreateProjectHandler(projectCommandRepository, projectQueryRepository, outboxWriter, actorProvider, correlationProvider);
+        return new CreateProjectHandler(projectCommandRepository, projectQueryRepository, projectPolicyFacade, outboxWriter, actorProvider, correlationProvider);
     }
 
     public static UpdateProjectUseCase updateProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
+            ProjectPolicyFacade projectPolicyFacade,
             OutboxWriter outboxWriter,
             ActorProvider actorProvider,
             CorrelationProvider correlationProvider
     ) {
-        return new UpdateProjectHandler(projectCommandRepository, projectQueryRepository, actorProvider, correlationProvider, outboxWriter);
+        return new UpdateProjectHandler(projectCommandRepository, projectQueryRepository, projectPolicyFacade, actorProvider, correlationProvider, outboxWriter);
     }
 
     public static ChangeProjectStatusUseCase changeProjectStatusUseCase(

@@ -5,7 +5,7 @@ import pl.feature.toggle.service.configuration.environment.infrastructure.FakeEn
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import pl.feature.toggle.service.configuration.project.infrastructure.ProjectCommandRepositoryStub;
+import pl.feature.toggle.service.configuration.project.infrastructure.ProjectCommandRepositorySpy;
 import pl.feature.toggle.service.configuration.project.infrastructure.ProjectQueryRepositoryStub;
 import pl.feature.toggle.service.contracts.shared.Metadata;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 
 public abstract class AbstractUnitTest {
 
-    protected ProjectCommandRepositoryStub projectCommandRepositoryStub;
+    protected ProjectCommandRepositorySpy projectCommandRepositorySpy;
     protected ProjectQueryRepositoryStub projectQueryRepositoryStub;
     protected FakeEnvironmentRepository environmentRepository;
     protected FakeOutboxWriter outboxWriter;
@@ -28,7 +28,7 @@ public abstract class AbstractUnitTest {
     @BeforeEach
     void setUp() {
         outboxWriter = new FakeOutboxWriter();
-        projectCommandRepositoryStub = new ProjectCommandRepositoryStub();
+        projectCommandRepositorySpy = new ProjectCommandRepositorySpy();
         projectQueryRepositoryStub = new ProjectQueryRepositoryStub();
         environmentRepository = new FakeEnvironmentRepository();
         actorProvider = new FakeActorProvider();
@@ -37,7 +37,7 @@ public abstract class AbstractUnitTest {
 
     @AfterEach
     void tearDown() {
-        projectCommandRepositoryStub.reset();
+        projectCommandRepositorySpy.reset();
         projectQueryRepositoryStub.reset();
         outboxWriter.clear();
         environmentRepository.clear();
@@ -52,7 +52,7 @@ public abstract class AbstractUnitTest {
     }
 
     protected void insertProject(Project project) {
-        projectCommandRepositoryStub.save(project);
+        projectCommandRepositorySpy.save(project);
     }
 
     protected void insertEnvironment(Environment environment) {

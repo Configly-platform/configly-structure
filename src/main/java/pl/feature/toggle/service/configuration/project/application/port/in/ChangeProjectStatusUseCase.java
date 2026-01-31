@@ -1,9 +1,9 @@
 package pl.feature.toggle.service.configuration.project.application.port.in;
 
-import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeStatusCommand;
+import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeProjectStatusCommand;
 
 public interface ChangeProjectStatusUseCase {
 
-    void handle(ChangeStatusCommand command);
+    void handle(ChangeProjectStatusCommand command);
 
 }

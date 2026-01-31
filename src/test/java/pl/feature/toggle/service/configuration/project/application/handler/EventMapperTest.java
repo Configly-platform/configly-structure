@@ -23,4 +23,6 @@ class EventMapperTest extends AbstractUnitTest {
         assertThat(result.eventId()).isNotNull();
         assertThat(result.metadata()).isEqualTo(metadata(result.metadata().occurredAt()));
     }
+
+
 }

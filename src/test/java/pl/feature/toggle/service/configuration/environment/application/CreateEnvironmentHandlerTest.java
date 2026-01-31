@@ -3,7 +3,7 @@ package pl.feature.toggle.service.configuration.environment.application;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.environment.application.handler.EnvironmentHandlerFacade;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
-import pl.feature.toggle.service.configuration.environment.domain.exception.CannotCreateEnvironmentForMissingProject;
+import pl.feature.toggle.service.configuration.environment.domain.exception.CannotCreateEnvironmentForMissingProjectException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import org.junit.jupiter.api.BeforeEach;
@@ -62,7 +62,7 @@ class CreateEnvironmentHandlerTest extends AbstractUnitTest {
         var exception = catchException(() -> sut.handle(environmentCommand));
 
         // then
-        assertThat(exception).isInstanceOf(CannotCreateEnvironmentForMissingProject.class);
+        assertThat(exception).isInstanceOf(CannotCreateEnvironmentForMissingProjectException.class);
         assertDoesNotContainEnvironmentCreatedEvent();
     }
 

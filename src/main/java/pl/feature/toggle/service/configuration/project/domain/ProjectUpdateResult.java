@@ -11,8 +11,8 @@ public record ProjectUpdateResult(
         return new ProjectUpdateResult(project, List.of(changes));
     }
 
-    public static ProjectUpdateResult noChanges(Project project) {
-        return new ProjectUpdateResult(project, List.of());
+    public static ProjectUpdateResult noChanges() {
+        return new ProjectUpdateResult(null, List.of());
     }
 
     public static ProjectUpdateResult of(Project project, List<ProjectFieldChange> changes) {

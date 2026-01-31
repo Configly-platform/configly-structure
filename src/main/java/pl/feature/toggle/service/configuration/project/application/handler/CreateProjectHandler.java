@@ -1,5 +1,6 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
+import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
@@ -21,6 +22,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
     private final ProjectQueryRepository projectQueryRepository;
+    private final ProjectPolicyFacade projectPolicyFacade;
     private final OutboxWriter outboxWriter;
     private final ActorProvider actorProvider;
     private final CorrelationProvider correlationProvider;
@@ -29,8 +31,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
     @Transactional
     public ProjectId handle(CreateProjectCommand command) {
         var project = Project.create(command.name(), command.description());
-
-        validate(project);
+        projectPolicyFacade.ensureCreateAllowed(project.name());
 
         projectCommandRepository.save(project);
 
@@ -39,15 +40,4 @@ class CreateProjectHandler implements CreateProjectUseCase {
 
         return project.id();
     }
-
-    private void validate(Project project) {
-        validateUniqueName(project);
-    }
-
-    private void validateUniqueName(Project project) {
-        if (projectQueryRepository.existsByName(project.name())) {
-            throw new ProjectAlreadyExistsException(project.name());
-        }
-    }
-
 }

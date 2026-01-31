@@ -3,6 +3,8 @@ package pl.feature.toggle.service.configuration.environment.infrastructure.out.d
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -19,14 +21,18 @@ final class EnvironmentMapper {
         record.setName(environment.name().value());
         record.setCreatedAt(OffsetDateTime.now());
         record.setProjectId(environment.projectId().uuid());
+        record.setStatus(environment.status().name());
+        record.setType(environment.type().name());
         return record;
     }
 
     static Environment toDomain(EnvironmentsRecord record) {
-        return Environment.create(
+        return new Environment(
                 EnvironmentId.create(record.getId()),
                 ProjectId.create(record.getProjectId()),
-                EnvironmentName.create(record.getName())
+                EnvironmentName.create(record.getName()),
+                EnvironmentType.valueOf(record.getType()),
+                EnvironmentStatus.valueOf(record.getStatus())
         );
     }
 

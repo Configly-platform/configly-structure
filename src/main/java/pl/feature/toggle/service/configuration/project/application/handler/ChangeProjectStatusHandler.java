@@ -3,13 +3,13 @@ package pl.feature.toggle.service.configuration.project.application.handler;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
-import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeStatusCommand;
+import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeProjectStatusCommand;
 import pl.feature.toggle.service.configuration.project.application.port.out.EnvironmentStatusCascadePort;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
-import pl.feature.toggle.service.configuration.project.domain.Status;
+import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
@@ -31,10 +31,10 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
 
     @Override
     @Transactional
-    public void handle(ChangeStatusCommand command) {
-        var project = loadProject(command.projectId());
+    public void handle(ChangeProjectStatusCommand command) {
+        var project = projectQueryRepository.getOrThrow(command.projectId());
 
-        var updateResult = changeStatus(project, command.newStatus());
+        var updateResult = changeStatus(project, command.newProjectStatus());
         if (!updateResult.wasUpdated()) {
             return;
         }
@@ -56,15 +56,11 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
         environmentStatusCascadePort.archiveCascadeByProjectId(project.id());
     }
 
-    private ProjectUpdateResult changeStatus(Project project, Status newStatus) {
-        return switch (newStatus) {
+    private ProjectUpdateResult changeStatus(Project project, ProjectStatus newProjectStatus) {
+        return switch (newProjectStatus) {
             case ACTIVE -> project.restore();
             case ARCHIVED -> project.archive();
         };
     }
 
-    private Project loadProject(ProjectId projectId) {
-        return projectQueryRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(projectId));
-    }
 }

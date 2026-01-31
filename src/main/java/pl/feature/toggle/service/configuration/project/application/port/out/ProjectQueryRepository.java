@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.application.port.out;
 
 import pl.feature.toggle.service.configuration.project.domain.Project;
+import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
 
@@ -12,6 +13,8 @@ public interface ProjectQueryRepository {
 
     boolean existsByName(ProjectName name);
 
-    Optional<Project> findById(ProjectId projectId);
+    Project getOrThrow(ProjectId projectId);
+
+    ProjectStatus fetchStatus(ProjectId projectId);
 
 }

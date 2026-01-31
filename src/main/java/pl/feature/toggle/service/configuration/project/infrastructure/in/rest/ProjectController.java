@@ -3,14 +3,13 @@ package pl.feature.toggle.service.configuration.project.infrastructure.in.rest;
 import org.springframework.web.bind.annotation.*;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
-import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeStatusCommand;
+import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeProjectStatusCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.UpdateProjectCommand;
 import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.UUID;
 
@@ -36,7 +35,7 @@ final class ProjectController {
 
     @PatchMapping("/{projectId}/status")
     void changeStatus(@PathVariable String projectId, @RequestBody @Valid String status){
-        changeProjectStatusUseCase.handle(ChangeStatusCommand.of(projectId,status));
+        changeProjectStatusUseCase.handle(ChangeProjectStatusCommand.of(projectId,status));
     }
 
 }

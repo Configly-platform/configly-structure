@@ -1,6 +1,5 @@
 package pl.feature.toggle.service.configuration.environment.infrastructure;
 
-import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
@@ -10,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class FakeEnvironmentRepository implements EnvironmentRepository {
+public class FakeEnvironmentRepository {
 
     private final Map<EnvironmentId, Environment> environments = new HashMap<>();
 

@@ -8,7 +8,7 @@ import java.util.UUID;
 public record CreateEnvironmentDto(
         @NotEmpty
         String name,
-        @NotNull
-        UUID projectId
+        @NotEmpty
+        String type
 ) {
 }

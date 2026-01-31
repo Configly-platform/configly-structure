@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-class EnvironmentHandlerEventMapperTest extends AbstractUnitTest {
+class EventMapperTest extends AbstractUnitTest {
 
     @Test
     @DisplayName("Should map Environment to EnvironmentCreated event")
@@ -18,7 +18,7 @@ class EnvironmentHandlerEventMapperTest extends AbstractUnitTest {
         var environment = createEnvironment(projectId, "TEST");
 
         // when
-        var result = EnvironmentHandlerEventMapper.createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
+        var result = EventMapper.createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
 
         // then
         assertThat(result.environmentId()).isEqualTo(environment.id().uuid());
