@@ -1,17 +1,13 @@
 package pl.feature.toggle.service.configuration.environment.domain;
 
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.CreateEnvironmentCommand;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult.EnvironmentFieldChange;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotOperateOnArchivedEnvironmentException;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import static pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult.EnvironmentFieldChange.change;
+import static pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult.ChangeSet.createChangeSet;
+import static pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult.EnvironmentFieldChange.fieldChange;
 import static pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult.noChanges;
 import static pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult.updated;
 
@@ -30,42 +26,50 @@ public record Environment(
 
     public EnvironmentUpdateResult archive() {
         if (isArchived()) {
-            return noChanges();
+            return noChanges(this);
         }
-        var change = change(EnvironmentField.STATUS, status, EnvironmentStatus.ARCHIVED);
-        return updated(new Environment(id, projectId, name, type, EnvironmentStatus.ARCHIVED), change);
+        var environment = new Environment(id, projectId, name, type, EnvironmentStatus.ARCHIVED);
+        var change = fieldChange(EnvironmentField.STATUS, status, EnvironmentStatus.ARCHIVED);
+        return updated(environment, change);
     }
 
     public EnvironmentUpdateResult restore() {
         if (isActive()) {
-            return noChanges();
+            return noChanges(this);
         }
-        var change = change(EnvironmentField.STATUS, status, EnvironmentStatus.ACTIVE);
-        return updated(new Environment(id, projectId, name, type, EnvironmentStatus.ACTIVE), change);
+        var environment = new Environment(id, projectId, name, type, EnvironmentStatus.ACTIVE);
+        var change = fieldChange(EnvironmentField.STATUS, status, EnvironmentStatus.ARCHIVED);
+        return updated(environment, change);
     }
 
     public EnvironmentUpdateResult changeType(EnvironmentType newType) {
         if (isArchived()) {
             throw new CannotOperateOnArchivedEnvironmentException(id);
         }
-        if (type.equals(newType)) {
-            return noChanges();
+        var changeSet = createChangeSet();
+        changeSet.addIfChanged(EnvironmentField.TYPE, type, newType);
+
+        if (changeSet.isEmpty()) {
+            return noChanges(this);
         }
-        var change = change(EnvironmentField.TYPE, type, newType);
-        return updated(new Environment(id, projectId, name, newType, status), change);
+
+        var environment = new Environment(id, projectId, name, newType, status);
+        return updated(environment, changeSet.toArray());
     }
 
-    public EnvironmentUpdateResult update(EnvironmentName environmentName) {
+    public EnvironmentUpdateResult update(EnvironmentName newName) {
         if (isArchived()) {
             throw new CannotOperateOnArchivedEnvironmentException(id);
         }
-        List<EnvironmentFieldChange> changes = new ArrayList<>();
-        if (!Objects.equals(environmentName, name)) {
-            changes.add(change(EnvironmentField.NAME, name, environmentName));
+        var changeSet = createChangeSet();
+        changeSet.addIfChanged(EnvironmentField.NAME, name, newName);
+
+        if (changeSet.isEmpty()) {
+            return noChanges(this);
         }
 
-        var environment = new Environment(id, projectId, environmentName, type, status);
-        return EnvironmentUpdateResult.of(environment, changes);
+        var environment = new Environment(id, projectId, newName, type, status);
+        return updated(environment, changeSet.toArray());
     }
 
     public boolean isArchived() {

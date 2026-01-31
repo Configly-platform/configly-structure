@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange.change;
+import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ChangeSet.createChangeSet;
+import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange.fieldChange;
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.noChanges;
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.updated;
 
@@ -32,18 +33,36 @@ public record Project(
 
     public ProjectUpdateResult archive() {
         if (isArchived()) {
-            return noChanges();
+            return noChanges(this);
         }
-        var fieldChange = change(ProjectField.STATUS, status, ProjectStatus.ARCHIVED);
-        return updated(new Project(id, name, description, ProjectStatus.ARCHIVED), fieldChange);
+        var fieldChange = fieldChange(ProjectField.STATUS, status, ProjectStatus.ARCHIVED);
+        var project = new Project(id, name, description, ProjectStatus.ARCHIVED);
+        return updated(project, fieldChange);
     }
 
     public ProjectUpdateResult restore() {
         if (isActive()) {
-            return noChanges();
+            return noChanges(this);
         }
-        var fieldChange = change(ProjectField.STATUS, status, ProjectStatus.ACTIVE);
-        return updated(new Project(id, name, description, ProjectStatus.ACTIVE), fieldChange);
+        var fieldChange = fieldChange(ProjectField.STATUS, status, ProjectStatus.ACTIVE);
+        var project = new Project(id, name, description, ProjectStatus.ACTIVE);
+        return updated(project, fieldChange);
+    }
+
+    public ProjectUpdateResult update(ProjectName newName, ProjectDescription newDescription) {
+        if (isArchived()) {
+            throw new CannotOperateOnArchivedProjectException(id);
+        }
+        var changeSet = createChangeSet();
+        changeSet.addIfChanged(ProjectField.NAME, this.name, newName);
+        changeSet.addIfChanged(ProjectField.DESCRIPTION, this.description, newDescription);
+
+        if (changeSet.isEmpty()) {
+            return noChanges(this);
+        }
+
+        var project = new Project(id, newName, newDescription, status);
+        return updated(project, changeSet.toArray());
     }
 
     public boolean isArchived() {
@@ -52,23 +71,5 @@ public record Project(
 
     public boolean isActive() {
         return this.status.equals(ProjectStatus.ACTIVE);
-    }
-
-    public ProjectUpdateResult update(ProjectName name, ProjectDescription description) {
-        if (isArchived()) {
-            throw new CannotOperateOnArchivedProjectException(id);
-        }
-        List<ProjectFieldChange> changes = new ArrayList<>();
-
-        if (!Objects.equals(this.name, name)) {
-            changes.add(change(ProjectField.NAME, this.name, name));
-        }
-
-        if (!Objects.equals(this.description, description)) {
-            changes.add(change(ProjectField.DESCRIPTION, this.description, description));
-        }
-
-        var project = new Project(id, name, description, status);
-        return ProjectUpdateResult.of(project, changes);
     }
 }

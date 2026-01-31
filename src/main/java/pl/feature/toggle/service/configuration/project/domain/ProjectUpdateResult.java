@@ -1,6 +1,10 @@
 package pl.feature.toggle.service.configuration.project.domain;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange.fieldChange;
 
 public record ProjectUpdateResult(
         Project project,
@@ -11,12 +15,8 @@ public record ProjectUpdateResult(
         return new ProjectUpdateResult(project, List.of(changes));
     }
 
-    public static ProjectUpdateResult noChanges() {
-        return new ProjectUpdateResult(null, List.of());
-    }
-
-    public static ProjectUpdateResult of(Project project, List<ProjectFieldChange> changes) {
-        return new ProjectUpdateResult(project, changes);
+    public static ProjectUpdateResult noChanges(Project project) {
+        return new ProjectUpdateResult(project, List.of());
     }
 
     public boolean wasUpdated() {
@@ -29,9 +29,30 @@ public record ProjectUpdateResult(
             Object after
     ) {
 
-        static ProjectFieldChange change(ProjectField field, Object before, Object after) {
+        static ProjectFieldChange fieldChange(ProjectField field, Object before, Object after) {
             return new ProjectFieldChange(field, before, after);
         }
+    }
 
+    static class ChangeSet {
+        private final List<ProjectFieldChange> changes = new ArrayList<>();
+
+        static ChangeSet createChangeSet() {
+            return new ChangeSet();
+        }
+
+        void addIfChanged(ProjectField field, Object before, Object after) {
+            if (!Objects.equals(before, after)) {
+                changes.add(fieldChange(field, before, after));
+            }
+        }
+
+        public boolean isEmpty() {
+            return changes.isEmpty();
+        }
+
+        public ProjectFieldChange[] toArray() {
+            return changes.toArray(ProjectFieldChange[]::new);
+        }
     }
 }
