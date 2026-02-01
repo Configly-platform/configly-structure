@@ -41,7 +41,7 @@ public record Environment(
             return noChanges(this);
         }
         var environment = new Environment(id, projectId, name, type, EnvironmentStatus.ACTIVE);
-        var change = fieldChange(EnvironmentField.STATUS, status, EnvironmentStatus.ARCHIVED);
+        var change = fieldChange(EnvironmentField.STATUS, status, EnvironmentStatus.ACTIVE);
         return updated(environment, change);
     }
 
