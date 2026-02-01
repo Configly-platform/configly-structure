@@ -11,6 +11,10 @@ class UniqueEnvironmentNamePolicy {
 
     private final EnvironmentQueryRepository environmentQueryRepository;
 
+    static UniqueEnvironmentNamePolicy create(EnvironmentQueryRepository environmentQueryRepository) {
+        return new UniqueEnvironmentNamePolicy(environmentQueryRepository);
+    }
+
     void ensure(ProjectId projectId, EnvironmentName environmentName) {
         var existsByProjectIdAndName = environmentQueryRepository.existsByProjectIdAndName(projectId, environmentName);
         if (existsByProjectIdAndName) {

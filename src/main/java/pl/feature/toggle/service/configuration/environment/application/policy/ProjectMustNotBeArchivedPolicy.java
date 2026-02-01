@@ -10,6 +10,10 @@ class ProjectMustNotBeArchivedPolicy {
 
     private final ProjectQueryRepository projectQueryRepository;
 
+    static ProjectMustNotBeArchivedPolicy create(ProjectQueryRepository projectQueryRepository) {
+        return new ProjectMustNotBeArchivedPolicy(projectQueryRepository);
+    }
+
     void ensure(ProjectId projectId) {
         var projectStatus = projectQueryRepository.fetchStatus(projectId);
 

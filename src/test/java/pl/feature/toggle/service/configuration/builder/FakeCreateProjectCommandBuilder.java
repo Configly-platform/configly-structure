@@ -1,15 +1,17 @@
 package pl.feature.toggle.service.configuration.builder;
 
 import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
+import pl.feature.toggle.service.model.project.ProjectDescription;
+import pl.feature.toggle.service.model.project.ProjectName;
 
 public class FakeCreateProjectCommandBuilder {
 
-    private String name;
-    private String description;
+    private ProjectName name;
+    private ProjectDescription description;
 
     private FakeCreateProjectCommandBuilder() {
-        this.description = "TEST";
-        this.name = "TEST";
+        this.description = ProjectDescription.create("TEST");
+        this.name = ProjectName.create("TEST");
     }
 
     public static FakeCreateProjectCommandBuilder createProjectCommandBuilder() {
@@ -17,17 +19,17 @@ public class FakeCreateProjectCommandBuilder {
     }
 
     public FakeCreateProjectCommandBuilder withName(String name) {
-        this.name = name;
+        this.name = ProjectName.create(name);
         return this;
     }
 
     public FakeCreateProjectCommandBuilder withDescription(String description) {
-        this.description = description;
+        this.description = ProjectDescription.create(description);
         return this;
     }
 
     public CreateProjectCommand build() {
-        return CreateProjectCommand.create(name, description);
+        return new CreateProjectCommand(name, description);
     }
 
 }

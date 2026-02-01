@@ -6,6 +6,7 @@ import pl.feature.toggle.service.configuration.environment.application.port.out.
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
+import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentNotFoundException;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
 
@@ -49,10 +50,13 @@ class EnvironmentCommandJooqRepository implements EnvironmentCommandRepository {
 
     @Override
     public void update(Environment environment) {
-        dsl.update(ENVIRONMENTS)
+        var rows = dsl.update(ENVIRONMENTS)
                 .set(toRecord(environment))
                 .where(ENVIRONMENTS.ID.eq(environment.id().uuid()))
                 .execute();
+        if (rows == 0) {
+            throw new EnvironmentNotFoundException(environment.id(), environment.projectId());
+        }
     }
 
 

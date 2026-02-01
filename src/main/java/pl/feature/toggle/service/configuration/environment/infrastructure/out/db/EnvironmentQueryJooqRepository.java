@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentQueryRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentNotFoundException;
+import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -30,5 +32,4 @@ final class EnvironmentQueryJooqRepository implements EnvironmentQueryRepository
     public boolean existsByProjectIdAndName(ProjectId projectId, EnvironmentName environmentName) {
         return dsl.fetchExists(ENVIRONMENTS, ENVIRONMENTS.PROJECT_ID.eq(projectId.uuid()), ENVIRONMENTS.NAME.eq(environmentName.value()));
     }
-
 }

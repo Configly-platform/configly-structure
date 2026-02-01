@@ -10,7 +10,11 @@ class ProjectMustExistPolicy {
 
     private final ProjectQueryRepository projectQueryRepository;
 
-    public void ensure(ProjectId projectId) {
+    static ProjectMustExistPolicy create(ProjectQueryRepository projectQueryRepository) {
+        return new ProjectMustExistPolicy(projectQueryRepository);
+    }
+
+    void ensure(ProjectId projectId) {
         var exists = projectQueryRepository.exists(projectId);
         if (!exists) {
             throw new CannotCreateEnvironmentForMissingProjectException(projectId);

@@ -20,8 +20,11 @@ public record Environment(
 ) {
 
     public static Environment create(CreateEnvironmentCommand command) {
-        EnvironmentId environmentId = EnvironmentId.create();
-        return new Environment(environmentId, command.projectId(), command.name(), command.type(), EnvironmentStatus.ACTIVE);
+        return new Environment(EnvironmentId.create(), command.projectId(), command.name(), command.type(), EnvironmentStatus.ACTIVE);
+    }
+
+    public static Environment create(ProjectId projectId, EnvironmentName name, EnvironmentType type) {
+        return new Environment(EnvironmentId.create(), projectId, name, type, EnvironmentStatus.ACTIVE);
     }
 
     public EnvironmentUpdateResult archive() {

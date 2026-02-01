@@ -1,9 +1,6 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
-import pl.feature.toggle.service.configuration.environment.domain.Environment;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentField;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
+import pl.feature.toggle.service.configuration.environment.domain.*;
 import pl.feature.toggle.service.configuration.project.domain.ProjectField;
 import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
@@ -13,6 +10,7 @@ import pl.feature.toggle.service.contracts.event.environment.EnvironmentTypeChan
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentUpdated;
 import pl.feature.toggle.service.contracts.shared.Changes;
 import pl.feature.toggle.service.contracts.shared.Metadata;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -58,6 +56,7 @@ final class EventMapper {
 
     static EnvironmentUpdated createEnvironmentUpdatedEvent(EnvironmentUpdateResult updateResult, Actor actor, CorrelationId correlationId) {
         return environmentUpdatedEventBuilder()
+                .changes(buildChanges(updateResult))
                 .environmentId(updateResult.environment().id().uuid())
                 .projectId(updateResult.environment().projectId().uuid())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
@@ -83,9 +82,9 @@ final class EventMapper {
         }
 
         return switch (field) {
-            case NAME -> ((ProjectName) value).value();
+            case NAME -> ((EnvironmentName) value).value();
             case PROJECT_ID -> ((ProjectId) value).idAsString();
-            case STATUS -> ((ProjectStatus) value).name();
+            case STATUS -> ((EnvironmentStatus) value).name();
             case TYPE -> ((EnvironmentType) value).name();
         };
     }

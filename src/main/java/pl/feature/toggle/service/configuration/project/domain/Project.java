@@ -1,14 +1,9 @@
 package pl.feature.toggle.service.configuration.project.domain;
 
-import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange;
 import pl.feature.toggle.service.configuration.project.domain.exception.CannotOperateOnArchivedProjectException;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ChangeSet.createChangeSet;
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange.fieldChange;

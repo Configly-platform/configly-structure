@@ -1,4 +1,4 @@
-package pl.feature.toggle.service.configuration.project.infrastructure;
+package pl.feature.toggle.service.configuration.project.support;
 
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
@@ -35,15 +35,21 @@ public class ProjectCommandRepositorySpy implements ProjectCommandRepository {
         failOnAnyCall = false;
     }
 
-    public void failing() {
+    public void expectNoCalls() {
         failOnAnyCall = true;
     }
 
     public Project getSaved() {
+        if (saved.isEmpty()) {
+            return null;
+        }
         return saved.getLast();
     }
 
     public Project getUpdated() {
+        if (updated.isEmpty()) {
+            return null;
+        }
         return updated.getLast();
     }
 }

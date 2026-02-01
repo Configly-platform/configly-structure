@@ -1,16 +1,16 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
+import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.contracts.event.project.ProjectCreated;
 
-import static pl.feature.toggle.service.configuration.builder.FakeCreateProjectCommandBuilder.createProjectCommandBuilder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
+import static pl.feature.toggle.service.configuration.builder.FakeCreateProjectCommandBuilder.createProjectCommandBuilder;
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
 
 class CreateProjectHandlerTest extends AbstractUnitTest {
@@ -20,33 +20,36 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub,
-                outboxWriter, actorProvider, correlationProvider);
+                projectPolicyFacade, outboxWriter, actorProvider, correlationProvider);
     }
 
     @Test
-    @DisplayName("Should create a new project")
-    void test01() {
+    void should_create_project() {
         // given
         var command = createProjectCommandBuilder()
                 .withName("TEST")
                 .withDescription("TEST")
                 .build();
-        projectQueryRepositoryStub.existsByName(false);
+        projectQueryRepositoryStub.existsByNameReturns(false);
 
         // when
         var result = sut.handle(command);
 
         // then
         assertThat(result).isNotNull();
-        assertThat(projectCommandRepositorySpy.getSaved()).isNotNull();
-        assertContainsProjectCreatedEvent();
+        var saved = projectCommandRepositorySpy.getSaved();
+        var updated = projectCommandRepositorySpy.getUpdated();
+        assertThat(updated).isNull();
+        assertThat(saved).isNotNull();
+        assertThat(saved.name()).isEqualTo(command.name());
+        assertThat(saved.description()).isEqualTo(command.description());
+        assertContainsEventOfType(PROJECT_ENV.topic(), ProjectCreated.class);
     }
 
     @Test
-    @DisplayName("Should not create a new project when project with given name already exists")
-    void test02() {
+    void should_not_create_project_when_project_with_name_already_exists() {
         // given
-        projectQueryRepositoryStub.existsByName(true);
+        projectQueryRepositoryStub.existsByNameReturns(true);
 
         var command = createProjectCommandBuilder()
                 .withName("TEST")
@@ -58,14 +61,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
 
         // then
         assertThat(exception).isInstanceOf(ProjectAlreadyExistsException.class);
-        assertDoesNotContainProjectCreatedEvent();
+        assertNoEventsHasBeenPublished();
     }
 
-    private void assertContainsProjectCreatedEvent() {
-        assertThat(outboxWriter.containsEventOfType(PROJECT_ENV.topic(), ProjectCreated.class)).isTrue();
-    }
-
-    private void assertDoesNotContainProjectCreatedEvent() {
-        assertThat(outboxWriter.containsEventOfType(PROJECT_ENV.topic(), ProjectCreated.class)).isFalse();
-    }
 }

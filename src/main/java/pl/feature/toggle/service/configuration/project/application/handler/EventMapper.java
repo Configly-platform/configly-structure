@@ -24,6 +24,7 @@ final class EventMapper {
         return projectCreatedEventBuilder()
                 .projectName(project.name().value())
                 .projectId(project.id().uuid())
+                .status(project.status().name())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }

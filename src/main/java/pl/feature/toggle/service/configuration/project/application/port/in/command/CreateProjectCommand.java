@@ -13,8 +13,4 @@ public record CreateProjectCommand(
         return new CreateProjectCommand(ProjectName.create(dto.name()), ProjectDescription.create(dto.description()));
     }
 
-    public static CreateProjectCommand create(String name, String description) {
-        return new CreateProjectCommand(ProjectName.create(name), ProjectDescription.create(description));
-    }
-
 }

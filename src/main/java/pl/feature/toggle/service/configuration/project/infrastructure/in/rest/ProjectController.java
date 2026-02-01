@@ -30,12 +30,14 @@ final class ProjectController {
 
     @PutMapping("/{projectId}")
     void updateProject(@PathVariable String projectId, @RequestBody @Valid ProjectSnapshotDto dto) {
-        updateProjectUseCase.handle(UpdateProjectCommand.from(projectId, dto));
+        var command = UpdateProjectCommand.from(projectId, dto);
+        updateProjectUseCase.handle(command);
     }
 
     @PatchMapping("/{projectId}/status")
     void changeStatus(@PathVariable String projectId, @RequestBody @Valid String status){
-        changeProjectStatusUseCase.handle(ChangeProjectStatusCommand.of(projectId,status));
+        var command = ChangeProjectStatusCommand.of(projectId, status);
+        changeProjectStatusUseCase.handle(command);
     }
 
 }

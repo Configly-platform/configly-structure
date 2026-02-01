@@ -1,18 +1,22 @@
 package pl.feature.toggle.service.configuration.builder;
 
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.CreateEnvironmentCommand;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
+import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.UUID;
 
 public class FakeCreateEnvironmentCommandBuilder {
 
-    private String name;
-    private UUID projectId;
+    private EnvironmentName name;
+    private ProjectId projectId;
+    private EnvironmentType type;
 
     private FakeCreateEnvironmentCommandBuilder() {
-        this.name = "TEST";
-        this.projectId = UUID.randomUUID();
+        this.name = EnvironmentName.create("TEST");
+        this.projectId = ProjectId.create();
+        this.type = EnvironmentType.DEV;
     }
 
     public static FakeCreateEnvironmentCommandBuilder createEnvironmentCommandBuilder() {
@@ -20,21 +24,26 @@ public class FakeCreateEnvironmentCommandBuilder {
     }
 
     public FakeCreateEnvironmentCommandBuilder withName(String name) {
-        this.name = name;
+        this.name = EnvironmentName.create(name);
+        return this;
+    }
+
+    public FakeCreateEnvironmentCommandBuilder withType(EnvironmentType type) {
+        this.type = type;
         return this;
     }
 
     public FakeCreateEnvironmentCommandBuilder withProjectId(UUID projectId) {
-        this.projectId = projectId;
+        this.projectId = ProjectId.create(projectId);
         return this;
     }
 
     public FakeCreateEnvironmentCommandBuilder withProjectId(ProjectId projectId) {
-        this.projectId = projectId.uuid();
+        this.projectId = projectId;
         return this;
     }
 
     public CreateEnvironmentCommand build() {
-        return CreateEnvironmentCommand.create(name, projectId);
+        return new CreateEnvironmentCommand(name, projectId, type);
     }
 }

@@ -6,6 +6,6 @@ import pl.feature.toggle.service.model.project.ProjectId;
 
 public interface CreateProjectUseCase {
 
-    ProjectId handle(final CreateProjectCommand command);
+    ProjectId handle(CreateProjectCommand command);
 
 }

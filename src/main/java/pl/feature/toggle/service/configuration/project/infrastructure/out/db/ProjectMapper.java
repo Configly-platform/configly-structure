@@ -3,6 +3,7 @@ package pl.feature.toggle.service.configuration.project.infrastructure.out.db;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -20,14 +21,16 @@ final class ProjectMapper {
         record.setName(project.name().value());
         record.setDescription(project.description().value());
         record.setCreatedAt(OffsetDateTime.now());
+        record.setStatus(project.status().name());
         return record;
     }
 
     static Project toDomain(ProjectsRecord record) {
-        return Project.create(
+        return new Project(
                 ProjectId.create(record.getId()),
                 ProjectName.create(record.getName()),
-                ProjectDescription.create(record.getDescription())
+                ProjectDescription.create(record.getDescription()),
+                ProjectStatus.valueOf(record.getStatus())
         );
     }
 
