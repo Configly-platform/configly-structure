@@ -35,12 +35,11 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
                 command.name(),
                 command.description()
         );
-
         if (!updateResult.wasUpdated()) {
             return;
         }
 
-        projectCommandRepository.update(updateResult.project());
+        projectCommandRepository.update(updateResult);
 
         var event = createProjectUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());

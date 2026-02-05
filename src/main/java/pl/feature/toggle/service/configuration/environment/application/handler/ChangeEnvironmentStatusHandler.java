@@ -38,8 +38,7 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
             return;
         }
 
-        var updatedEnvironment = updateResult.environment();
-        environmentCommandRepository.update(updatedEnvironment);
+        environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());

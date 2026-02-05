@@ -3,6 +3,7 @@ package pl.feature.toggle.service.configuration.project.domain;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange;
 import pl.feature.toggle.service.configuration.project.domain.exception.CannotOperateOnArchivedProjectException;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -24,6 +25,7 @@ class ProjectTest {
         // then
         assertThat(project.status()).isEqualTo(ProjectStatus.ACTIVE);
         assertThat(project.id()).isNotNull();
+        assertThat(project.revision()).isEqualTo(Revision.initialRevision());
         assertThat(project.name()).isEqualTo(name);
         assertThat(project.description()).isEqualTo(description);
     }
@@ -39,6 +41,8 @@ class ProjectTest {
         // then
         assertThat(result.wasUpdated()).isTrue();
         assertThat(result.project().status()).isEqualTo(ProjectStatus.ARCHIVED);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision().next());
 
         assertThat(result.changes())
                 .anySatisfy(change -> {
@@ -60,6 +64,8 @@ class ProjectTest {
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.project()).isEqualTo(project);
         assertThat(result.changes()).isEmpty();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision());
     }
 
     @Test
@@ -73,6 +79,8 @@ class ProjectTest {
         // then
         assertThat(result.wasUpdated()).isTrue();
         assertThat(result.project().status()).isEqualTo(ProjectStatus.ACTIVE);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision().next());
 
         assertThat(result.changes())
                 .anySatisfy(change -> {
@@ -93,6 +101,8 @@ class ProjectTest {
         // then
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.project()).isEqualTo(project);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision());
         assertThat(result.changes()).isEmpty();
     }
 
@@ -119,6 +129,8 @@ class ProjectTest {
         // then
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.project()).isEqualTo(project);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision());
         assertThat(result.changes()).isEmpty();
     }
 
@@ -136,6 +148,8 @@ class ProjectTest {
         assertThat(result.project().name()).isEqualTo(newName);
         assertThat(result.project().description()).isEqualTo(project.description());
         assertThat(result.project().status()).isEqualTo(ProjectStatus.ACTIVE);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision().next());
 
         assertThat(result.changes())
                 .hasSize(1)
@@ -160,6 +174,8 @@ class ProjectTest {
         assertThat(result.wasUpdated()).isTrue();
         assertThat(result.project().name()).isEqualTo(project.name());
         assertThat(result.project().description()).isEqualTo(newDescription);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision().next());
 
         assertThat(result.changes())
                 .hasSize(1)
@@ -185,6 +201,8 @@ class ProjectTest {
         assertThat(result.wasUpdated()).isTrue();
         assertThat(result.project().name()).isEqualTo(newName);
         assertThat(result.project().description()).isEqualTo(newDesc);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.project().revision()).isEqualTo(result.expectedRevision().next());
 
         assertThat(result.changes())
                 .extracting(ProjectFieldChange::field)
@@ -197,7 +215,8 @@ class ProjectTest {
                 ProjectId.create(),
                 ProjectName.create("Name"),
                 ProjectDescription.create("Desc"),
-                ProjectStatus.ACTIVE
+                ProjectStatus.ACTIVE,
+                Revision.initialRevision()
         );
     }
 
@@ -206,7 +225,8 @@ class ProjectTest {
                 ProjectId.create(),
                 ProjectName.create("Name"),
                 ProjectDescription.create("Desc"),
-                ProjectStatus.ARCHIVED
+                ProjectStatus.ARCHIVED,
+                Revision.initialRevision()
         );
     }
 }

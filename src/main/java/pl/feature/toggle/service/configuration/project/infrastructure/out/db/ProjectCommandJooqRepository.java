@@ -5,8 +5,10 @@ import org.jooq.DSLContext;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
+import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
+import pl.feature.toggle.service.configuration.project.domain.exception.ProjectUpdateFailedException;
 
 import static pl.feature.toggle.service.configuration.project.infrastructure.out.db.ProjectMapper.toRecord;
 import static pl.feature.toggle.service.tables.Projects.PROJECTS;
@@ -30,13 +32,15 @@ final class ProjectCommandJooqRepository implements ProjectCommandRepository {
     }
 
     @Override
-    public void update(Project project) {
+    public void update(ProjectUpdateResult updateResult) {
+        var project = updateResult.project();
         var rows = dslContext.update(PROJECTS)
                 .set(toRecord(project))
                 .where(PROJECTS.ID.eq(project.id().uuid()))
+                .and(PROJECTS.REVISION.eq(updateResult.expectedRevision().value()))
                 .execute();
         if (rows == 0) {
-            throw new ProjectNotFoundException(project.id());
+            throw new ProjectUpdateFailedException(updateResult);
         }
     }
 }

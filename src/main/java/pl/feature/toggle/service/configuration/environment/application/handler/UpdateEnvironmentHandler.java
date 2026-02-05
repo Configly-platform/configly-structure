@@ -34,10 +34,8 @@ class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
         if (!updateResult.wasUpdated()) {
             return;
         }
-        var updatedEnvironment = updateResult.environment();
 
-
-        environmentCommandRepository.update(updatedEnvironment);
+        environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());

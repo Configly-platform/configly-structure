@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.application.port.out;
 
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
 
@@ -12,5 +13,5 @@ public interface EnvironmentCommandRepository {
 
     void restoreAllByProjectId(ProjectId projectId);
 
-    void update(Environment environment);
+    void update(EnvironmentUpdateResult updateResult);
 }

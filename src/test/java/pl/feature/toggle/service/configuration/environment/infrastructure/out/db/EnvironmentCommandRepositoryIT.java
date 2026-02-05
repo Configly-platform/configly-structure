@@ -6,8 +6,10 @@ import pl.feature.toggle.service.configuration.environment.application.port.out.
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentNotFoundException;
+import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentUpdateFailedException;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import org.junit.jupiter.api.BeforeEach;
@@ -63,18 +65,20 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         // given
         var environment = createEnvironment("TEST", projectId_1);
         sut.save(environment);
-        var updated = environment.changeType(EnvironmentType.PROD).environment();
+        var updated = environment.changeType(EnvironmentType.PROD);
 
         // when
         sut.update(updated);
 
         // then
-        var actual = queryRepository.getOrThrow(updated.id(), updated.projectId());
-        assertThat(actual.name()).isEqualTo(updated.name());
-        assertThat(actual.type()).isEqualTo(updated.type());
-        assertThat(actual.status()).isEqualTo(updated.status());
-        assertThat(actual.projectId()).isEqualTo(updated.projectId());
-        assertThat(actual.id()).isEqualTo(updated.id());
+        var expected = updated.environment();
+        var actual = queryRepository.getOrThrow(expected.id(), expected.projectId());
+        assertThat(actual.name()).isEqualTo(expected.name());
+        assertThat(actual.type()).isEqualTo(expected.type());
+        assertThat(actual.status()).isEqualTo(expected.status());
+        assertThat(actual.projectId()).isEqualTo(expected.projectId());
+        assertThat(actual.id()).isEqualTo(expected.id());
+        assertThat(actual.revision()).isEqualTo(expected.revision());
     }
 
     @Test
@@ -83,10 +87,10 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         var environment = createEnvironment("TEST", projectId_1);
 
         // when
-        var exception = catchException(() -> sut.update(environment));
+        var exception = catchException(() -> sut.update(EnvironmentUpdateResult.noChanges(environment)));
 
         // then
-        assertThat(exception).isInstanceOf(EnvironmentNotFoundException.class);
+        assertThat(exception).isInstanceOf(EnvironmentUpdateFailedException.class);
     }
 
     @Test

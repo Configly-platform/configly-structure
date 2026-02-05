@@ -3,6 +3,7 @@ package pl.feature.toggle.service.configuration.builder;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -13,6 +14,7 @@ public class FakeEnvironmentBuilder {
     private EnvironmentName name;
     private EnvironmentType type;
     private EnvironmentStatus status;
+    private Revision revision;
 
     private FakeEnvironmentBuilder() {
         this.id = EnvironmentId.create();
@@ -20,6 +22,7 @@ public class FakeEnvironmentBuilder {
         this.name = EnvironmentName.create("TEST");
         this.type = EnvironmentType.DEV;
         this.status = EnvironmentStatus.ACTIVE;
+        this.revision = Revision.initialRevision();
     }
 
     public static FakeEnvironmentBuilder fakeEnvironmentBuilder() {
@@ -46,13 +49,18 @@ public class FakeEnvironmentBuilder {
         return this;
     }
 
+    public FakeEnvironmentBuilder withRevision(Revision revision) {
+        this.revision = revision;
+        return this;
+    }
+
     public FakeEnvironmentBuilder withStatus(EnvironmentStatus status) {
         this.status = status;
         return this;
     }
 
     public Environment build() {
-        return new Environment(id, projectId, name, type, status);
+        return new Environment(id, projectId, name, type, status, revision);
     }
 
 }

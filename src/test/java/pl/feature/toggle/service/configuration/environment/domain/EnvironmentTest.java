@@ -3,6 +3,7 @@ package pl.feature.toggle.service.configuration.environment.domain;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.CreateEnvironmentCommand;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotOperateOnArchivedEnvironmentException;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -28,6 +29,7 @@ class EnvironmentTest {
         assertThat(env.id()).isNotNull();
         assertThat(env.projectId()).isEqualTo(command.projectId());
         assertThat(env.name()).isEqualTo(command.name());
+        assertThat(env.revision()).isEqualTo(Revision.initialRevision());
         assertThat(env.type()).isEqualTo(command.type());
         assertThat(env.status()).isEqualTo(EnvironmentStatus.ACTIVE);
     }
@@ -44,6 +46,7 @@ class EnvironmentTest {
 
         // then
         assertThat(env.id()).isNotNull();
+        assertThat(env.revision()).isEqualTo(Revision.initialRevision());
         assertThat(env.projectId()).isEqualTo(projectId);
         assertThat(env.name()).isEqualTo(name);
         assertThat(env.type()).isEqualTo(type);
@@ -60,6 +63,8 @@ class EnvironmentTest {
 
         // then
         assertThat(result.wasUpdated()).isTrue();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision().next());
         assertThat(result.environment().status()).isEqualTo(EnvironmentStatus.ARCHIVED);
 
         assertThat(result.changes())
@@ -82,6 +87,8 @@ class EnvironmentTest {
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.environment()).isEqualTo(env);
         assertThat(result.changes()).isEmpty();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision());
     }
 
     @Test
@@ -95,6 +102,8 @@ class EnvironmentTest {
         // then
         assertThat(result.wasUpdated()).isTrue();
         assertThat(result.environment().status()).isEqualTo(EnvironmentStatus.ACTIVE);
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision().next());
 
         assertThat(result.changes())
                 .anySatisfy(change -> {
@@ -116,6 +125,8 @@ class EnvironmentTest {
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.environment()).isEqualTo(env);
         assertThat(result.changes()).isEmpty();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision());
     }
 
     @Test
@@ -150,6 +161,8 @@ class EnvironmentTest {
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.environment()).isEqualTo(env);
         assertThat(result.changes()).isEmpty();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision());
     }
 
     @Test
@@ -167,6 +180,8 @@ class EnvironmentTest {
         assertThat(result.environment().type()).isEqualTo(env.type());
         assertThat(result.environment().status()).isEqualTo(EnvironmentStatus.ACTIVE);
         assertThat(result.environment().projectId()).isEqualTo(env.projectId());
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision().next());
 
         assertThat(result.changes())
                 .hasSize(1)
@@ -190,6 +205,8 @@ class EnvironmentTest {
         assertThat(result.wasUpdated()).isFalse();
         assertThat(result.environment()).isEqualTo(env);
         assertThat(result.changes()).isEmpty();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision());
     }
 
     @Test
@@ -203,6 +220,8 @@ class EnvironmentTest {
 
         // then
         assertThat(result.wasUpdated()).isTrue();
+        assertThat(result.expectedRevision()).isEqualTo(Revision.initialRevision());
+        assertThat(result.environment().revision()).isEqualTo(env.revision().next());
         assertThat(result.environment().type()).isEqualTo(newType);
         assertThat(result.environment().name()).isEqualTo(env.name());
         assertThat(result.environment().status()).isEqualTo(EnvironmentStatus.ACTIVE);
@@ -223,7 +242,8 @@ class EnvironmentTest {
                 ProjectId.create(),
                 EnvironmentName.create("name"),
                 EnvironmentType.DEV,
-                EnvironmentStatus.ACTIVE
+                EnvironmentStatus.ACTIVE,
+                Revision.initialRevision()
         );
     }
 
@@ -233,7 +253,8 @@ class EnvironmentTest {
                 ProjectId.create(),
                 EnvironmentName.create("name"),
                 EnvironmentType.DEV,
-                EnvironmentStatus.ARCHIVED
+                EnvironmentStatus.ARCHIVED,
+                Revision.initialRevision()
         );
     }
 }

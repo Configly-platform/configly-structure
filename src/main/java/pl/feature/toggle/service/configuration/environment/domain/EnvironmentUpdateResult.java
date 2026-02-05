@@ -1,5 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.domain;
 
+import pl.feature.toggle.service.model.Revision;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,19 +10,20 @@ import static pl.feature.toggle.service.configuration.environment.domain.Environ
 
 public record EnvironmentUpdateResult(
         Environment environment,
+        Revision expectedRevision,
         List<EnvironmentFieldChange> changes
 ) {
 
-    public static EnvironmentUpdateResult updated(Environment environment, EnvironmentFieldChange... changes) {
-        return new EnvironmentUpdateResult(environment, List.of(changes));
+    public static EnvironmentUpdateResult updated(Environment environment, Revision expectedRevision, EnvironmentFieldChange... changes) {
+        return new EnvironmentUpdateResult(environment, expectedRevision, List.of(changes));
     }
 
     public static EnvironmentUpdateResult noChanges(Environment environment) {
-        return new EnvironmentUpdateResult(environment, List.of());
+        return new EnvironmentUpdateResult(environment, environment.revision(), List.of());
     }
 
-    public static EnvironmentUpdateResult of(Environment environment, List<EnvironmentFieldChange> changes) {
-        return new EnvironmentUpdateResult(environment, changes);
+    public static EnvironmentUpdateResult of(Environment environment, Revision expectedRevision, List<EnvironmentFieldChange> changes) {
+        return new EnvironmentUpdateResult(environment, expectedRevision, changes);
     }
 
     public boolean wasUpdated() {

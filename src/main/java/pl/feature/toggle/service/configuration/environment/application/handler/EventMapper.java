@@ -1,9 +1,6 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
 import pl.feature.toggle.service.configuration.environment.domain.*;
-import pl.feature.toggle.service.configuration.project.domain.ProjectField;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
-import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentTypeChanged;
@@ -11,9 +8,7 @@ import pl.feature.toggle.service.contracts.event.environment.EnvironmentUpdated;
 import pl.feature.toggle.service.contracts.shared.Changes;
 import pl.feature.toggle.service.contracts.shared.Metadata;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
-import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
-import pl.feature.toggle.service.model.project.ProjectName;
 import pl.feature.toggle.service.model.security.actor.Actor;
 import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
@@ -30,6 +25,7 @@ final class EventMapper {
                 .environmentId(environment.id().uuid())
                 .projectId(environment.projectId().uuid())
                 .environmentName(environment.name().value())
+                .revision(environment.revision().value())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
@@ -40,6 +36,7 @@ final class EventMapper {
                 .projectId(updateResult.environment().projectId().uuid())
                 .status(updateResult.environment().status().name())
                 .changes(buildChanges(updateResult))
+                .revision(updateResult.environment().revision().value())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
@@ -50,6 +47,7 @@ final class EventMapper {
                 .projectId(updateResult.environment().projectId().uuid())
                 .type(updateResult.environment().type().name())
                 .changes(buildChanges(updateResult))
+                .revision(updateResult.environment().revision().value())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
@@ -57,6 +55,7 @@ final class EventMapper {
     static EnvironmentUpdated createEnvironmentUpdatedEvent(EnvironmentUpdateResult updateResult, Actor actor, CorrelationId correlationId) {
         return environmentUpdatedEventBuilder()
                 .changes(buildChanges(updateResult))
+                .revision(updateResult.environment().revision().value())
                 .environmentId(updateResult.environment().id().uuid())
                 .projectId(updateResult.environment().projectId().uuid())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))

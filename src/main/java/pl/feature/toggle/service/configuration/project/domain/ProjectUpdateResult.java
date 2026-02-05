@@ -1,5 +1,7 @@
 package pl.feature.toggle.service.configuration.project.domain;
 
+import pl.feature.toggle.service.model.Revision;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,15 +10,16 @@ import static pl.feature.toggle.service.configuration.project.domain.ProjectUpda
 
 public record ProjectUpdateResult(
         Project project,
+        Revision expectedRevision,
         List<ProjectFieldChange> changes
 ) {
 
-    public static ProjectUpdateResult updated(Project project, ProjectFieldChange... changes) {
-        return new ProjectUpdateResult(project, List.of(changes));
+    public static ProjectUpdateResult updated(Project project, Revision expectedRevision, ProjectFieldChange... changes) {
+        return new ProjectUpdateResult(project, expectedRevision, List.of(changes));
     }
 
     public static ProjectUpdateResult noChanges(Project project) {
-        return new ProjectUpdateResult(project, List.of());
+        return new ProjectUpdateResult(project, project.revision(), List.of());
     }
 
     public boolean wasUpdated() {

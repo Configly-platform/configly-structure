@@ -6,8 +6,10 @@ import pl.feature.toggle.service.configuration.AbstractITTest;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
+import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
+import pl.feature.toggle.service.configuration.project.domain.exception.ProjectUpdateFailedException;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectName;
 
@@ -58,8 +60,8 @@ class ProjectCommandRepositoryIT extends AbstractITTest {
         var project = createProject("TEST");
 
         // when && then
-        assertThatThrownBy(() -> sut.update(project))
-                .isInstanceOf(ProjectNotFoundException.class);
+        assertThatThrownBy(() -> sut.update(ProjectUpdateResult.noChanges(project)))
+                .isInstanceOf(ProjectUpdateFailedException.class);
     }
 
     @Test
@@ -70,7 +72,7 @@ class ProjectCommandRepositoryIT extends AbstractITTest {
         var updatedProject = project.update(ProjectName.create("TEST2"), ProjectDescription.empty());
 
         // when
-        sut.update(updatedProject.project());
+        sut.update(updatedProject);
 
         // then
         var expected = updatedProject.project();
@@ -79,6 +81,7 @@ class ProjectCommandRepositoryIT extends AbstractITTest {
         assertThat(actual.name()).isEqualTo(expected.name());
         assertThat(actual.description()).isEqualTo(expected.description());
         assertThat(actual.status()).isEqualTo(expected.status());
+        assertThat(actual.revision()).isEqualTo(expected.revision());
     }
 
     private Project createProject(String name) {

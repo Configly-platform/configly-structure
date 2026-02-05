@@ -4,7 +4,8 @@ create table projects
     name        varchar(100) not null unique,
     description varchar(200),
     created_at  timestamptz  not null,
-    status      varchar(10) not null
+    status      varchar(10) not null,
+    revision    bigint not null default 0
 );
 
 create table environments
@@ -15,5 +16,6 @@ create table environments
     created_at timestamptz  not null,
     status      varchar(10) not null,
     type        varchar(10) not null,
+    revision    bigint not null default 0,
     unique (project_id, name)
 );

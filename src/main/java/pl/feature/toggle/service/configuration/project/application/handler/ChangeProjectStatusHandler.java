@@ -39,10 +39,8 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
             return;
         }
 
-        var updatedProject = updateResult.project();
-
-        projectCommandRepository.update(updatedProject);
-        changeEnvironmentsStatus(updatedProject);
+        projectCommandRepository.update(updateResult);
+        changeEnvironmentsStatus(updateResult.project());
 
         var event = createProjectStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());

@@ -5,6 +5,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -23,6 +24,7 @@ final class EnvironmentMapper {
         record.setProjectId(environment.projectId().uuid());
         record.setStatus(environment.status().name());
         record.setType(environment.type().name());
+        record.setRevision(environment.revision().value());
         return record;
     }
 
@@ -32,7 +34,8 @@ final class EnvironmentMapper {
                 ProjectId.create(record.getProjectId()),
                 EnvironmentName.create(record.getName()),
                 EnvironmentType.valueOf(record.getType()),
-                EnvironmentStatus.valueOf(record.getStatus())
+                EnvironmentStatus.valueOf(record.getStatus()),
+                Revision.from(record.getRevision())
         );
     }
 

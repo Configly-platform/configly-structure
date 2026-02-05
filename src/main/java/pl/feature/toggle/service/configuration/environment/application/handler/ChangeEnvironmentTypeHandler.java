@@ -37,8 +37,7 @@ class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
             return;
         }
 
-        var updatedEnvironment = updateResult.environment();
-        environmentCommandRepository.update(updatedEnvironment);
+        environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentTypeChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, PROJECT_ENV.topic());

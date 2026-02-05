@@ -8,6 +8,7 @@ import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.domain.ProjectField;
 import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -26,14 +27,15 @@ class EventMapperTest extends AbstractUnitTest {
         var project = fakeProjectBuilder().build();
 
         // when
-        var result = EventMapper.createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
+        var event = EventMapper.createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
 
         // then
-        assertThat(result.projectId()).isEqualTo(project.id().uuid());
-        assertThat(result.projectName()).isEqualTo(project.name().value());
-        assertThat(result.status()).isEqualTo(project.status().name());
-        assertThat(result.eventId()).isNotNull();
-        assertThat(result.metadata()).isEqualTo(metadata(result.metadata().occurredAt()));
+        assertThat(event.projectId()).isEqualTo(project.id().uuid());
+        assertThat(event.projectName()).isEqualTo(project.name().value());
+        assertThat(event.status()).isEqualTo(project.status().name());
+        assertThat(event.revision()).isEqualTo(Revision.initialRevision().value());
+        assertThat(event.eventId()).isNotNull();
+        assertThat(event.metadata()).isEqualTo(metadata(event.metadata().occurredAt()));
     }
 
     @Test
@@ -50,6 +52,7 @@ class EventMapperTest extends AbstractUnitTest {
 
         var updateResult = new ProjectUpdateResult(
                 updatedProject,
+                Revision.initialRevision(),
                 List.of(new ProjectUpdateResult.ProjectFieldChange(
                         ProjectField.STATUS,
                         ProjectStatus.ACTIVE,
@@ -63,6 +66,7 @@ class EventMapperTest extends AbstractUnitTest {
         // then
         assertThat(event.projectId()).isEqualTo(projectId.uuid());
         assertThat(event.status()).isEqualTo(ProjectStatus.ARCHIVED.name());
+        assertThat(event.revision()).isEqualTo(Revision.initialRevision().value());
 
         assertThat(event.metadata().actorId()).isEqualTo(actor.idAsString());
         assertThat(event.metadata().username()).isEqualTo(actor.usernameAsString());
@@ -93,6 +97,7 @@ class EventMapperTest extends AbstractUnitTest {
 
         var updateResult = new ProjectUpdateResult(
                 project,
+                Revision.initialRevision(),
                 List.of(new ProjectUpdateResult.ProjectFieldChange(field, before, after))
         );
 

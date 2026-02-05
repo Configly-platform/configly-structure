@@ -2,6 +2,7 @@ package pl.feature.toggle.service.configuration.project.support;
 
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
+import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,11 +23,11 @@ public class ProjectCommandRepositorySpy implements ProjectCommandRepository {
     }
 
     @Override
-    public void update(Project project) {
+    public void update(ProjectUpdateResult updateResult) {
         if (failOnAnyCall) {
             throw new AssertionError("this method should not be called");
         }
-        updated.add(project);
+        updated.add(updateResult.project());
     }
 
     public void reset() {

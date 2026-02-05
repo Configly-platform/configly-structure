@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.domain;
 
 import pl.feature.toggle.service.configuration.project.domain.exception.CannotOperateOnArchivedProjectException;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -9,21 +10,23 @@ import static pl.feature.toggle.service.configuration.project.domain.ProjectUpda
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange.fieldChange;
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.noChanges;
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.updated;
+import static pl.feature.toggle.service.model.Revision.initialRevision;
 
 public record Project(
         ProjectId id,
         ProjectName name,
         ProjectDescription description,
-        ProjectStatus status
+        ProjectStatus status,
+        Revision revision
 ) {
 
     public static Project create(ProjectName name, ProjectDescription description) {
         ProjectId projectId = ProjectId.create();
-        return new Project(projectId, name, description, ProjectStatus.ACTIVE);
+        return new Project(projectId, name, description, ProjectStatus.ACTIVE, initialRevision());
     }
 
     public static Project create(ProjectId projectId, ProjectName name, ProjectDescription description) {
-        return new Project(projectId, name, description, ProjectStatus.ACTIVE);
+        return new Project(projectId, name, description, ProjectStatus.ACTIVE, initialRevision());
     }
 
     public ProjectUpdateResult archive() {
@@ -31,8 +34,8 @@ public record Project(
             return noChanges(this);
         }
         var fieldChange = fieldChange(ProjectField.STATUS, status, ProjectStatus.ARCHIVED);
-        var project = new Project(id, name, description, ProjectStatus.ARCHIVED);
-        return updated(project, fieldChange);
+        var project = new Project(id, name, description, ProjectStatus.ARCHIVED, revision.next());
+        return updated(project, revision, fieldChange);
     }
 
     public ProjectUpdateResult restore() {
@@ -40,8 +43,8 @@ public record Project(
             return noChanges(this);
         }
         var fieldChange = fieldChange(ProjectField.STATUS, status, ProjectStatus.ACTIVE);
-        var project = new Project(id, name, description, ProjectStatus.ACTIVE);
-        return updated(project, fieldChange);
+        var project = new Project(id, name, description, ProjectStatus.ACTIVE, revision.next());
+        return updated(project, revision, fieldChange);
     }
 
     public ProjectUpdateResult update(ProjectName newName, ProjectDescription newDescription) {
@@ -56,8 +59,8 @@ public record Project(
             return noChanges(this);
         }
 
-        var project = new Project(id, newName, newDescription, status);
-        return updated(project, changeSet.toArray());
+        var project = new Project(id, newName, newDescription, status, revision.next());
+        return updated(project, revision, changeSet.toArray());
     }
 
     public boolean isArchived() {

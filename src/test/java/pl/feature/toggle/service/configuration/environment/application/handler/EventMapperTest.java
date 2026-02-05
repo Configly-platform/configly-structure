@@ -9,6 +9,7 @@ import pl.feature.toggle.service.configuration.environment.domain.EnvironmentFie
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
 
@@ -28,14 +29,15 @@ class EventMapperTest extends AbstractUnitTest {
         var environment = createEnvironment(projectId, "TEST");
 
         // when
-        var result = EventMapper.createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
+        var event = EventMapper.createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
 
         // then
-        assertThat(result.environmentId()).isEqualTo(environment.id().uuid());
-        assertThat(result.projectId()).isEqualTo(UUID.fromString(projectId));
-        assertThat(result.environmentName()).isEqualTo(environment.name().value());
-        assertThat(result.eventId()).isNotNull();
-        assertThat(result.metadata()).isEqualTo(metadata(result.metadata().occurredAt()));
+        assertThat(event.environmentId()).isEqualTo(environment.id().uuid());
+        assertThat(event.projectId()).isEqualTo(UUID.fromString(projectId));
+        assertThat(event.environmentName()).isEqualTo(environment.name().value());
+        assertThat(event.eventId()).isNotNull();
+        assertThat(event.revision()).isEqualTo(Revision.initialRevision().value());
+        assertThat(event.metadata()).isEqualTo(metadata(event.metadata().occurredAt()));
     }
 
     @Test
@@ -51,6 +53,7 @@ class EventMapperTest extends AbstractUnitTest {
 
         var updateResult = new EnvironmentUpdateResult(
                 environment,
+                Revision.initialRevision(),
                 List.of(new EnvironmentUpdateResult.EnvironmentFieldChange(
                         EnvironmentField.NAME,
                         EnvironmentName.create("OLD_NAME"),
@@ -70,6 +73,7 @@ class EventMapperTest extends AbstractUnitTest {
         assertThat(event.projectId()).isEqualTo(environment.projectId().uuid());
         assertThat(event.environmentName()).isEqualTo(environment.name().value());
         assertThat(event.eventId()).isNotNull();
+        assertThat(event.revision()).isEqualTo(Revision.initialRevision().value());
 
         assertThat(event.metadata()).isEqualTo(metadata(event.metadata().occurredAt()));
 
@@ -93,6 +97,7 @@ class EventMapperTest extends AbstractUnitTest {
 
         var updateResult = new EnvironmentUpdateResult(
                 environment,
+                Revision.initialRevision(),
                 List.of(new EnvironmentUpdateResult.EnvironmentFieldChange(
                         EnvironmentField.STATUS,
                         EnvironmentStatus.ACTIVE,
@@ -112,6 +117,7 @@ class EventMapperTest extends AbstractUnitTest {
         assertThat(event.projectId()).isEqualTo(environment.projectId().uuid());
         assertThat(event.status()).isEqualTo(environment.status().name());
         assertThat(event.eventId()).isNotNull();
+        assertThat(event.revision()).isEqualTo(Revision.initialRevision().value());
 
         assertThat(event.metadata()).isEqualTo(metadata(event.metadata().occurredAt()));
 
@@ -135,6 +141,7 @@ class EventMapperTest extends AbstractUnitTest {
 
         var updateResult = new EnvironmentUpdateResult(
                 environment,
+                Revision.initialRevision(),
                 List.of(new EnvironmentUpdateResult.EnvironmentFieldChange(
                         EnvironmentField.TYPE,
                         EnvironmentType.TEST,
@@ -154,6 +161,7 @@ class EventMapperTest extends AbstractUnitTest {
         assertThat(event.projectId()).isEqualTo(environment.projectId().uuid());
         assertThat(event.type()).isEqualTo(environment.type().name());
         assertThat(event.eventId()).isNotNull();
+        assertThat(event.revision()).isEqualTo(Revision.initialRevision().value());
 
         assertThat(event.metadata()).isEqualTo(metadata(event.metadata().occurredAt()));
 
@@ -185,6 +193,7 @@ class EventMapperTest extends AbstractUnitTest {
 
         var updateResult = new EnvironmentUpdateResult(
                 environment,
+                Revision.initialRevision(),
                 List.of(new EnvironmentUpdateResult.EnvironmentFieldChange(field, before, after))
         );
 

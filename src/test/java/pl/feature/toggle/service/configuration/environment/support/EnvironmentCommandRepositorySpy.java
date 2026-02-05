@@ -2,6 +2,7 @@ package pl.feature.toggle.service.configuration.environment.support;
 
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
 
@@ -76,10 +77,10 @@ public class EnvironmentCommandRepositorySpy implements EnvironmentCommandReposi
     }
 
     @Override
-    public void update(Environment environment) {
+    public void update(EnvironmentUpdateResult updateResult) {
         if (failOnAnyCall) {
             throw new AssertionError("this method should not be called");
         }
-        updated.add(environment);
+        updated.add(updateResult.environment());
     }
 }
