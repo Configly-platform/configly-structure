@@ -13,7 +13,7 @@ import pl.feature.toggle.service.model.security.actor.Actor;
 import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 import static pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated.environmentCreatedEventBuilder;
-import static pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged.environmentStatusChangedBuilder;
+import static pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged.environmentStatusChangedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.environment.EnvironmentTypeChanged.environmentTypeChangedBuilder;
 import static pl.feature.toggle.service.contracts.event.environment.EnvironmentUpdated.environmentUpdatedEventBuilder;
 
@@ -31,7 +31,7 @@ final class EventMapper {
     }
 
     static EnvironmentStatusChanged createEnvironmentStatusChangedEvent(EnvironmentUpdateResult updateResult, Actor actor, CorrelationId correlationId) {
-        return environmentStatusChangedBuilder()
+        return environmentStatusChangedEventBuilder()
                 .environmentId(updateResult.environment().id().uuid())
                 .projectId(updateResult.environment().projectId().uuid())
                 .status(updateResult.environment().status().name())
