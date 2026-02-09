@@ -1,11 +1,9 @@
 package pl.feature.toggle.service.configuration.project.application.port.out;
 
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
-
-import java.util.Optional;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 public interface ProjectQueryRepository {
 

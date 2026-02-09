@@ -1,19 +1,15 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
-import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotCreateEnvironmentForMissingProjectException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotOperateOnEnvironmentForArchivedProjectException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentCreated;
-
-import java.util.UUID;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;

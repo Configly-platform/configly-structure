@@ -1,8 +1,8 @@
 package pl.feature.toggle.service.configuration.builder;
 
 import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeProjectStatusCommand;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 public class FakeChangeProjectStatusCommandBuilder {
 

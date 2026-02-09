@@ -5,6 +5,7 @@ import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ChangeSet.createChangeSet;
 import static pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange.fieldChange;

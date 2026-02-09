@@ -9,9 +9,7 @@ import pl.feature.toggle.service.configuration.project.application.port.out.Proj
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
-import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
-import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;

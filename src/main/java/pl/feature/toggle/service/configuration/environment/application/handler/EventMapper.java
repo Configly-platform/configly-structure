@@ -8,6 +8,7 @@ import pl.feature.toggle.service.contracts.event.environment.EnvironmentUpdated;
 import pl.feature.toggle.service.contracts.shared.Changes;
 import pl.feature.toggle.service.contracts.shared.Metadata;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.security.actor.Actor;
 import pl.feature.toggle.service.model.security.correlation.CorrelationId;

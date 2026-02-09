@@ -1,7 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.application.port.in.command;
 
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 import java.util.UUID;

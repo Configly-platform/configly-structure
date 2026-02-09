@@ -4,12 +4,10 @@ import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
-
-import java.util.Optional;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static pl.feature.toggle.service.tables.Projects.PROJECTS;
 

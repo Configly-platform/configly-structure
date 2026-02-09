@@ -5,9 +5,9 @@ import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
 import pl.feature.toggle.service.contracts.event.project.ProjectStatusChanged;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static org.assertj.core.api.Assertions.*;
 import static pl.feature.toggle.service.configuration.builder.FakeChangeProjectStatusCommandBuilder.fakeChangeProjectStatusCommandBuilder;

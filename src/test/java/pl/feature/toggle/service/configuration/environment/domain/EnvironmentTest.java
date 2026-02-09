@@ -6,6 +6,7 @@ import pl.feature.toggle.service.configuration.environment.domain.exception.Cann
 import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 import static org.assertj.core.api.Assertions.assertThat;

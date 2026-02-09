@@ -3,7 +3,6 @@ package pl.feature.toggle.service.configuration.project.application.handler;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectField;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.contracts.event.project.ProjectCreated;
 import pl.feature.toggle.service.contracts.event.project.ProjectStatusChanged;
 import pl.feature.toggle.service.contracts.event.project.ProjectUpdated;
@@ -11,6 +10,7 @@ import pl.feature.toggle.service.contracts.shared.Changes;
 import pl.feature.toggle.service.contracts.shared.Metadata;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 import pl.feature.toggle.service.model.security.actor.Actor;
 import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 

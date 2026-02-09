@@ -3,9 +3,9 @@ package pl.feature.toggle.service.configuration.project.support;
 import pl.feature.toggle.service.configuration.StubSupport;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static pl.feature.toggle.service.configuration.StubSupport.forMethod;
 

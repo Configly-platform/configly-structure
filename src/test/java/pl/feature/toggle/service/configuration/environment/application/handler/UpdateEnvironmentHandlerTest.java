@@ -8,9 +8,9 @@ import pl.feature.toggle.service.configuration.environment.domain.exception.Cann
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotOperateOnEnvironmentForArchivedProjectException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentNotFoundException;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.contracts.event.environment.EnvironmentUpdated;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;

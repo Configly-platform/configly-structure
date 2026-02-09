@@ -3,11 +3,11 @@ package pl.feature.toggle.service.configuration.environment.infrastructure.out.d
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.tables.records.EnvironmentsRecord;
 

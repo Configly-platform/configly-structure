@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import org.jooq.DSLContext;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
-import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentNotFoundException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentUpdateFailedException;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 import static pl.feature.toggle.service.configuration.environment.infrastructure.out.db.EnvironmentMapper.toRecord;

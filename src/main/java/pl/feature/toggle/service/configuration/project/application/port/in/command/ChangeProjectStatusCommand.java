@@ -1,7 +1,7 @@
 package pl.feature.toggle.service.configuration.project.application.port.in.command;
 
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 
 public record ChangeProjectStatusCommand(
         ProjectId projectId,

@@ -3,11 +3,11 @@ package pl.feature.toggle.service.configuration.project.infrastructure.out.db;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import pl.feature.toggle.service.configuration.project.domain.ProjectStatus;
 import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.model.project.ProjectStatus;
 import pl.feature.toggle.service.tables.records.ProjectsRecord;
 
 import java.time.OffsetDateTime;

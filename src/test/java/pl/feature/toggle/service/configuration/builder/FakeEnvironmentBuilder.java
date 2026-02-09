@@ -1,11 +1,11 @@
 package pl.feature.toggle.service.configuration.builder;
 
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentStatus;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
 
 public class FakeEnvironmentBuilder {
