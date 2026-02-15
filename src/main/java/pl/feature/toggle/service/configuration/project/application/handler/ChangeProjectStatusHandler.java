@@ -15,7 +15,7 @@ import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.project.application.handler.EventMapper.createProjectStatusChangedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
 class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
@@ -41,7 +41,7 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
         changeEnvironmentsStatus(updateResult.project());
 
         var event = createProjectStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
     }
 
     private void changeEnvironmentsStatus(Project project) {

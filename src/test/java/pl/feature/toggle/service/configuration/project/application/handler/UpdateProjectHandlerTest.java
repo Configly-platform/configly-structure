@@ -12,7 +12,7 @@ import pl.feature.toggle.service.contracts.event.project.ProjectUpdated;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static pl.feature.toggle.service.configuration.builder.FakeUpdateProjectCommandBuilder.fakeUpdateProjectCommandBuilder;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 class UpdateProjectHandlerTest extends AbstractUnitTest {
 
@@ -46,7 +46,7 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
         assertThat(updated).isNotNull();
         assertThat(updated.name()).isEqualTo(command.name());
         assertThat(updated.description()).isEqualTo(command.description());
-        assertContainsEventOfType(PROJECT_ENV.topic(), ProjectUpdated.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), ProjectUpdated.class);
     }
 
     @Test

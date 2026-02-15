@@ -12,7 +12,7 @@ import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.environment.application.handler.EventMapper.createEnvironmentUpdatedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
 class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
@@ -38,6 +38,6 @@ class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
         environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
     }
 }

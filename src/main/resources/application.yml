@@ -2,12 +2,12 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/projectenv
+    url: jdbc:postgresql://localhost:5432/feature_toggle_configuration
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
   application:
-    name: project-env
+    name: feature-toggle-configuration
   security:
     oauth2:
       resourceserver:
@@ -22,9 +22,9 @@ outbox:
   kafka:
     enabled: true
     bootstrap-servers: localhost:9092
-    client-id: project-env-events-client
+    client-id: feature-toggle-configuration-client
     topics:
-      - name: project-env-events
+      - name: feature-toggle-configuration-events
         partitions: 3
         replication-factor: 1
     props:

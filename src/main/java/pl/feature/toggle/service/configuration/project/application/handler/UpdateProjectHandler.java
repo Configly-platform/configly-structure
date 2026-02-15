@@ -6,15 +6,12 @@ import pl.feature.toggle.service.configuration.project.application.port.in.Updat
 import pl.feature.toggle.service.configuration.project.application.port.in.command.UpdateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
-import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
-import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.project.application.handler.EventMapper.createProjectUpdatedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
 class UpdateProjectHandler implements UpdateProjectUseCase {
@@ -42,6 +39,6 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
         projectCommandRepository.update(updateResult);
 
         var event = createProjectUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
     }
 }

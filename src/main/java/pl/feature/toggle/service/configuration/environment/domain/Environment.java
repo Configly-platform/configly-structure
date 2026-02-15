@@ -2,7 +2,9 @@ package pl.feature.toggle.service.configuration.environment.domain;
 
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.CreateEnvironmentCommand;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotOperateOnArchivedEnvironmentException;
+import pl.feature.toggle.service.model.CreatedAt;
 import pl.feature.toggle.service.model.Revision;
+import pl.feature.toggle.service.model.UpdatedAt;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
@@ -20,24 +22,33 @@ public record Environment(
         EnvironmentName name,
         EnvironmentType type,
         EnvironmentStatus status,
-        Revision revision
+        Revision revision,
+        CreatedAt createdAt,
+        UpdatedAt updatedAt
 ) {
 
     public static Environment create(CreateEnvironmentCommand command) {
         return new Environment(EnvironmentId.create(), command.projectId(), command.name(), command.type(),
-                EnvironmentStatus.ACTIVE, initialRevision());
+                EnvironmentStatus.ACTIVE, initialRevision(), CreatedAt.now(), UpdatedAt.now());
     }
 
     public static Environment create(ProjectId projectId, EnvironmentName name, EnvironmentType type) {
         return new Environment(EnvironmentId.create(), projectId, name, type,
-                EnvironmentStatus.ACTIVE, initialRevision());
+                EnvironmentStatus.ACTIVE, initialRevision(), CreatedAt.now(), UpdatedAt.now());
     }
 
     public EnvironmentUpdateResult archive() {
         if (isArchived()) {
             return noChanges(this);
         }
-        var environment = new Environment(id, projectId, name, type, EnvironmentStatus.ARCHIVED, revision.next());
+        var environment = new Environment(id,
+                projectId,
+                name,
+                type,
+                EnvironmentStatus.ARCHIVED,
+                revision.next(),
+                createdAt,
+                UpdatedAt.now());
         var change = fieldChange(EnvironmentField.STATUS, status, EnvironmentStatus.ARCHIVED);
         return updated(environment, revision, change);
     }
@@ -46,7 +57,14 @@ public record Environment(
         if (isActive()) {
             return noChanges(this);
         }
-        var environment = new Environment(id, projectId, name, type, EnvironmentStatus.ACTIVE, revision.next());
+        var environment = new Environment(id,
+                projectId,
+                name,
+                type,
+                EnvironmentStatus.ACTIVE,
+                revision.next(),
+                createdAt,
+                UpdatedAt.now());
         var change = fieldChange(EnvironmentField.STATUS, status, EnvironmentStatus.ACTIVE);
         return updated(environment, revision, change);
     }
@@ -62,7 +80,14 @@ public record Environment(
             return noChanges(this);
         }
 
-        var environment = new Environment(id, projectId, name, newType, status, revision.next());
+        var environment = new Environment(id,
+                projectId,
+                name,
+                newType,
+                status,
+                revision.next(),
+                createdAt,
+                UpdatedAt.now());
         return updated(environment, revision, changeSet.toArray());
     }
 
@@ -77,7 +102,14 @@ public record Environment(
             return noChanges(this);
         }
 
-        var environment = new Environment(id, projectId, newName, type, status, revision.next());
+        var environment = new Environment(id,
+                projectId,
+                newName,
+                type,
+                status,
+                revision.next(),
+                createdAt,
+                UpdatedAt.now());
         return updated(environment, revision, changeSet.toArray());
     }
 

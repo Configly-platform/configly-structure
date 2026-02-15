@@ -4,14 +4,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
-import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import pl.feature.toggle.service.contracts.event.project.ProjectCreated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static pl.feature.toggle.service.configuration.builder.FakeCreateProjectCommandBuilder.createProjectCommandBuilder;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 class CreateProjectHandlerTest extends AbstractUnitTest {
 
@@ -43,7 +42,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNotNull();
         assertThat(saved.name()).isEqualTo(command.name());
         assertThat(saved.description()).isEqualTo(command.description());
-        assertContainsEventOfType(PROJECT_ENV.topic(), ProjectCreated.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), ProjectCreated.class);
     }
 
     @Test

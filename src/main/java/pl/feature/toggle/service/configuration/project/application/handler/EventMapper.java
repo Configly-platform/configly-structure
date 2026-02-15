@@ -25,7 +25,10 @@ final class EventMapper {
                 .projectName(project.name().value())
                 .projectId(project.id().uuid())
                 .status(project.status().name())
+                .createdAt(project.createdAt().toLocalDateTime())
+                .updatedAt(project.updatedAt().toLocalDateTime())
                 .revision(project.revision().value())
+                .projectDescription(project.description().value())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
@@ -35,6 +38,8 @@ final class EventMapper {
                 .projectId(updateResult.project().id().uuid())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .status(updateResult.project().status().name())
+                .createdAt(updateResult.project().createdAt().toLocalDateTime())
+                .updatedAt(updateResult.project().updatedAt().toLocalDateTime())
                 .revision(updateResult.project().revision().value())
                 .changes(buildChanges(updateResult))
                 .build();
@@ -45,6 +50,8 @@ final class EventMapper {
                 .projectId(updateResult.project().id().uuid())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .changes(buildChanges(updateResult))
+                .createdAt(updateResult.project().createdAt().toLocalDateTime())
+                .updatedAt(updateResult.project().updatedAt().toLocalDateTime())
                 .revision(updateResult.project().revision().value())
                 .status(updateResult.project().status().name())
                 .projectName(updateResult.project().name().value())

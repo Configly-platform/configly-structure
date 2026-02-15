@@ -12,7 +12,7 @@ import pl.feature.toggle.service.model.project.ProjectStatus;
 import static org.assertj.core.api.Assertions.*;
 import static pl.feature.toggle.service.configuration.builder.FakeChangeProjectStatusCommandBuilder.fakeChangeProjectStatusCommandBuilder;
 import static pl.feature.toggle.service.configuration.builder.FakeProjectBuilder.fakeProjectBuilder;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
 
@@ -85,7 +85,7 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
         assertThat(lastRestoredProjectId).isNull();
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ARCHIVED);
         assertThat(lastArchivedProjectId).isEqualTo(updatedProject.id());
-        assertContainsEventOfType(PROJECT_ENV.topic(), ProjectStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), ProjectStatusChanged.class);
     }
 
     @Test
@@ -108,7 +108,7 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
         assertThat(lastArchivedProjectId).isNull();
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ACTIVE);
         assertThat(lastRestoredProjectId).isEqualTo(updatedProject.id());
-        assertContainsEventOfType(PROJECT_ENV.topic(), ProjectStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), ProjectStatusChanged.class);
     }
 
     @Test

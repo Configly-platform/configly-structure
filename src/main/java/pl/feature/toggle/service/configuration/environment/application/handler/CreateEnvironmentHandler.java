@@ -13,7 +13,7 @@ import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.environment.application.handler.EventMapper.createEnvironmentCreatedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 
 @AllArgsConstructor
@@ -34,7 +34,7 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
         var environmentId = environmentCommandRepository.save(environment);
 
         var event = createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
 
         return environmentId;
     }

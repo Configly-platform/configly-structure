@@ -15,7 +15,7 @@ import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.environment.application.handler.EventMapper.createEnvironmentStatusChangedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
 class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
@@ -41,7 +41,7 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
         environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
     }
 
     private EnvironmentUpdateResult changeStatus(Environment environment, EnvironmentStatus environmentStatus) {

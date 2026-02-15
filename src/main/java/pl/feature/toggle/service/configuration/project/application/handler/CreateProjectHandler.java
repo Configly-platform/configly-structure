@@ -6,7 +6,6 @@ import pl.feature.toggle.service.configuration.project.application.port.in.Creat
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -15,7 +14,7 @@ import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.project.application.handler.EventMapper.createProjectCreatedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
 class CreateProjectHandler implements CreateProjectUseCase {
@@ -36,7 +35,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
         projectCommandRepository.save(project);
 
         var event = createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
 
         return project.id();
     }

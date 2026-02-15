@@ -7,14 +7,12 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.C
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.ChangeEnvironmentTypeCommand;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentQueryRepository;
-import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;
 import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
-import static pl.feature.toggle.service.configuration.environment.application.handler.EventMapper.createEnvironmentStatusChangedEvent;
 import static pl.feature.toggle.service.configuration.environment.application.handler.EventMapper.createEnvironmentTypeChangedEvent;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
 class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
@@ -40,6 +38,6 @@ class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
         environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentTypeChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
-        outboxWriter.write(event, PROJECT_ENV.topic());
+        outboxWriter.write(event, CONFIGURATION.topic());
     }
 }

@@ -6,10 +6,10 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-public class ProjectsApplication {
+public class FeatureToggleConfigurationApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProjectsApplication.class, args);
+        SpringApplication.run(FeatureToggleConfigurationApplication.class, args);
     }
 
 }

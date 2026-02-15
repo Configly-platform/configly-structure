@@ -13,7 +13,7 @@ import pl.feature.toggle.service.model.project.ProjectStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static pl.feature.toggle.service.configuration.builder.FakeChangeEnvironmentStatusCommandBuilder.fakeChangeEnvironmentStatusCommandBuilder;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 class ChangeEnvironmentStatusHandlerTest extends AbstractUnitTest {
 
@@ -43,7 +43,7 @@ class ChangeEnvironmentStatusHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNull();
         assertThat(updated).isNotNull();
         assertThat(updated.status()).isEqualTo(command.newEnvironmentStatus());
-        assertContainsEventOfType(PROJECT_ENV.topic(), EnvironmentStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class);
     }
 
     @Test
@@ -64,7 +64,7 @@ class ChangeEnvironmentStatusHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNull();
         assertThat(updated).isNotNull();
         assertThat(updated.status()).isEqualTo(command.newEnvironmentStatus());
-        assertContainsEventOfType(PROJECT_ENV.topic(), EnvironmentStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class);
     }
 
     @Test

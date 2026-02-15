@@ -15,7 +15,7 @@ import pl.feature.toggle.service.model.project.ProjectStatus;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchException;
 import static pl.feature.toggle.service.configuration.builder.FakeUpdateEnvironmentCommandBuilder.fakeUpdateEnvironmentCommandBuilder;
-import static pl.feature.toggle.service.contracts.topic.KafkaTopic.PROJECT_ENV;
+import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
 
@@ -46,7 +46,7 @@ class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNull();
         assertThat(updated).isNotNull();
         assertThat(updated.name()).isEqualTo(command.name());
-        assertContainsEventOfType(PROJECT_ENV.topic(), EnvironmentUpdated.class);
+        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentUpdated.class);
     }
 
     @Test
