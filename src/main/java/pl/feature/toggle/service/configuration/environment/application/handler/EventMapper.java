@@ -26,6 +26,8 @@ final class EventMapper {
                 .environmentId(environment.id().uuid())
                 .projectId(environment.projectId().uuid())
                 .environmentName(environment.name().value())
+                .status(environment.status().name())
+                .type(environment.type().name())
                 .revision(environment.revision().value())
                 .createdAt(environment.createdAt().toLocalDateTime())
                 .updatedAt(environment.updatedAt().toLocalDateTime())
