@@ -3,7 +3,9 @@ package pl.feature.toggle.service.configuration.environment.domain;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.CreateEnvironmentCommand;
 import pl.feature.toggle.service.configuration.environment.domain.exception.CannotOperateOnArchivedEnvironmentException;
+import pl.feature.toggle.service.model.CreatedAt;
 import pl.feature.toggle.service.model.Revision;
+import pl.feature.toggle.service.model.UpdatedAt;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
@@ -244,7 +246,9 @@ class EnvironmentTest {
                 EnvironmentName.create("name"),
                 EnvironmentType.DEV,
                 EnvironmentStatus.ACTIVE,
-                Revision.initialRevision()
+                Revision.initialRevision(),
+                CreatedAt.now(),
+                UpdatedAt.now()
         );
     }
 
@@ -255,7 +259,9 @@ class EnvironmentTest {
                 EnvironmentName.create("name"),
                 EnvironmentType.DEV,
                 EnvironmentStatus.ARCHIVED,
-                Revision.initialRevision()
+                Revision.initialRevision(),
+                CreatedAt.now(),
+                UpdatedAt.now()
         );
     }
 }

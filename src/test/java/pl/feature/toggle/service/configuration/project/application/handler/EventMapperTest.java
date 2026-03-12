@@ -39,6 +39,42 @@ class EventMapperTest extends AbstractUnitTest {
     }
 
     @Test
+    void should_map_to_project_updated_event() {
+        // given
+        var actor = actorProvider.current();
+        var correlationId = correlationProvider.current();
+        var project = fakeProjectBuilder().build();
+        var updateResult = new ProjectUpdateResult(
+                project,
+                Revision.initialRevision(),
+                List.of(new ProjectUpdateResult.ProjectFieldChange(
+                        ProjectField.DESCRIPTION,
+                        project.description(),
+                        ProjectDescription.create("TEST")
+                ))
+        );
+
+        // when
+        var result = EventMapper.createProjectUpdatedEvent(updateResult, actor, correlationId);
+
+        // then
+        assertThat(result.projectId()).isEqualTo(project.id().uuid());
+        assertThat(result.projectName()).isEqualTo(project.name().value());
+        assertThat(result.projectDescription()).isEqualTo(project.description().value());
+        assertThat(result.revision()).isEqualTo(Revision.initialRevision().value());
+        assertThat(result.eventId()).isNotNull();
+        assertThat(result.metadata().actorId()).isEqualTo(actor.idAsString());
+        assertThat(result.metadata().username()).isEqualTo(actor.usernameAsString());
+        assertThat(result.metadata().correlationId()).isEqualTo(correlationId.value());
+
+        assertThat(result.changes().changes()).hasSize(1);
+        var change = result.changes().changes().getFirst();
+        assertThat(change.field()).isEqualTo(ProjectField.DESCRIPTION.name());
+        assertThat(change.before()).isEqualTo(project.description().value());
+        assertThat(change.after()).isEqualTo("TEST");
+    }
+
+    @Test
     void should_map_project_status_changed_event() {
         // given
         var actor = actorProvider.current();

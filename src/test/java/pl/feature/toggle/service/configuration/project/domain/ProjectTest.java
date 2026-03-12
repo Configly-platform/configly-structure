@@ -3,7 +3,9 @@ package pl.feature.toggle.service.configuration.project.domain;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult.ProjectFieldChange;
 import pl.feature.toggle.service.configuration.project.domain.exception.CannotOperateOnArchivedProjectException;
+import pl.feature.toggle.service.model.CreatedAt;
 import pl.feature.toggle.service.model.Revision;
+import pl.feature.toggle.service.model.UpdatedAt;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -217,7 +219,9 @@ class ProjectTest {
                 ProjectName.create("Name"),
                 ProjectDescription.create("Desc"),
                 ProjectStatus.ACTIVE,
-                Revision.initialRevision()
+                Revision.initialRevision(),
+                CreatedAt.now(),
+                UpdatedAt.now()
         );
     }
 
@@ -227,7 +231,9 @@ class ProjectTest {
                 ProjectName.create("Name"),
                 ProjectDescription.create("Desc"),
                 ProjectStatus.ARCHIVED,
-                Revision.initialRevision()
+                Revision.initialRevision(),
+                CreatedAt.now(),
+                UpdatedAt.now()
         );
     }
 }

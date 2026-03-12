@@ -2,7 +2,9 @@ package pl.feature.toggle.service.configuration.builder;
 
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
+import pl.feature.toggle.service.model.CreatedAt;
 import pl.feature.toggle.service.model.Revision;
+import pl.feature.toggle.service.model.UpdatedAt;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
@@ -15,6 +17,8 @@ public class FakeEnvironmentBuilder {
     private EnvironmentType type;
     private EnvironmentStatus status;
     private Revision revision;
+    private CreatedAt createdAt;
+    private UpdatedAt updatedAt;
 
     private FakeEnvironmentBuilder() {
         this.id = EnvironmentId.create();
@@ -23,6 +27,8 @@ public class FakeEnvironmentBuilder {
         this.type = EnvironmentType.DEV;
         this.status = EnvironmentStatus.ACTIVE;
         this.revision = Revision.initialRevision();
+        this.createdAt = CreatedAt.now();
+        this.updatedAt = UpdatedAt.now();
     }
 
     public static FakeEnvironmentBuilder fakeEnvironmentBuilder() {
@@ -60,7 +66,7 @@ public class FakeEnvironmentBuilder {
     }
 
     public Environment build() {
-        return new Environment(id, projectId, name, type, status, revision);
+        return new Environment(id, projectId, name, type, status, revision, createdAt, updatedAt);
     }
 
 }

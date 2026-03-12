@@ -50,6 +50,7 @@ final class EventMapper {
                 .projectId(updateResult.project().id().uuid())
                 .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .changes(buildChanges(updateResult))
+                .projectDescription(updateResult.project().description().value())
                 .createdAt(updateResult.project().createdAt().toLocalDateTime())
                 .updatedAt(updateResult.project().updatedAt().toLocalDateTime())
                 .revision(updateResult.project().revision().value())

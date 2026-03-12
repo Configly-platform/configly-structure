@@ -1,7 +1,9 @@
 package pl.feature.toggle.service.configuration.builder;
 
 import pl.feature.toggle.service.configuration.project.domain.Project;
+import pl.feature.toggle.service.model.CreatedAt;
 import pl.feature.toggle.service.model.Revision;
+import pl.feature.toggle.service.model.UpdatedAt;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
@@ -13,6 +15,8 @@ public class FakeProjectBuilder {
     private ProjectDescription description;
     private ProjectStatus status;
     private Revision revision;
+    private CreatedAt createdAt;
+    private UpdatedAt updatedAt;
 
     private FakeProjectBuilder() {
         this.id = ProjectId.create();
@@ -20,6 +24,8 @@ public class FakeProjectBuilder {
         this.description = ProjectDescription.create("TEST");
         this.status = ProjectStatus.ACTIVE;
         this.revision = Revision.initialRevision();
+        this.createdAt = CreatedAt.now();
+        this.updatedAt = UpdatedAt.now();
     }
 
     public static FakeProjectBuilder fakeProjectBuilder() {
@@ -52,6 +58,6 @@ public class FakeProjectBuilder {
     }
 
     public Project build() {
-        return new Project(id, name, description, status, revision);
+        return new Project(id, name, description, status, revision, createdAt, updatedAt);
     }
 }
