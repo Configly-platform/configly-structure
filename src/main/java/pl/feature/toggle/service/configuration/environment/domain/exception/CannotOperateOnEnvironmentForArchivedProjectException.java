@@ -6,6 +6,6 @@ import pl.feature.toggle.service.model.project.ProjectId;
 public class CannotOperateOnEnvironmentForArchivedProjectException extends RuntimeException {
 
     public CannotOperateOnEnvironmentForArchivedProjectException(ProjectId projectId) {
-        super("Cannot create environment for archived project: " + projectId.toString());
+        super("Cannot operate on environment for archived project: " + projectId.toString());
     }
 }

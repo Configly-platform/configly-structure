@@ -7,9 +7,14 @@ import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentAlreadyExistsException;
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentUpdateFailedException;
+import pl.feature.toggle.service.configuration.project.application.port.out.environment.CascadedEnvironmentStatusChange;
+import pl.feature.toggle.service.model.CreatedAt;
+import pl.feature.toggle.service.model.Revision;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
+
+import java.util.List;
 
 import static pl.feature.toggle.service.configuration.environment.infrastructure.out.db.EnvironmentMapper.toRecord;
 import static pl.feature.toggle.service.tables.Environments.ENVIRONMENTS;
@@ -34,19 +39,29 @@ class EnvironmentCommandJooqRepository implements EnvironmentCommandRepository {
     }
 
     @Override
-    public void archiveAllByProjectId(ProjectId projectId) {
-        dsl.update(ENVIRONMENTS)
+    public List<CascadedEnvironmentStatusChange> archiveAllByProjectId(ProjectId projectId) {
+        return dsl.update(ENVIRONMENTS)
                 .set(ENVIRONMENTS.STATUS, EnvironmentStatus.ARCHIVED.name())
-                .where(ENVIRONMENTS.PROJECT_ID.eq(projectId.uuid()))
-                .execute();
-    }
-
-    @Override
-    public void restoreAllByProjectId(ProjectId projectId) {
-        dsl.update(ENVIRONMENTS)
-                .set(ENVIRONMENTS.STATUS, EnvironmentStatus.ACTIVE.name())
-                .where(ENVIRONMENTS.PROJECT_ID.eq(projectId.uuid()))
-                .execute();
+                .set(ENVIRONMENTS.REVISION, ENVIRONMENTS.REVISION.plus(1))
+                .where(
+                        ENVIRONMENTS.PROJECT_ID.eq(projectId.uuid())
+                                .and(ENVIRONMENTS.STATUS.ne(EnvironmentStatus.ARCHIVED.name()))
+                )
+                .returning(
+                        ENVIRONMENTS.ID,
+                        ENVIRONMENTS.PROJECT_ID,
+                        ENVIRONMENTS.STATUS,
+                        ENVIRONMENTS.REVISION,
+                        ENVIRONMENTS.CREATED_AT
+                )
+                .fetch(record -> new CascadedEnvironmentStatusChange(
+                        EnvironmentId.create(record.get(ENVIRONMENTS.ID)),
+                        ProjectId.create(record.get(ENVIRONMENTS.PROJECT_ID)),
+                        EnvironmentStatus.valueOf(record.get(ENVIRONMENTS.STATUS)),
+                        EnvironmentStatus.ACTIVE,
+                        Revision.from(record.get(ENVIRONMENTS.REVISION)),
+                        CreatedAt.of(record.get(ENVIRONMENTS.CREATED_AT))
+                ));
     }
 
     @Override

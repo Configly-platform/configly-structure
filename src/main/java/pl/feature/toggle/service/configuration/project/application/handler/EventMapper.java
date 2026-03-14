@@ -1,8 +1,11 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
+import pl.feature.toggle.service.configuration.environment.domain.EnvironmentField;
+import pl.feature.toggle.service.configuration.project.application.port.out.environment.CascadedEnvironmentStatusChange;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectField;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged;
 import pl.feature.toggle.service.contracts.event.project.ProjectCreated;
 import pl.feature.toggle.service.contracts.event.project.ProjectStatusChanged;
 import pl.feature.toggle.service.contracts.event.project.ProjectUpdated;
@@ -14,6 +17,9 @@ import pl.feature.toggle.service.model.project.ProjectStatus;
 import pl.feature.toggle.service.model.security.actor.Actor;
 import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
+import java.time.LocalDateTime;
+
+import static pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged.environmentStatusChangedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.project.ProjectCreated.projectCreatedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.project.ProjectStatusChanged.projectStatusChangedEventBuilder;
 import static pl.feature.toggle.service.contracts.event.project.ProjectUpdated.projectUpdatedEventBuilder;
@@ -56,6 +62,19 @@ final class EventMapper {
                 .revision(updateResult.project().revision().value())
                 .status(updateResult.project().status().name())
                 .projectName(updateResult.project().name().value())
+                .build();
+    }
+
+    static EnvironmentStatusChanged createEnvironmentStatusChanged(CascadedEnvironmentStatusChange statusChange, Actor actor, CorrelationId correlationId) {
+        return environmentStatusChangedEventBuilder()
+                .environmentId(statusChange.environmentId().uuid())
+                .projectId(statusChange.projectId().uuid())
+                .status(statusChange.afterStatus().name())
+                .createdAt(statusChange.createdAt().toLocalDateTime())
+                .updatedAt(LocalDateTime.now())
+                .changes(Changes.of(EnvironmentField.STATUS.name(), statusChange.beforeStatus().name(), statusChange.afterStatus().name()))
+                .revision(statusChange.revision().value())
+                .metadata(Metadata.create(actor.idAsString(), actor.usernameAsString(), correlationId.value()))
                 .build();
     }
 

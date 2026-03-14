@@ -7,7 +7,7 @@ import pl.feature.toggle.service.configuration.project.application.policy.Projec
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
-import pl.feature.toggle.service.configuration.project.application.port.out.EnvironmentStatusCascadePort;
+import pl.feature.toggle.service.configuration.project.application.port.out.environment.EnvironmentStatusCascadePort;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.model.security.actor.ActorProvider;

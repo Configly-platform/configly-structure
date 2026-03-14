@@ -3,6 +3,7 @@ package pl.feature.toggle.service.configuration.environment.support;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
+import pl.feature.toggle.service.configuration.project.application.port.out.environment.CascadedEnvironmentStatusChange;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
 
@@ -14,14 +15,12 @@ public class EnvironmentCommandRepositorySpy implements EnvironmentCommandReposi
     private final List<Environment> saved = new ArrayList<>();
     private final List<Environment> updated = new ArrayList<>();
     private final List<ProjectId> archivedAll = new ArrayList<>();
-    private final List<ProjectId> restoredAll = new ArrayList<>();
     private boolean failOnAnyCall;
 
     public void reset() {
         saved.clear();
         updated.clear();
         archivedAll.clear();
-        restoredAll.clear();
         failOnAnyCall = false;
     }
 
@@ -47,10 +46,6 @@ public class EnvironmentCommandRepositorySpy implements EnvironmentCommandReposi
         return archivedAll.getLast();
     }
 
-    public ProjectId getLastRestoredAll() {
-        return restoredAll.getLast();
-    }
-
     @Override
     public EnvironmentId save(Environment environment) {
         if (failOnAnyCall) {
@@ -61,19 +56,12 @@ public class EnvironmentCommandRepositorySpy implements EnvironmentCommandReposi
     }
 
     @Override
-    public void archiveAllByProjectId(ProjectId projectId) {
+    public List<CascadedEnvironmentStatusChange> archiveAllByProjectId(ProjectId projectId) {
         if (failOnAnyCall) {
             throw new AssertionError("this method should not be called");
         }
         archivedAll.add(projectId);
-    }
-
-    @Override
-    public void restoreAllByProjectId(ProjectId projectId) {
-        if (failOnAnyCall) {
-            throw new AssertionError("this method should not be called");
-        }
-        restoredAll.add(projectId);
+        return List.of();
     }
 
     @Override

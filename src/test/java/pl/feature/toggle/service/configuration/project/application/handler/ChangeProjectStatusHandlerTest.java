@@ -4,10 +4,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
+import pl.feature.toggle.service.configuration.project.application.port.out.environment.CascadedEnvironmentStatusChange;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
+import pl.feature.toggle.service.contracts.event.environment.EnvironmentStatusChanged;
 import pl.feature.toggle.service.contracts.event.project.ProjectStatusChanged;
+import pl.feature.toggle.service.model.CreatedAt;
+import pl.feature.toggle.service.model.Revision;
+import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectStatus;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
 import static pl.feature.toggle.service.configuration.builder.FakeChangeProjectStatusCommandBuilder.fakeChangeProjectStatusCommandBuilder;
@@ -15,14 +22,6 @@ import static pl.feature.toggle.service.configuration.builder.FakeProjectBuilder
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
-
-    private static final Project ACTIVE_PROJECT = fakeProjectBuilder()
-            .withStatus(ProjectStatus.ACTIVE)
-            .build();
-
-    private static final Project ARCHIVED_PROJECT = fakeProjectBuilder()
-            .withStatus(ProjectStatus.ARCHIVED)
-            .build();
 
     private ChangeProjectStatusUseCase sut;
 
@@ -80,9 +79,7 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
         // then
         var updatedProject = projectCommandRepositorySpy.getUpdated();
         var lastArchivedProjectId = environmentStatusCascadeSpy.getLastArchived();
-        var lastRestoredProjectId = environmentStatusCascadeSpy.getLastRestored();
 
-        assertThat(lastRestoredProjectId).isNull();
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ARCHIVED);
         assertThat(lastArchivedProjectId).isEqualTo(updatedProject.id());
         assertContainsEventOfType(CONFIGURATION.topic(), ProjectStatusChanged.class);
@@ -102,13 +99,52 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
 
         // then
         var updatedProject = projectCommandRepositorySpy.getUpdated();
-        var lastRestoredProjectId = environmentStatusCascadeSpy.getLastRestored();
         var lastArchivedProjectId = environmentStatusCascadeSpy.getLastArchived();
 
         assertThat(lastArchivedProjectId).isNull();
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ACTIVE);
-        assertThat(lastRestoredProjectId).isEqualTo(updatedProject.id());
         assertContainsEventOfType(CONFIGURATION.topic(), ProjectStatusChanged.class);
+        assertDoesNotContainEventOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class);
+    }
+
+    @Test
+    void should_change_project_status_to_archive_and_emit_environment_status_changed_events_when_project_is_active(){
+        // given
+        var command = fakeChangeProjectStatusCommandBuilder()
+                .withProjectStatus(ProjectStatus.ARCHIVED)
+                .build();
+
+        environmentStatusCascadeSpy.archiveCascadeByProjectIdReturns(List.of(
+                new CascadedEnvironmentStatusChange(
+                        ENVIRONMENT_ID_1,
+                        PROJECT_ID,
+                        EnvironmentStatus.ARCHIVED,
+                        EnvironmentStatus.ACTIVE,
+                        Revision.initialRevision(),
+                        CreatedAt.now()
+                ),
+                new CascadedEnvironmentStatusChange(
+                        ENVIRONMENT_ID_2,
+                        PROJECT_ID,
+                        EnvironmentStatus.ARCHIVED,
+                        EnvironmentStatus.ACTIVE,
+                        Revision.initialRevision(),
+                        CreatedAt.now()
+                )
+        ));
+        projectQueryRepositoryStub.getOrThrowReturns(ACTIVE_PROJECT);
+
+        // when
+        sut.handle(command);
+
+        // then
+        var updatedProject = projectCommandRepositorySpy.getUpdated();
+        var lastArchivedProjectId = environmentStatusCascadeSpy.getLastArchived();
+
+        assertThat(lastArchivedProjectId).isEqualTo(ACTIVE_PROJECT.id());
+        assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ARCHIVED);
+        assertHasEventCountOfType(CONFIGURATION.topic(), ProjectStatusChanged.class, 1);
+        assertHasEventCountOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class, 2);
     }
 
     @Test

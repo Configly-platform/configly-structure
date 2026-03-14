@@ -1,5 +1,8 @@
 package pl.feature.toggle.service.configuration.environment.infrastructure.out.db;
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import pl.feature.toggle.service.configuration.AbstractITTest;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentQueryRepository;
@@ -10,9 +13,6 @@ import pl.feature.toggle.service.configuration.environment.domain.exception.Envi
 import pl.feature.toggle.service.configuration.environment.domain.exception.EnvironmentUpdateFailedException;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectDescription;
@@ -106,26 +106,6 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
     }
 
     @Test
-    void should_restore_all_environments_by_project_id() {
-        // given
-        var firstEnvironment = createAndSaveEnvironment("TEST_1", projectId_1, EnvironmentStatus.ARCHIVED);
-        var secondEnvironment = createAndSaveEnvironment("TEST_2", projectId_1, EnvironmentStatus.ARCHIVED);
-        var thirdEnvironment = createAndSaveEnvironment("TEST_2", projectId_2, EnvironmentStatus.ARCHIVED);
-
-        // when
-        sut.restoreAllByProjectId(projectId_1);
-
-        // then
-        var firstActual = queryRepository.getOrThrow(firstEnvironment.id(), firstEnvironment.projectId());
-        var secondActual = queryRepository.getOrThrow(secondEnvironment.id(), secondEnvironment.projectId());
-        var thirdActual = queryRepository.getOrThrow(thirdEnvironment.id(), thirdEnvironment.projectId());
-
-        assertThat(firstActual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
-        assertThat(secondActual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
-        assertThat(thirdActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
-    }
-
-    @Test
     void should_archive_all_environments_by_project_id() {
         // given
         var firstEnvironment = createAndSaveEnvironment("TEST_1", projectId_1, EnvironmentStatus.ACTIVE);
@@ -143,6 +123,9 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         assertThat(firstActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
         assertThat(secondActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
         assertThat(thirdActual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
+        assertThat(firstActual.revision()).isEqualTo(firstEnvironment.revision().next());
+        assertThat(secondActual.revision()).isEqualTo(secondEnvironment.revision().next());
+        assertThat(thirdActual.revision()).isEqualTo(thirdEnvironment.revision());
     }
 
     @Test
@@ -156,19 +139,6 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         // then
         var actual = queryRepository.getOrThrow(environment.id(), environment.projectId());
         assertThat(actual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
-    }
-
-    @Test
-    void should_do_nothing_when_restore_environments_by_project_id_without_environments() {
-        // given
-        var environment = createAndSaveEnvironment("TEST_2", projectId_2, EnvironmentStatus.ARCHIVED);
-
-        // when
-        assertThatCode(() -> sut.restoreAllByProjectId(projectId_1)).doesNotThrowAnyException();
-
-        // then
-        var actual = queryRepository.getOrThrow(environment.id(), environment.projectId());
-        assertThat(actual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
     }
 
 

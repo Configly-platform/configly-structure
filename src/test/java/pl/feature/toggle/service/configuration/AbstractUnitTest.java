@@ -14,6 +14,7 @@ import pl.feature.toggle.service.configuration.project.support.EnvironmentStatus
 import pl.feature.toggle.service.configuration.project.support.ProjectCommandRepositorySpy;
 import pl.feature.toggle.service.configuration.project.support.ProjectQueryRepositoryStub;
 import pl.feature.toggle.service.contracts.shared.Metadata;
+import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
@@ -28,6 +29,8 @@ import static pl.feature.toggle.service.configuration.builder.FakeEnvironmentBui
 public abstract class AbstractUnitTest {
 
     protected static final ProjectId PROJECT_ID = ProjectId.create();
+    protected static final EnvironmentId ENVIRONMENT_ID_1 = EnvironmentId.create();
+    protected static final EnvironmentId ENVIRONMENT_ID_2 = EnvironmentId.create();
 
     protected static final Environment ACTIVE_ENVIRONMENT = fakeEnvironmentBuilder()
             .withStatus(EnvironmentStatus.ACTIVE)
@@ -85,10 +88,6 @@ public abstract class AbstractUnitTest {
         return Environment.create(ProjectId.create(projectId), EnvironmentName.create(name), EnvironmentType.TEST);
     }
 
-    protected void insertEnvironment(Environment environment) {
-        environmentCommandRepositorySpy.save(environment);
-    }
-
     protected Metadata metadata(LocalDateTime time) {
         return new Metadata(actorProvider.current().actorId().value(), actorProvider.current().username().value(), time, correlationProvider.current().value());
     }
@@ -99,6 +98,14 @@ public abstract class AbstractUnitTest {
 
     protected void assertContainsEventOfType(String topic, Class<?> eventClass) {
         assertThat(outboxWriter.containsEventOfType(topic, eventClass)).isTrue();
+    }
+
+    protected void assertDoesNotContainEventOfType(String topic, Class<?> eventClass) {
+        assertThat(outboxWriter.containsEventOfType(topic, eventClass)).isFalse();
+    }
+
+    protected void assertHasEventCountOfType(String topic, Class<?> eventClass, int eventCount) {
+        assertThat(outboxWriter.hasEventTypeCountForTopic(topic, eventClass, eventCount)).isTrue();
     }
 
 }
