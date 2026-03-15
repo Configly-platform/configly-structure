@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.UpdateProjectCommand;
@@ -14,6 +15,7 @@ import static pl.feature.toggle.service.configuration.project.application.handle
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
+@Slf4j
 class UpdateProjectHandler implements UpdateProjectUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
@@ -40,5 +42,8 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
 
         var event = createProjectUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, CONFIGURATION.topic());
+
+        log.info("Project updated: projectId={}, newName={}, newDescription={}",
+                project.id().uuid(), command.name().value(), command.description().value());
     }
 }

@@ -14,6 +14,10 @@ spring:
         jwt:
           issuer-uri: http://keycloak:8080/auth/realms/feature-toggle
 
+logging:
+  pattern:
+    console: "%clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr([${spring.application.name:-app}]){green} %clr([%X{correlationId:--}]){yellow} %clr([%X{actor:--}]){cyan} %clr(%-5level) -> %msg%n"
+
 outbox:
   batch-size: 100
   pool-interval-ms: 10s
@@ -29,11 +33,6 @@ outbox:
         replication-factor: 1
     props:
       spring.json.add.type.headers: true
-
-logging:
-  level:
-    org.springframework.kafka: DEBUG
-    org.apache.kafka.clients.consumer: DEBUG
 
 server:
   port: 8081

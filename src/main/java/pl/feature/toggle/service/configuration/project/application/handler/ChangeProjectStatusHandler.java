@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.ChangeProjectStatusCommand;
@@ -26,6 +27,7 @@ import static pl.feature.toggle.service.configuration.project.application.handle
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
+@Slf4j
 class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
@@ -53,6 +55,8 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
 
         sendProjectStatusChangedEvent(updateResult, actor, correlation);
         sendEnvironmentStatusChangedEvent(cascadedChanges, actor, correlation);
+        log.info("Project status changed: projectId={}, oldStatus={}, newStatus={}", project.id().uuid(),
+                project.status(), updateResult.project().status());
     }
 
     private List<CascadedEnvironmentStatusChange> changeEnvironmentsStatus(Project project) {

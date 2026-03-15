@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.configuration.environment.application.policy.EnvironmentPolicyFacade;
 import pl.feature.toggle.service.configuration.environment.application.port.in.ChangeEnvironmentStatusUseCase;
@@ -18,6 +19,7 @@ import static pl.feature.toggle.service.configuration.environment.application.ha
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
+@Slf4j
 class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
 
     private final EnvironmentCommandRepository environmentCommandRepository;
@@ -42,6 +44,8 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
 
         var event = createEnvironmentStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, CONFIGURATION.topic());
+        log.info("Environment status changed: environmentId={}, oldStatus={}, newStatus={}", environment.id().uuid(),
+                environment.status(), updateResult.environment().status());
     }
 
     private EnvironmentUpdateResult changeStatus(Environment environment, EnvironmentStatus environmentStatus) {

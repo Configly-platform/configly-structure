@@ -1,5 +1,6 @@
 package pl.feature.toggle.service.configuration.project.application.handler;
 
+import lombok.extern.slf4j.Slf4j;
 import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.command.CreateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
@@ -17,6 +18,7 @@ import static pl.feature.toggle.service.configuration.project.application.handle
 import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION;
 
 @AllArgsConstructor
+@Slf4j
 class CreateProjectHandler implements CreateProjectUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
@@ -36,6 +38,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
 
         var event = createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, CONFIGURATION.topic());
+        log.info("Project created: projectId={}", project.id().uuid());
 
         return project.id();
     }

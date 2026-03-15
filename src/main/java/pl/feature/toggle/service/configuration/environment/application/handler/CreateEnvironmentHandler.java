@@ -1,6 +1,7 @@
 package pl.feature.toggle.service.configuration.environment.application.handler;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import pl.feature.toggle.service.configuration.environment.application.policy.EnvironmentPolicyFacade;
 import pl.feature.toggle.service.configuration.environment.application.port.in.CreateEnvironmentUseCase;
@@ -17,6 +18,7 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION
 
 
 @AllArgsConstructor
+@Slf4j
 class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
 
     private final EnvironmentCommandRepository environmentCommandRepository;
@@ -36,6 +38,7 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
         var event = createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
         outboxWriter.write(event, CONFIGURATION.topic());
 
+        log.info("Environment created: environmentId={}", environment.id().uuid());
         return environmentId;
     }
 }
