@@ -20,48 +20,40 @@ public final class EnvironmentHandlerFacade {
     public static CreateEnvironmentUseCase createEnvironmentUseCase(
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return new CreateEnvironmentHandler(environmentCommandRepository, environmentPolicyFacade,
-                outboxWriter, actorProvider, correlationProvider);
+                outboxWriter);
     }
 
     public static ChangeEnvironmentStatusUseCase changeEnvironmentStatusUseCase(
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentQueryRepository environmentQueryRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return new ChangeEnvironmentStatusHandler(environmentCommandRepository, environmentQueryRepository,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
     public static UpdateEnvironmentUseCase updateEnvironmentUseCase(
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentQueryRepository environmentQueryRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return new UpdateEnvironmentHandler(environmentCommandRepository, environmentQueryRepository,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
     public static ChangeEnvironmentTypeUseCase changeEnvironmentTypeUseCase(
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentQueryRepository environmentQueryRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return new ChangeEnvironmentTypeHandler(environmentCommandRepository, environmentQueryRepository,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
 }

@@ -18,36 +18,28 @@ public final class ProjectHandlerFacade {
 
     public static CreateProjectUseCase createProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
-            ProjectQueryRepository projectQueryRepository,
             ProjectPolicyFacade projectPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
-        return new CreateProjectHandler(projectCommandRepository, projectQueryRepository, projectPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+        return new CreateProjectHandler(projectCommandRepository, projectPolicyFacade, outboxWriter);
     }
 
     public static UpdateProjectUseCase updateProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
             ProjectPolicyFacade projectPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
-        return new UpdateProjectHandler(projectCommandRepository, projectQueryRepository, projectPolicyFacade, actorProvider, correlationProvider, outboxWriter);
+        return new UpdateProjectHandler(projectCommandRepository, projectQueryRepository, projectPolicyFacade, outboxWriter);
     }
 
     public static ChangeProjectStatusUseCase changeProjectStatusUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
             OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider,
             EnvironmentStatusCascadePort environmentStatusCascadePort
     ) {
-        return new ChangeProjectStatusHandler(projectCommandRepository, projectQueryRepository, actorProvider,
-                correlationProvider, outboxWriter, environmentStatusCascadePort);
+        return new ChangeProjectStatusHandler(projectCommandRepository, projectQueryRepository, outboxWriter, environmentStatusCascadePort);
     }
 
 }

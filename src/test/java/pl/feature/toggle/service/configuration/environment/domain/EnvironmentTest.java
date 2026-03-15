@@ -10,6 +10,8 @@ import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -22,7 +24,9 @@ class EnvironmentTest {
         var command = new CreateEnvironmentCommand(
                 EnvironmentName.create("DEV"),
                 ProjectId.create(),
-                EnvironmentType.DEV
+                EnvironmentType.DEV,
+                Actor.system(),
+                CorrelationId.generate()
         );
 
         // when

@@ -23,7 +23,7 @@ class ChangeEnvironmentTypeHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = EnvironmentHandlerFacade.changeEnvironmentTypeUseCase(environmentCommandRepositorySpy, environmentQueryRepositoryStub,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
     @Test

@@ -23,8 +23,6 @@ class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
     private final EnvironmentQueryRepository environmentQueryRepository;
     private final EnvironmentPolicyFacade environmentPolicyFacade;
     private final OutboxWriter outboxWriter;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
 
     @Override
     @Transactional
@@ -39,7 +37,7 @@ class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
 
         environmentCommandRepository.update(updateResult);
 
-        var event = createEnvironmentUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
+        var event = createEnvironmentUpdatedEvent(updateResult, command.actor(), command.correlationId());
         outboxWriter.write(event, CONFIGURATION.topic());
         log.info("Environment updated: environmentId={}, newName={}", environment.id().uuid(), environment.name().value());
     }

@@ -4,21 +4,37 @@ import pl.feature.toggle.service.configuration.project.application.port.in.comma
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectId;
 import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 public class FakeUpdateProjectCommandBuilder {
 
     private ProjectId projectId;
     private ProjectName name;
     private ProjectDescription description;
+    private Actor actor;
+    private CorrelationId correlationId;
 
     private FakeUpdateProjectCommandBuilder() {
         this.projectId = ProjectId.create();
         this.name = ProjectName.create("TEST");
         this.description = ProjectDescription.create("TEST");
+        this.actor = Actor.system();
+        this.correlationId = CorrelationId.generate();
     }
 
     public static FakeUpdateProjectCommandBuilder fakeUpdateProjectCommandBuilder() {
         return new FakeUpdateProjectCommandBuilder();
+    }
+
+    public FakeUpdateProjectCommandBuilder withActor(Actor actor) {
+        this.actor = actor;
+        return this;
+    }
+
+    public FakeUpdateProjectCommandBuilder withCorrelationId(String correlationId) {
+        this.correlationId = CorrelationId.of(correlationId);
+        return this;
     }
 
     public FakeUpdateProjectCommandBuilder withProjectId(ProjectId projectId) {
@@ -37,7 +53,7 @@ public class FakeUpdateProjectCommandBuilder {
     }
 
     public UpdateProjectCommand build() {
-        return new UpdateProjectCommand(projectId, name, description);
+        return new UpdateProjectCommand(projectId, name, description, actor, correlationId);
     }
 
 }

@@ -4,16 +4,22 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.c
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 public class FakeChangeEnvironmentStatusCommandBuilder {
     private ProjectId projectId;
     private EnvironmentId environmentId;
     private EnvironmentStatus newEnvironmentStatus;
+    private Actor actor;
+    private CorrelationId correlationId;
 
     private FakeChangeEnvironmentStatusCommandBuilder() {
         this.projectId = ProjectId.create();
         this.environmentId = EnvironmentId.create();
         this.newEnvironmentStatus = EnvironmentStatus.ACTIVE;
+        this.actor = Actor.system();
+        this.correlationId = CorrelationId.generate();
     }
 
     public static FakeChangeEnvironmentStatusCommandBuilder fakeChangeEnvironmentStatusCommandBuilder() {
@@ -22,6 +28,16 @@ public class FakeChangeEnvironmentStatusCommandBuilder {
 
     public FakeChangeEnvironmentStatusCommandBuilder withProjectId(String projectId) {
         this.projectId = ProjectId.create(projectId);
+        return this;
+    }
+
+    public FakeChangeEnvironmentStatusCommandBuilder withActor(Actor actor) {
+        this.actor = actor;
+        return this;
+    }
+
+    public FakeChangeEnvironmentStatusCommandBuilder withCorrelationId(String correlationId) {
+        this.correlationId = CorrelationId.of(correlationId);
         return this;
     }
 
@@ -36,6 +52,6 @@ public class FakeChangeEnvironmentStatusCommandBuilder {
     }
 
     public ChangeEnvironmentStatusCommand build() {
-        return new ChangeEnvironmentStatusCommand(projectId, environmentId, newEnvironmentStatus);
+        return new ChangeEnvironmentStatusCommand(projectId, environmentId, newEnvironmentStatus, actor, correlationId);
     }
 }

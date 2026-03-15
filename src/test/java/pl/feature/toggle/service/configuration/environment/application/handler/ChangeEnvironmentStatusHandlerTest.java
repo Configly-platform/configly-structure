@@ -22,7 +22,7 @@ class ChangeEnvironmentStatusHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = EnvironmentHandlerFacade.changeEnvironmentStatusUseCase(environmentCommandRepositorySpy, environmentQueryRepositoryStub,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
     @Test

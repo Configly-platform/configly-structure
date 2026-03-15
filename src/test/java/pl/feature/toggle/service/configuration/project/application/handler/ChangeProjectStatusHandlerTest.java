@@ -28,7 +28,7 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = ProjectHandlerFacade.changeProjectStatusUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub,
-                outboxWriter, actorProvider, correlationProvider, environmentStatusCascadeSpy);
+                outboxWriter, environmentStatusCascadeSpy);
     }
 
     @Test

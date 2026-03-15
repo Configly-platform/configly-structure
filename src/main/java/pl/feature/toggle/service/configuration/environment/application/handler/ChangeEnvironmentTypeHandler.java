@@ -23,8 +23,6 @@ class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
     private final EnvironmentQueryRepository environmentQueryRepository;
     private final EnvironmentPolicyFacade environmentPolicyFacade;
     private final OutboxWriter outboxWriter;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
 
     @Override
     @Transactional
@@ -39,7 +37,7 @@ class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
 
         environmentCommandRepository.update(updateResult);
 
-        var event = createEnvironmentTypeChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
+        var event = createEnvironmentTypeChangedEvent(updateResult, command.actor(), command.correlationId());
         outboxWriter.write(event, CONFIGURATION.topic());
         log.info("Environment type changed: environmentId={}, newType={}", environment.id().uuid(), environment.type());
     }

@@ -24,7 +24,7 @@ class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = EnvironmentHandlerFacade.updateEnvironmentUseCase(environmentCommandRepositorySpy, environmentQueryRepositoryStub,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
     @Test

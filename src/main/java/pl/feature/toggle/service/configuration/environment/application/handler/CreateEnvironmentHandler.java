@@ -24,8 +24,6 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
     private final EnvironmentCommandRepository environmentCommandRepository;
     private final EnvironmentPolicyFacade environmentPolicyFacade;
     private final OutboxWriter outboxWriter;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
 
     @Override
     @Transactional
@@ -35,7 +33,7 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
 
         var environmentId = environmentCommandRepository.save(environment);
 
-        var event = createEnvironmentCreatedEvent(environment, actorProvider.current(), correlationProvider.current());
+        var event = createEnvironmentCreatedEvent(environment, command.actor(), command.correlationId());
         outboxWriter.write(event, CONFIGURATION.topic());
 
         log.info("Environment created: environmentId={}", environment.id().uuid());

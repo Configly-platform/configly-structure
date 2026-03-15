@@ -26,8 +26,6 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
     private final EnvironmentQueryRepository environmentQueryRepository;
     private final EnvironmentPolicyFacade environmentPolicyFacade;
     private final OutboxWriter outboxWriter;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
 
     @Override
     @Transactional
@@ -42,7 +40,7 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
 
         environmentCommandRepository.update(updateResult);
 
-        var event = createEnvironmentStatusChangedEvent(updateResult, actorProvider.current(), correlationProvider.current());
+        var event = createEnvironmentStatusChangedEvent(updateResult, command.actor(), command.correlationId());
         outboxWriter.write(event, CONFIGURATION.topic());
         log.info("Environment status changed: environmentId={}, oldStatus={}, newStatus={}", environment.id().uuid(),
                 environment.status(), updateResult.environment().status());

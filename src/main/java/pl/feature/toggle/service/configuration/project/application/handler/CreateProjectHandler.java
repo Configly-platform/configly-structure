@@ -22,11 +22,8 @@ import static pl.feature.toggle.service.contracts.topic.KafkaTopic.CONFIGURATION
 class CreateProjectHandler implements CreateProjectUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
-    private final ProjectQueryRepository projectQueryRepository;
     private final ProjectPolicyFacade projectPolicyFacade;
     private final OutboxWriter outboxWriter;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
 
     @Override
     @Transactional
@@ -36,7 +33,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
 
         projectCommandRepository.save(project);
 
-        var event = createProjectCreatedEvent(project, actorProvider.current(), correlationProvider.current());
+        var event = createProjectCreatedEvent(project, command.actor(), command.correlationId());
         outboxWriter.write(event, CONFIGURATION.topic());
         log.info("Project created: projectId={}", project.id().uuid());
 

@@ -3,14 +3,19 @@ package pl.feature.toggle.service.configuration.project.application.port.in.comm
 import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectName;
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 public record CreateProjectCommand(
         ProjectName name,
-        ProjectDescription description
+        ProjectDescription description,
+        Actor actor,
+        CorrelationId correlationId
 ) {
 
-    public static CreateProjectCommand from(ProjectSnapshotDto dto) {
-        return new CreateProjectCommand(ProjectName.create(dto.name()), ProjectDescription.create(dto.description()));
+    public static CreateProjectCommand from(ProjectSnapshotDto dto, Actor actor, CorrelationId correlationId) {
+        return new CreateProjectCommand(ProjectName.create(dto.name()), ProjectDescription.create(dto.description()),
+                actor, correlationId);
     }
 
 }

@@ -21,7 +21,7 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = ProjectHandlerFacade.updateProjectUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub,
-                projectPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                projectPolicyFacade, outboxWriter);
     }
 
     @Test

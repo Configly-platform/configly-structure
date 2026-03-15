@@ -4,17 +4,22 @@ import pl.feature.toggle.service.configuration.environment.infrastructure.in.res
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 import java.util.UUID;
 
 public record UpdateEnvironmentCommand(
         EnvironmentId environmentId,
         ProjectId projectId,
-        EnvironmentName name
+        EnvironmentName name,
+        Actor actor,
+        CorrelationId correlationId
 ) {
 
-    public static UpdateEnvironmentCommand of(UUID projectId, UUID environmentId, UpdateEnvironmentDto dto) {
-        return new UpdateEnvironmentCommand(EnvironmentId.create(environmentId), ProjectId.create(projectId), EnvironmentName.create(dto.name()));
+    public static UpdateEnvironmentCommand of(UUID projectId, UUID environmentId, UpdateEnvironmentDto dto, Actor actor, CorrelationId correlationId) {
+        return new UpdateEnvironmentCommand(EnvironmentId.create(environmentId), ProjectId.create(projectId), EnvironmentName.create(dto.name()),
+                actor, correlationId);
     }
 
 }

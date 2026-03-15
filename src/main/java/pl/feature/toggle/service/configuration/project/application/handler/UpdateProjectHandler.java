@@ -21,8 +21,6 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
     private final ProjectCommandRepository projectCommandRepository;
     private final ProjectQueryRepository projectQueryRepository;
     private final ProjectPolicyFacade projectPolicyFacade;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
     private final OutboxWriter outboxWriter;
 
     @Override
@@ -40,7 +38,7 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
 
         projectCommandRepository.update(updateResult);
 
-        var event = createProjectUpdatedEvent(updateResult, actorProvider.current(), correlationProvider.current());
+        var event = createProjectUpdatedEvent(updateResult, command.actor(), command.correlationId());
         outboxWriter.write(event, CONFIGURATION.topic());
 
         log.info("Project updated: projectId={}, newName={}, newDescription={}",

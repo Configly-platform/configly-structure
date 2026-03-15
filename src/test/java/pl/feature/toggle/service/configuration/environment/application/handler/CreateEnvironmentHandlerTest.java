@@ -23,7 +23,7 @@ class CreateEnvironmentHandlerTest extends AbstractUnitTest {
     @BeforeEach
     void setUp() {
         sut = EnvironmentHandlerFacade.createEnvironmentUseCase(environmentCommandRepositorySpy, environmentPolicyFacade,
-                outboxWriter, actorProvider, correlationProvider);
+                outboxWriter);
     }
 
     @Test

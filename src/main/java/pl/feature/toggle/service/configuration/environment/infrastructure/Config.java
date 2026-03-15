@@ -22,12 +22,10 @@ class Config {
     CreateEnvironmentUseCase createEnvironmentUseCase(
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return EnvironmentHandlerFacade.createEnvironmentUseCase(environmentCommandRepository, environmentPolicyFacade,
-                outboxWriter, actorProvider, correlationProvider);
+                outboxWriter);
     }
 
     @Bean
@@ -35,12 +33,10 @@ class Config {
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentQueryRepository environmentQueryRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return EnvironmentHandlerFacade.updateEnvironmentUseCase(environmentCommandRepository,
-                environmentQueryRepository, environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentQueryRepository, environmentPolicyFacade, outboxWriter);
     }
 
     @Bean
@@ -48,12 +44,10 @@ class Config {
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentQueryRepository environmentQueryRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return EnvironmentHandlerFacade.changeEnvironmentTypeUseCase(environmentCommandRepository, environmentQueryRepository,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 
     @Bean
@@ -61,11 +55,9 @@ class Config {
             EnvironmentCommandRepository environmentCommandRepository,
             EnvironmentQueryRepository environmentQueryRepository,
             EnvironmentPolicyFacade environmentPolicyFacade,
-            OutboxWriter outboxWriter,
-            ActorProvider actorProvider,
-            CorrelationProvider correlationProvider
+            OutboxWriter outboxWriter
     ) {
         return EnvironmentHandlerFacade.changeEnvironmentStatusUseCase(environmentCommandRepository, environmentQueryRepository,
-                environmentPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+                environmentPolicyFacade, outboxWriter);
     }
 }

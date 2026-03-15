@@ -10,6 +10,8 @@ import pl.feature.toggle.service.configuration.project.application.port.in.comma
 import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import pl.feature.toggle.service.model.security.actor.ActorProvider;
+import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 
 import java.util.UUID;
 
@@ -21,22 +23,24 @@ final class ProjectController {
     private final CreateProjectUseCase createProjectUseCase;
     private final UpdateProjectUseCase updateProjectUseCase;
     private final ChangeProjectStatusUseCase changeProjectStatusUseCase;
+    private final ActorProvider actorProvider;
+    private final CorrelationProvider correlationProvider;
 
     @PostMapping
     UUID createProject(@RequestBody @Valid ProjectSnapshotDto dto) {
-        var command = CreateProjectCommand.from(dto);
+        var command = CreateProjectCommand.from(dto, actorProvider.current(), correlationProvider.current());
         return createProjectUseCase.handle(command).uuid();
     }
 
     @PutMapping("/{projectId}")
     void updateProject(@PathVariable String projectId, @RequestBody @Valid ProjectSnapshotDto dto) {
-        var command = UpdateProjectCommand.from(projectId, dto);
+        var command = UpdateProjectCommand.from(projectId, dto, actorProvider.current(), correlationProvider.current());
         updateProjectUseCase.handle(command);
     }
 
     @PatchMapping("/{projectId}/status")
-    void changeStatus(@PathVariable String projectId, @RequestBody @Valid String status){
-        var command = ChangeProjectStatusCommand.of(projectId, status);
+    void changeStatus(@PathVariable String projectId, @RequestBody @Valid String status) {
+        var command = ChangeProjectStatusCommand.of(projectId, status, actorProvider.current(), correlationProvider.current());
         changeProjectStatusUseCase.handle(command);
     }
 

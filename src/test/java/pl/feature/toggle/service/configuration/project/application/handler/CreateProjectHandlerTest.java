@@ -18,8 +18,8 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
 
     @BeforeEach
     void setUp() {
-        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub,
-                projectPolicyFacade, outboxWriter, actorProvider, correlationProvider);
+        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositorySpy,
+                projectPolicyFacade, outboxWriter);
     }
 
     @Test

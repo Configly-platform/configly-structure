@@ -32,8 +32,6 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
 
     private final ProjectCommandRepository projectCommandRepository;
     private final ProjectQueryRepository projectQueryRepository;
-    private final ActorProvider actorProvider;
-    private final CorrelationProvider correlationProvider;
     private final OutboxWriter outboxWriter;
     private final EnvironmentStatusCascadePort environmentStatusCascadePort;
 
@@ -50,11 +48,8 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
         projectCommandRepository.update(updateResult);
         var cascadedChanges = changeEnvironmentsStatus(updateResult.project());
 
-        var actor = actorProvider.current();
-        var correlation = correlationProvider.current();
-
-        sendProjectStatusChangedEvent(updateResult, actor, correlation);
-        sendEnvironmentStatusChangedEvent(cascadedChanges, actor, correlation);
+        sendProjectStatusChangedEvent(updateResult, command.actor(), command.correlationId());
+        sendEnvironmentStatusChangedEvent(cascadedChanges, command.actor(), command.correlationId());
         log.info("Project status changed: projectId={}, oldStatus={}, newStatus={}", project.id().uuid(),
                 project.status(), updateResult.project().status());
     }

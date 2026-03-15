@@ -4,17 +4,23 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.c
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.environment.EnvironmentName;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.model.security.actor.Actor;
+import pl.feature.toggle.service.model.security.correlation.CorrelationId;
 
 public class FakeUpdateEnvironmentCommandBuilder {
 
     private EnvironmentId environmentId;
     private ProjectId projectId;
     private EnvironmentName name;
+    private Actor actor;
+    private CorrelationId correlationId;
 
     private FakeUpdateEnvironmentCommandBuilder() {
         this.environmentId = EnvironmentId.create();
         this.projectId = ProjectId.create();
         this.name = EnvironmentName.create("TEST");
+        this.actor = Actor.system();
+        this.correlationId = CorrelationId.generate();
     }
 
     public static FakeUpdateEnvironmentCommandBuilder fakeUpdateEnvironmentCommandBuilder() {
@@ -23,6 +29,16 @@ public class FakeUpdateEnvironmentCommandBuilder {
 
     public FakeUpdateEnvironmentCommandBuilder withEnvironmentId(EnvironmentId environmentId) {
         this.environmentId = environmentId;
+        return this;
+    }
+
+    public FakeUpdateEnvironmentCommandBuilder withActor(Actor actor) {
+        this.actor = actor;
+        return this;
+    }
+
+    public FakeUpdateEnvironmentCommandBuilder withCorrelationId(String correlationId) {
+        this.correlationId = CorrelationId.of(correlationId);
         return this;
     }
 
@@ -37,6 +53,6 @@ public class FakeUpdateEnvironmentCommandBuilder {
     }
 
     public UpdateEnvironmentCommand build() {
-        return new UpdateEnvironmentCommand(environmentId, projectId, name);
+        return new UpdateEnvironmentCommand(environmentId, projectId, name, actor, correlationId);
     }
 }
