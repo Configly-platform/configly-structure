@@ -27,7 +27,7 @@ class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
     @Override
     @Transactional
     public void handle(ChangeEnvironmentTypeCommand command) {
-        var environment = environmentQueryRepository.getOrThrow(command.environmentId(), command.projectId());
+        var environment = environmentQueryRepository.getOrThrow(command.projectId(), command.environmentId());
         environmentPolicyFacade.ensureChangeTypeAllowed(environment);
 
         var updateResult = environment.changeType(command.type());

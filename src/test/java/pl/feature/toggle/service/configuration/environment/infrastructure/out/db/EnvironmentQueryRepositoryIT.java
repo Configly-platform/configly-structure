@@ -47,7 +47,7 @@ class EnvironmentQueryRepositoryIT extends AbstractITTest {
         commandRepository.save(environment);
 
         // when
-        var actual = sut.getOrThrow(environment.id(), environment.projectId());
+        var actual = sut.getOrThrow(environment.projectId(), environment.id());
 
         // then
         assertThat(actual).isEqualTo(environment);
@@ -56,7 +56,7 @@ class EnvironmentQueryRepositoryIT extends AbstractITTest {
     @Test
     void should_throw_exception_when_environment_does_not_exist() {
         // given && when
-        var exception = catchException(() -> sut.getOrThrow(environment.id(), projectId));
+        var exception = catchException(() -> sut.getOrThrow(projectId, environment.id()));
 
         // then
         assertThat(exception).isInstanceOf(EnvironmentNotFoundException.class);
@@ -68,7 +68,7 @@ class EnvironmentQueryRepositoryIT extends AbstractITTest {
         commandRepository.save(environment);
 
         // when
-        var exception = catchException(() -> sut.getOrThrow(environment.id(), ProjectId.create()));
+        var exception = catchException(() -> sut.getOrThrow(ProjectId.create(), environment.id()));
 
         // then
         assertThat(exception).isInstanceOf(EnvironmentNotFoundException.class);

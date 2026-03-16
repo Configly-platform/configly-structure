@@ -17,7 +17,7 @@ final class EnvironmentQueryJooqRepository implements EnvironmentQueryRepository
     private final DSLContext dsl;
 
     @Override
-    public Environment getOrThrow(EnvironmentId environmentId, ProjectId projectId) {
+    public Environment getOrThrow(ProjectId projectId, EnvironmentId environmentId) {
         return dsl.selectFrom(ENVIRONMENTS)
                 .where(ENVIRONMENTS.ID.eq(environmentId.uuid()))
                 .and(ENVIRONMENTS.PROJECT_ID.eq(projectId.uuid()))

@@ -27,7 +27,7 @@ class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
     @Override
     @Transactional
     public void handle(UpdateEnvironmentCommand command) {
-        var environment = environmentQueryRepository.getOrThrow(command.environmentId(), command.projectId());
+        var environment = environmentQueryRepository.getOrThrow(command.projectId(), command.environmentId());
         environmentPolicyFacade.ensureUpdateAllowed(environment, command.name());
 
         var updateResult = environment.update(command.name());

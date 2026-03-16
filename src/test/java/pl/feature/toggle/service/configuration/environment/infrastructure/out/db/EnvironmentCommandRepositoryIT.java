@@ -53,7 +53,7 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         sut.save(environment);
 
         // then
-        var result = queryRepository.getOrThrow(environment.id(), environment.projectId());
+        var result = queryRepository.getOrThrow(environment.projectId(), environment.id());
         assertThat(result.name()).isEqualTo(environment.name());
         assertThat(result.projectId()).isEqualTo(environment.projectId());
         assertThat(result.id()).isEqualTo(environment.id());
@@ -71,7 +71,7 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
 
         // then
         var expected = updated.environment();
-        var actual = queryRepository.getOrThrow(expected.id(), expected.projectId());
+        var actual = queryRepository.getOrThrow(expected.projectId(), expected.id());
         assertThat(actual.name()).isEqualTo(expected.name());
         assertThat(actual.type()).isEqualTo(expected.type());
         assertThat(actual.status()).isEqualTo(expected.status());
@@ -116,9 +116,9 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         sut.archiveAllByProjectId(projectId_1);
 
         // then
-        var firstActual = queryRepository.getOrThrow(firstEnvironment.id(), firstEnvironment.projectId());
-        var secondActual = queryRepository.getOrThrow(secondEnvironment.id(), secondEnvironment.projectId());
-        var thirdActual = queryRepository.getOrThrow(thirdEnvironment.id(), thirdEnvironment.projectId());
+        var firstActual = queryRepository.getOrThrow(firstEnvironment.projectId(), firstEnvironment.id());
+        var secondActual = queryRepository.getOrThrow(secondEnvironment.projectId(), secondEnvironment.id());
+        var thirdActual = queryRepository.getOrThrow(thirdEnvironment.projectId(), thirdEnvironment.id());
 
         assertThat(firstActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
         assertThat(secondActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
@@ -137,7 +137,7 @@ class EnvironmentCommandRepositoryIT extends AbstractITTest {
         assertThatCode(() -> sut.archiveAllByProjectId(projectId_1)).doesNotThrowAnyException();
 
         // then
-        var actual = queryRepository.getOrThrow(environment.id(), environment.projectId());
+        var actual = queryRepository.getOrThrow(environment.projectId(), environment.id());
         assertThat(actual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
     }
 

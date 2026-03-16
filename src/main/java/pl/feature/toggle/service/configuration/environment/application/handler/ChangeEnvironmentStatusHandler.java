@@ -30,7 +30,7 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
     @Override
     @Transactional
     public void handle(ChangeEnvironmentStatusCommand command) {
-        var environment = environmentQueryRepository.getOrThrow(command.environmentId(), command.projectId());
+        var environment = environmentQueryRepository.getOrThrow(command.projectId(), command.environmentId());
         environmentPolicyFacade.ensureChangeStatusAllowed(environment);
 
         var updateResult = changeStatus(environment, command.newEnvironmentStatus());

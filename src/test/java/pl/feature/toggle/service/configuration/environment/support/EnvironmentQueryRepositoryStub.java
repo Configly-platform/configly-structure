@@ -12,7 +12,7 @@ import static pl.feature.toggle.service.configuration.StubSupport.forMethod;
 public class EnvironmentQueryRepositoryStub implements EnvironmentQueryRepository {
 
     private final StubSupport<Boolean> existByProjectIdAndName = forMethod("existsByProjectIdAndName(ProjectId, EnvironmentName)");
-    private final StubSupport<Environment> getOrThrow = forMethod("getOrThrow(EnvironmentId, ProjectId)");
+    private final StubSupport<Environment> getOrThrow = forMethod("getOrThrow(ProjectId, EnvironmentId)");
 
     public void existsByProjectIdAndNameReturns(boolean value) {
         existByProjectIdAndName.willReturn(value);
@@ -32,7 +32,7 @@ public class EnvironmentQueryRepositoryStub implements EnvironmentQueryRepositor
     }
 
     @Override
-    public Environment getOrThrow(EnvironmentId environmentId, ProjectId projectId) {
+    public Environment getOrThrow(ProjectId projectId, EnvironmentId environmentId) {
         return getOrThrow.get();
     }
 
