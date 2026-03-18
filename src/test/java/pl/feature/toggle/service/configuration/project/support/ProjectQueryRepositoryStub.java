@@ -4,7 +4,6 @@ import pl.feature.toggle.service.configuration.StubSupport;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.model.project.ProjectId;
-import pl.feature.toggle.service.model.project.ProjectName;
 import pl.feature.toggle.service.model.project.ProjectStatus;
 
 import static pl.feature.toggle.service.configuration.StubSupport.forMethod;
@@ -12,16 +11,11 @@ import static pl.feature.toggle.service.configuration.StubSupport.forMethod;
 public class ProjectQueryRepositoryStub implements ProjectQueryRepository {
 
     private final StubSupport<Boolean> exists = forMethod("exists(ProjectId)");
-    private final StubSupport<Boolean> existsByName = forMethod("existsByName(ProjectName)");
     private final StubSupport<Project> getOrThrow = forMethod("getOrThrow(ProjectId)");
     private final StubSupport<ProjectStatus> fetchStatus = forMethod("fetchStatus(ProjectId)");
 
     public void existsReturns(boolean value) {
         exists.willReturn(value);
-    }
-
-    public void existsByNameReturns(boolean value) {
-        existsByName.willReturn(value);
     }
 
     public void getOrThrowReturns(Project project) {
@@ -42,7 +36,6 @@ public class ProjectQueryRepositoryStub implements ProjectQueryRepository {
 
     public void reset() {
         exists.reset();
-        existsByName.reset();
         getOrThrow.reset();
         fetchStatus.reset();
     }
@@ -50,11 +43,6 @@ public class ProjectQueryRepositoryStub implements ProjectQueryRepository {
     @Override
     public boolean exists(ProjectId projectId) {
         return exists.get();
-    }
-
-    @Override
-    public boolean existsByName(ProjectName name) {
-        return existsByName.get();
     }
 
     @Override

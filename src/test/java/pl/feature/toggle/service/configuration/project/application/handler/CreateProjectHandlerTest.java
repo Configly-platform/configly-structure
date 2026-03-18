@@ -18,8 +18,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
 
     @BeforeEach
     void setUp() {
-        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositorySpy,
-                projectPolicyFacade, outboxWriter);
+        sut = ProjectHandlerFacade.createProjectUseCase(projectCommandRepositorySpy, outboxWriter);
     }
 
     @Test
@@ -29,7 +28,6 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
                 .withName("TEST")
                 .withDescription("TEST")
                 .build();
-        projectQueryRepositoryStub.existsByNameReturns(false);
 
         // when
         var result = sut.handle(command);
@@ -43,24 +41,6 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
         assertThat(saved.name()).isEqualTo(command.name());
         assertThat(saved.description()).isEqualTo(command.description());
         assertContainsEventOfType(CONFIGURATION.topic(), ProjectCreated.class);
-    }
-
-    @Test
-    void should_not_create_project_when_project_with_name_already_exists() {
-        // given
-        projectQueryRepositoryStub.existsByNameReturns(true);
-
-        var command = createProjectCommandBuilder()
-                .withName("TEST")
-                .withDescription("TEST")
-                .build();
-
-        // when
-        var exception = catchException(() -> sut.handle(command));
-
-        // then
-        assertThat(exception).isInstanceOf(ProjectAlreadyExistsException.class);
-        assertNoEventsHasBeenPublished();
     }
 
 }

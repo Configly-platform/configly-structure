@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import pl.feature.toggle.service.configuration.AbstractUnitTest;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.domain.exception.CannotOperateOnArchivedProjectException;
-import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
 import pl.feature.toggle.service.contracts.event.project.ProjectUpdated;
 
@@ -20,8 +19,7 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
 
     @BeforeEach
     void setUp() {
-        sut = ProjectHandlerFacade.updateProjectUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub,
-                projectPolicyFacade, outboxWriter);
+        sut = ProjectHandlerFacade.updateProjectUseCase(projectCommandRepositorySpy, projectQueryRepositoryStub, outboxWriter);
     }
 
     @Test
@@ -33,7 +31,6 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
                 .withDescription("UpdatedDescription")
                 .build();
         projectQueryRepositoryStub.getOrThrowReturns(ACTIVE_PROJECT);
-        projectQueryRepositoryStub.existsByNameReturns(false);
 
         // when
         sut.handle(command);
@@ -71,25 +68,6 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
         assertNoEventsHasBeenPublished();
     }
 
-    @Test
-    void should_throw_exception_when_project_name_is_not_unique() {
-        // given
-        projectQueryRepositoryStub.existsByNameReturns(true);
-        projectCommandRepositorySpy.expectNoCalls();
-
-        var command = fakeUpdateProjectCommandBuilder()
-                .withProjectId(PROJECT_ID)
-                .build();
-        projectQueryRepositoryStub.getOrThrowReturns(ACTIVE_PROJECT);
-
-        // when
-        var exception = catchException(() -> sut.handle(command));
-
-        // then
-        assertThat(exception).isInstanceOf(ProjectAlreadyExistsException.class);
-        assertNoEventsHasBeenPublished();
-
-    }
 
     @Test
     void should_throw_exception_when_project_is_archived() {
@@ -100,7 +78,6 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
                 .withDescription("UpdatedDescription")
                 .build();
         projectQueryRepositoryStub.getOrThrowReturns(ARCHIVED_PROJECT);
-        projectQueryRepositoryStub.existsByNameReturns(false);
         projectCommandRepositorySpy.expectNoCalls();
 
         // when

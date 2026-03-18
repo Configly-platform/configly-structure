@@ -74,25 +74,4 @@ class EnvironmentQueryRepositoryIT extends AbstractITTest {
         assertThat(exception).isInstanceOf(EnvironmentNotFoundException.class);
     }
 
-    @Test
-    void should_return_true_when_exist_by_project_id_and_name() {
-        // given
-        commandRepository.save(environment);
-
-        // when
-        var result = sut.existsByProjectIdAndName(projectId, environment.name());
-
-        // then
-        assertThat(result).isTrue();
-    }
-
-    @Test
-    void should_return_false_when_not_exist_by_project_id_and_name() {
-        // given && when
-        var result = sut.existsByProjectIdAndName(projectId, environment.name());
-
-        // then
-        assertThat(result).isFalse();
-    }
-
 }

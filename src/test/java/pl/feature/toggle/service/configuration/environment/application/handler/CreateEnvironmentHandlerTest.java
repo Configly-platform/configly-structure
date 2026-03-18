@@ -36,7 +36,6 @@ class CreateEnvironmentHandlerTest extends AbstractUnitTest {
                 .build();
         projectQueryRepositoryStub.existsReturns(true);
         projectQueryRepositoryStub.fetchStatusReturns(ProjectStatus.ACTIVE);
-        environmentQueryRepositoryStub.existsByProjectIdAndNameReturns(false);
 
         // when
         sut.handle(command);
@@ -85,25 +84,6 @@ class CreateEnvironmentHandlerTest extends AbstractUnitTest {
         // then
         assertThat(exception).isInstanceOf(CannotOperateOnEnvironmentForArchivedProjectException.class);
         assertNoEventsHasBeenPublished();
-    }
-
-    @Test
-    void should_throw_exception_when_environment_already_exists_in_project() {
-        // given
-        var command = createEnvironmentCommandBuilder()
-                .withProjectId(PROJECT_ID)
-                .withName("TEST")
-                .build();
-        environmentCommandRepositorySpy.expectNoCalls();
-        environmentQueryRepositoryStub.existsByProjectIdAndNameReturns(true);
-        projectQueryRepositoryStub.existsReturns(true);
-        projectQueryRepositoryStub.fetchStatusReturns(ProjectStatus.ACTIVE);
-
-        // when
-        var exception = catchException(() -> sut.handle(command));
-
-        // then
-        assertThat(exception).isInstanceOf(EnvironmentAlreadyExistsException.class);
     }
 
 }

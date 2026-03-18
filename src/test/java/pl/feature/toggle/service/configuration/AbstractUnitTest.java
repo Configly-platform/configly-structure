@@ -8,7 +8,6 @@ import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.configuration.environment.support.EnvironmentCommandRepositorySpy;
 import pl.feature.toggle.service.configuration.environment.support.EnvironmentQueryRepositoryStub;
-import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.support.EnvironmentStatusCascadeSpy;
 import pl.feature.toggle.service.configuration.project.support.ProjectCommandRepositorySpy;
@@ -56,7 +55,6 @@ public abstract class AbstractUnitTest {
     protected FakeOutboxWriter outboxWriter;
     protected FakeActorProvider actorProvider;
     protected FakeCorrelationProvider correlationProvider;
-    protected ProjectPolicyFacade projectPolicyFacade;
     protected EnvironmentPolicyFacade environmentPolicyFacade;
     protected EnvironmentStatusCascadeSpy environmentStatusCascadeSpy;
 
@@ -69,7 +67,6 @@ public abstract class AbstractUnitTest {
         environmentQueryRepositoryStub = new EnvironmentQueryRepositoryStub();
         actorProvider = new FakeActorProvider();
         correlationProvider = new FakeCorrelationProvider();
-        projectPolicyFacade = ProjectPolicyFacade.create(projectQueryRepositoryStub);
         environmentPolicyFacade = EnvironmentPolicyFacade.create(environmentQueryRepositoryStub, projectQueryRepositoryStub);
         environmentStatusCascadeSpy = new EnvironmentStatusCascadeSpy();
     }

@@ -26,8 +26,4 @@ final class EnvironmentQueryJooqRepository implements EnvironmentQueryRepository
                 .orElseThrow(() -> new EnvironmentNotFoundException(environmentId, projectId));
     }
 
-    @Override
-    public boolean existsByProjectIdAndName(ProjectId projectId, EnvironmentName environmentName) {
-        return dsl.fetchExists(ENVIRONMENTS, ENVIRONMENTS.PROJECT_ID.eq(projectId.uuid()), ENVIRONMENTS.NAME.eq(environmentName.value()));
-    }
 }

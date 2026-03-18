@@ -60,31 +60,6 @@ class ProjectQueryRepositoryIT extends AbstractITTest {
         assertThat(exists).isFalse();
     }
 
-    @Test
-    void should_return_true_when_project_exists_by_name() {
-        // given
-        var project = createProject();
-
-        // when
-        var exists = sut.existsByName(project.name());
-
-        // then
-        assertThat(exists).isTrue();
-    }
-
-    @Test
-    void should_return_false_when_project_does_not_exist_by_name() {
-        // given
-        var projectName = ProjectName.create("TEST");
-
-        // when
-        var exists = sut.existsByName(projectName);
-
-        // then
-        assertThat(exists).isFalse();
-    }
-
-
     private Project createProject() {
         var project = Project.create(ProjectName.create(UUID.randomUUID().toString()),
                 ProjectDescription.create(UUID.randomUUID().toString()));

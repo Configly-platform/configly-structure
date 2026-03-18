@@ -3,7 +3,6 @@ package pl.feature.toggle.service.configuration.project.infrastructure;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.feature.toggle.service.configuration.project.application.handler.ProjectHandlerFacade;
-import pl.feature.toggle.service.configuration.project.application.policy.ProjectPolicyFacade;
 import pl.feature.toggle.service.configuration.project.application.port.in.ChangeProjectStatusUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.CreateProjectUseCase;
 import pl.feature.toggle.service.configuration.project.application.port.in.UpdateProjectUseCase;
@@ -18,22 +17,19 @@ class Config {
     @Bean
     CreateProjectUseCase createProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
-            ProjectPolicyFacade projectPolicyFacade,
             OutboxWriter outboxWriter
     ) {
-        return ProjectHandlerFacade.createProjectUseCase(projectCommandRepository, projectPolicyFacade,
-                outboxWriter);
+        return ProjectHandlerFacade.createProjectUseCase(projectCommandRepository, outboxWriter);
     }
 
     @Bean
     UpdateProjectUseCase updateProjectUseCase(
             ProjectCommandRepository projectCommandRepository,
             ProjectQueryRepository projectQueryRepository,
-            ProjectPolicyFacade projectPolicyFacade,
             OutboxWriter outboxWriter
     ) {
         return ProjectHandlerFacade.updateProjectUseCase(projectCommandRepository, projectQueryRepository,
-                projectPolicyFacade, outboxWriter);
+                outboxWriter);
     }
 
     @Bean

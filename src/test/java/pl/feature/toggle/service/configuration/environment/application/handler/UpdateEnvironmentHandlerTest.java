@@ -34,7 +34,6 @@ class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
                 .withName(EnvironmentName.create("UpdatedName"))
                 .build();
         environmentQueryRepositoryStub.getOrThrowReturns(ACTIVE_ENVIRONMENT);
-        environmentQueryRepositoryStub.existsByProjectIdAndNameReturns(false);
         projectQueryRepositoryStub.fetchStatusReturns(ProjectStatus.ACTIVE);
 
         // when
@@ -67,29 +66,10 @@ class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
     }
 
     @Test
-    void should_throw_exception_when_environment_already_exist() {
-        // given
-        var command = fakeUpdateEnvironmentCommandBuilder()
-                .build();
-        environmentQueryRepositoryStub.getOrThrowReturns(ACTIVE_ENVIRONMENT);
-        environmentQueryRepositoryStub.existsByProjectIdAndNameReturns(true);
-        environmentCommandRepositorySpy.expectNoCalls();
-        projectQueryRepositoryStub.fetchStatusReturns(ProjectStatus.ACTIVE);
-
-        // when
-        var exception = catchException(() -> sut.handle(command));
-
-        // then
-        assertThat(exception).isInstanceOf(EnvironmentAlreadyExistsException.class);
-        assertNoEventsHasBeenPublished();
-    }
-
-    @Test
     void should_throw_exception_when_environment_is_archived() {
         // given
         var command = fakeUpdateEnvironmentCommandBuilder()
                 .build();
-        environmentQueryRepositoryStub.existsByProjectIdAndNameReturns(false);
         environmentQueryRepositoryStub.getOrThrowReturns(ARCHIVED_ENVIRONMENT);
         projectQueryRepositoryStub.fetchStatusReturns(ProjectStatus.ACTIVE);
 
@@ -106,7 +86,6 @@ class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
         // given
         var command = fakeUpdateEnvironmentCommandBuilder()
                 .build();
-        environmentQueryRepositoryStub.existsByProjectIdAndNameReturns(false);
         environmentQueryRepositoryStub.getOrThrowReturns(ACTIVE_ENVIRONMENT);
         projectQueryRepositoryStub.fetchStatusReturns(ProjectStatus.ARCHIVED);
         environmentCommandRepositorySpy.expectNoCalls();

@@ -9,7 +9,6 @@ import pl.feature.toggle.service.model.environment.EnvironmentName;
 @AllArgsConstructor
 public class EnvironmentPolicyFacade {
 
-    private final UniqueEnvironmentNamePolicy uniqueEnvironmentNamePolicy;
     private final ProjectMustNotBeArchivedPolicy projectMustNotBeArchivedPolicy;
     private final ProjectMustExistPolicy projectMustExistPolicy;
 
@@ -17,16 +16,14 @@ public class EnvironmentPolicyFacade {
             EnvironmentQueryRepository environmentQueryRepository,
             ProjectQueryRepository projectQueryRepository
     ) {
-        var uniqueEnvironmentNamePolicy = UniqueEnvironmentNamePolicy.create(environmentQueryRepository);
         var projectMustNotBeArchivedPolicy = ProjectMustNotBeArchivedPolicy.create(projectQueryRepository);
         var projectMustExistPolicy = ProjectMustExistPolicy.create(projectQueryRepository);
-        return new EnvironmentPolicyFacade(uniqueEnvironmentNamePolicy, projectMustNotBeArchivedPolicy, projectMustExistPolicy);
+        return new EnvironmentPolicyFacade(projectMustNotBeArchivedPolicy, projectMustExistPolicy);
     }
 
     public void ensureCreateAllowed(Environment environment) {
         projectMustExistPolicy.ensure(environment.projectId());
         projectMustNotBeArchivedPolicy.ensure(environment.projectId());
-        uniqueEnvironmentNamePolicy.ensure(environment.projectId(), environment.name());
     }
 
     public void ensureChangeStatusAllowed(Environment environment) {
@@ -37,9 +34,8 @@ public class EnvironmentPolicyFacade {
         projectMustNotBeArchivedPolicy.ensure(environment.projectId());
     }
 
-    public void ensureUpdateAllowed(Environment environment, EnvironmentName environmentName) {
+    public void ensureUpdateAllowed(Environment environment) {
         projectMustNotBeArchivedPolicy.ensure(environment.projectId());
-        uniqueEnvironmentNamePolicy.ensure(environment.projectId(), environmentName);
     }
 
 }

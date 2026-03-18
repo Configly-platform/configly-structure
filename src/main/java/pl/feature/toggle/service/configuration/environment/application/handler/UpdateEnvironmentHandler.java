@@ -8,8 +8,6 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.U
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.UpdateEnvironmentCommand;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentQueryRepository;
-import pl.feature.toggle.service.model.security.actor.ActorProvider;
-import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.environment.application.handler.EventMapper.createEnvironmentUpdatedEvent;
@@ -28,7 +26,7 @@ class UpdateEnvironmentHandler implements UpdateEnvironmentUseCase {
     @Transactional
     public void handle(UpdateEnvironmentCommand command) {
         var environment = environmentQueryRepository.getOrThrow(command.projectId(), command.environmentId());
-        environmentPolicyFacade.ensureUpdateAllowed(environment, command.name());
+        environmentPolicyFacade.ensureUpdateAllowed(environment);
 
         var updateResult = environment.update(command.name());
         if (!updateResult.wasUpdated()) {

@@ -25,11 +25,6 @@ class ProjectQueryJooqRepository implements ProjectQueryRepository {
     }
 
     @Override
-    public boolean existsByName(ProjectName name) {
-        return dslContext.fetchExists(PROJECTS, PROJECTS.NAME.eq(name.value()));
-    }
-
-    @Override
     public Project getOrThrow(ProjectId projectId) {
         return dslContext.selectFrom(PROJECTS)
                 .where(PROJECTS.ID.eq(projectId.uuid()))

@@ -9,8 +9,6 @@ public interface ProjectQueryRepository {
 
     boolean exists(ProjectId projectId);
 
-    boolean existsByName(ProjectName name);
-
     Project getOrThrow(ProjectId projectId);
 
     ProjectStatus fetchStatus(ProjectId projectId);
