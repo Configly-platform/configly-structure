@@ -18,6 +18,7 @@
         <outbox.version>1.0.0-SNAPSHOT</outbox.version>
         <contracts.version>1.0.0-SNAPSHOT</contracts.version>
         <model.version>1.0.0-SNAPSHOT</model.version>
+        <shared-web.version>1.0.0-SNAPSHOT</shared-web.version>
     </properties>
     <dependencies>
         <dependency>
@@ -52,6 +53,11 @@
             <groupId>pl.feature.toggle.service</groupId>
             <artifactId>feature-toggle-outbox</artifactId>
             <version>${outbox.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.feature.toggle.service</groupId>
+            <artifactId>feature-toggle-shared-web</artifactId>
+            <version>${shared-web.version}</version>
         </dependency>
         <dependency>
             <groupId>pl.feature.toggle.service</groupId>

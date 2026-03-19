@@ -4,8 +4,8 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.c
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentType;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
 import pl.feature.toggle.service.model.project.ProjectId;
-import pl.feature.toggle.service.model.security.actor.Actor;
-import pl.feature.toggle.service.model.security.correlation.CorrelationId;
+import pl.feature.toggle.service.web.actor.Actor;
+import pl.feature.toggle.service.web.correlation.CorrelationId;
 
 public class FakeChangeEnvironmentTypeCommandBuilder {
     private ProjectId projectId;

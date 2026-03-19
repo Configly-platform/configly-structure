@@ -12,13 +12,12 @@ import pl.feature.toggle.service.configuration.project.application.port.out.envi
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 import pl.feature.toggle.service.model.project.ProjectStatus;
-import pl.feature.toggle.service.model.security.actor.Actor;
-import pl.feature.toggle.service.model.security.actor.ActorProvider;
-import pl.feature.toggle.service.model.security.correlation.CorrelationId;
-import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
+import pl.feature.toggle.service.web.actor.Actor;
+import pl.feature.toggle.service.web.actor.ActorProvider;
+import pl.feature.toggle.service.web.correlation.CorrelationId;
+import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
-import java.util.Collections;
 import java.util.List;
 
 import static java.util.Collections.emptyList;

@@ -10,8 +10,8 @@ import pl.feature.toggle.service.configuration.project.application.port.in.comma
 import pl.feature.toggle.service.configuration.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import pl.feature.toggle.service.model.security.actor.ActorProvider;
-import pl.feature.toggle.service.model.security.correlation.CorrelationProvider;
+import pl.feature.toggle.service.web.actor.ActorProvider;
+import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 
 import java.util.UUID;
 

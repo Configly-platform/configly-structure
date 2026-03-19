@@ -14,8 +14,8 @@ import pl.feature.toggle.service.contracts.shared.Metadata;
 import pl.feature.toggle.service.model.project.ProjectDescription;
 import pl.feature.toggle.service.model.project.ProjectName;
 import pl.feature.toggle.service.model.project.ProjectStatus;
-import pl.feature.toggle.service.model.security.actor.Actor;
-import pl.feature.toggle.service.model.security.correlation.CorrelationId;
+import pl.feature.toggle.service.web.actor.Actor;
+import pl.feature.toggle.service.web.correlation.CorrelationId;
 
 import java.time.LocalDateTime;
 
