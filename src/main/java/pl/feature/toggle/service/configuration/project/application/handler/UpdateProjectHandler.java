@@ -6,6 +6,7 @@ import pl.feature.toggle.service.configuration.project.application.port.in.Updat
 import pl.feature.toggle.service.configuration.project.application.port.in.command.UpdateProjectCommand;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectQueryRepository;
+import pl.feature.toggle.service.outbox.api.OutboxEvent;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.project.application.handler.EventMapper.createProjectUpdatedEvent;
@@ -34,7 +35,7 @@ class UpdateProjectHandler implements UpdateProjectUseCase {
         projectCommandRepository.update(updateResult);
 
         var event = createProjectUpdatedEvent(updateResult, command.actor(), command.correlationId());
-        outboxWriter.write(event, CONFIGURATION.topic());
+        outboxWriter.write(OutboxEvent.of(project.id().idAsString(), event, CONFIGURATION));
 
         log.info("Project updated: projectId={}, newName={}, newDescription={}",
                 project.id().uuid(), command.name().value(), command.description().value());

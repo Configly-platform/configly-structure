@@ -43,7 +43,7 @@ class ChangeEnvironmentStatusHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNull();
         assertThat(updated).isNotNull();
         assertThat(updated.status()).isEqualTo(command.newEnvironmentStatus());
-        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), EnvironmentStatusChanged.class);
     }
 
     @Test
@@ -64,7 +64,7 @@ class ChangeEnvironmentStatusHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNull();
         assertThat(updated).isNotNull();
         assertThat(updated.status()).isEqualTo(command.newEnvironmentStatus());
-        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), EnvironmentStatusChanged.class);
     }
 
     @Test

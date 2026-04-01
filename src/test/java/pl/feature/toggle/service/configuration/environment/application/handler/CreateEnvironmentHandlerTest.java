@@ -46,7 +46,7 @@ class CreateEnvironmentHandlerTest extends AbstractUnitTest {
         assertThat(saved.projectId()).isEqualTo(command.projectId());
         assertThat(saved.name()).isEqualTo(command.name());
         assertThat(saved.type()).isEqualTo(command.type());
-        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentCreated.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), EnvironmentCreated.class);
     }
 
     @Test

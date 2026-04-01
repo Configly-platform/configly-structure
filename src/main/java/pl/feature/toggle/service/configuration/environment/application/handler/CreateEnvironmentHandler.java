@@ -9,6 +9,7 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.c
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.model.environment.EnvironmentId;
+import pl.feature.toggle.service.outbox.api.OutboxEvent;
 import pl.feature.toggle.service.web.actor.ActorProvider;
 import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
@@ -34,7 +35,7 @@ class CreateEnvironmentHandler implements CreateEnvironmentUseCase {
         var environmentId = environmentCommandRepository.save(environment);
 
         var event = createEnvironmentCreatedEvent(environment, command.actor(), command.correlationId());
-        outboxWriter.write(event, CONFIGURATION.topic());
+        outboxWriter.write(OutboxEvent.of(command.projectId().idAsString(), event, CONFIGURATION));
 
         log.info("Environment created: environmentId={}", environment.id().uuid());
         return environmentId;

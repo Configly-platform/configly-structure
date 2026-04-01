@@ -45,7 +45,7 @@ class UpdateEnvironmentHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNull();
         assertThat(updated).isNotNull();
         assertThat(updated.name()).isEqualTo(command.name());
-        assertContainsEventOfType(CONFIGURATION.topic(), EnvironmentUpdated.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), EnvironmentUpdated.class);
     }
 
     @Test

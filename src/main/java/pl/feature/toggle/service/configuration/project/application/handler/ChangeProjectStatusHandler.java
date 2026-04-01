@@ -12,6 +12,7 @@ import pl.feature.toggle.service.configuration.project.application.port.out.envi
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.configuration.project.domain.ProjectUpdateResult;
 import pl.feature.toggle.service.model.project.ProjectStatus;
+import pl.feature.toggle.service.outbox.api.OutboxEvent;
 import pl.feature.toggle.service.web.actor.Actor;
 import pl.feature.toggle.service.web.actor.ActorProvider;
 import pl.feature.toggle.service.web.correlation.CorrelationId;
@@ -70,13 +71,13 @@ class ChangeProjectStatusHandler implements ChangeProjectStatusUseCase {
     private void sendEnvironmentStatusChangedEvent(List<CascadedEnvironmentStatusChange> cascadedChanges, Actor actor, CorrelationId correlation) {
         cascadedChanges.forEach(change -> {
             var environmentEvent = createEnvironmentStatusChanged(change, actor, correlation);
-            outboxWriter.write(environmentEvent, CONFIGURATION.topic());
+            outboxWriter.write(OutboxEvent.of(environmentEvent.projectId().toString(), environmentEvent, CONFIGURATION));
         });
     }
 
     private void sendProjectStatusChangedEvent(ProjectUpdateResult updateResult, Actor actor, CorrelationId correlation) {
         var projectEvent = createProjectStatusChangedEvent(updateResult, actor, correlation);
-        outboxWriter.write(projectEvent, CONFIGURATION.topic());
+        outboxWriter.write(OutboxEvent.of(projectEvent.projectId().toString(), projectEvent, CONFIGURATION));
     }
 
 }

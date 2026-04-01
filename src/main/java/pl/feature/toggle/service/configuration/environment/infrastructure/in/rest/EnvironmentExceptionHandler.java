@@ -3,8 +3,8 @@ package pl.feature.toggle.service.configuration.environment.infrastructure.in.re
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.feature.toggle.service.configuration.environment.domain.exception.*;
 import pl.feature.toggle.service.web.ErrorCode;
 import pl.feature.toggle.service.web.ErrorResponse;
@@ -12,7 +12,7 @@ import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 
 import static pl.feature.toggle.service.web.ErrorCode.*;
 
-@ControllerAdvice
+@RestControllerAdvice
 @AllArgsConstructor
 class EnvironmentExceptionHandler {
 
@@ -73,7 +73,6 @@ class EnvironmentExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
     }
-
 
     private ErrorResponse createErrorResponse(ErrorCode errorCode, Exception e) {
         return ErrorResponse.from(errorCode, e, correlationProvider.current());

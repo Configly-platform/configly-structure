@@ -40,7 +40,7 @@ class CreateProjectHandlerTest extends AbstractUnitTest {
         assertThat(saved).isNotNull();
         assertThat(saved.name()).isEqualTo(command.name());
         assertThat(saved.description()).isEqualTo(command.description());
-        assertContainsEventOfType(CONFIGURATION.topic(), ProjectCreated.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), ProjectCreated.class);
     }
 
 }

@@ -8,6 +8,7 @@ import pl.feature.toggle.service.configuration.project.application.port.in.comma
 import pl.feature.toggle.service.configuration.project.application.port.out.ProjectCommandRepository;
 import pl.feature.toggle.service.configuration.project.domain.Project;
 import pl.feature.toggle.service.model.project.ProjectId;
+import pl.feature.toggle.service.outbox.api.OutboxEvent;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
 
 import static pl.feature.toggle.service.configuration.project.application.handler.EventMapper.createProjectCreatedEvent;
@@ -28,7 +29,7 @@ class CreateProjectHandler implements CreateProjectUseCase {
         projectCommandRepository.save(project);
 
         var event = createProjectCreatedEvent(project, command.actor(), command.correlationId());
-        outboxWriter.write(event, CONFIGURATION.topic());
+        outboxWriter.write(OutboxEvent.of(project.id().idAsString(), event, CONFIGURATION));
         log.info("Project created: projectId={}", project.id().uuid());
 
         return project.id();

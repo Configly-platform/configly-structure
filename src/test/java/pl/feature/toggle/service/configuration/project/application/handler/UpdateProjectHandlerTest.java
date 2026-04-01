@@ -43,7 +43,7 @@ class UpdateProjectHandlerTest extends AbstractUnitTest {
         assertThat(updated).isNotNull();
         assertThat(updated.name()).isEqualTo(command.name());
         assertThat(updated.description()).isEqualTo(command.description());
-        assertContainsEventOfType(CONFIGURATION.topic(), ProjectUpdated.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), ProjectUpdated.class);
     }
 
     @Test

@@ -82,7 +82,7 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
 
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ARCHIVED);
         assertThat(lastArchivedProjectId).isEqualTo(updatedProject.id());
-        assertContainsEventOfType(CONFIGURATION.topic(), ProjectStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), ProjectStatusChanged.class);
     }
 
     @Test
@@ -103,8 +103,8 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
 
         assertThat(lastArchivedProjectId).isNull();
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ACTIVE);
-        assertContainsEventOfType(CONFIGURATION.topic(), ProjectStatusChanged.class);
-        assertDoesNotContainEventOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class);
+        assertContainsEventOfType(CONFIGURATION.topicName(), ProjectStatusChanged.class);
+        assertDoesNotContainEventOfType(CONFIGURATION.topicName(), EnvironmentStatusChanged.class);
     }
 
     @Test
@@ -143,8 +143,8 @@ class ChangeProjectStatusHandlerTest extends AbstractUnitTest {
 
         assertThat(lastArchivedProjectId).isEqualTo(ACTIVE_PROJECT.id());
         assertThat(updatedProject.status()).isEqualTo(ProjectStatus.ARCHIVED);
-        assertHasEventCountOfType(CONFIGURATION.topic(), ProjectStatusChanged.class, 1);
-        assertHasEventCountOfType(CONFIGURATION.topic(), EnvironmentStatusChanged.class, 2);
+        assertHasEventCountOfType(CONFIGURATION.topicName(), ProjectStatusChanged.class, 1);
+        assertHasEventCountOfType(CONFIGURATION.topicName(), EnvironmentStatusChanged.class, 2);
     }
 
     @Test

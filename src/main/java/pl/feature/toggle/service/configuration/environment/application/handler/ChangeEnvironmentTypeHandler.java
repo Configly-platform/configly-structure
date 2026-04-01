@@ -8,6 +8,7 @@ import pl.feature.toggle.service.configuration.environment.application.port.in.C
 import pl.feature.toggle.service.configuration.environment.application.port.in.command.ChangeEnvironmentTypeCommand;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentCommandRepository;
 import pl.feature.toggle.service.configuration.environment.application.port.out.EnvironmentQueryRepository;
+import pl.feature.toggle.service.outbox.api.OutboxEvent;
 import pl.feature.toggle.service.web.actor.ActorProvider;
 import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
@@ -38,7 +39,7 @@ class ChangeEnvironmentTypeHandler implements ChangeEnvironmentTypeUseCase {
         environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentTypeChangedEvent(updateResult, command.actor(), command.correlationId());
-        outboxWriter.write(event, CONFIGURATION.topic());
+        outboxWriter.write(OutboxEvent.of(command.projectId().idAsString(), event, CONFIGURATION));
         log.info("Environment type changed: environmentId={}, newType={}", environment.id().uuid(), environment.type());
     }
 }

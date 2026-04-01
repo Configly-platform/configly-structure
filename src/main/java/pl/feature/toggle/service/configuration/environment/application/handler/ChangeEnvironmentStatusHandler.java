@@ -11,6 +11,7 @@ import pl.feature.toggle.service.configuration.environment.application.port.out.
 import pl.feature.toggle.service.configuration.environment.domain.Environment;
 import pl.feature.toggle.service.configuration.environment.domain.EnvironmentUpdateResult;
 import pl.feature.toggle.service.model.environment.EnvironmentStatus;
+import pl.feature.toggle.service.outbox.api.OutboxEvent;
 import pl.feature.toggle.service.web.actor.ActorProvider;
 import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 import pl.feature.toggle.service.outbox.api.OutboxWriter;
@@ -41,7 +42,7 @@ class ChangeEnvironmentStatusHandler implements ChangeEnvironmentStatusUseCase {
         environmentCommandRepository.update(updateResult);
 
         var event = createEnvironmentStatusChangedEvent(updateResult, command.actor(), command.correlationId());
-        outboxWriter.write(event, CONFIGURATION.topic());
+        outboxWriter.write(OutboxEvent.of(command.projectId().idAsString(), event, CONFIGURATION));
         log.info("Environment status changed: environmentId={}, oldStatus={}, newStatus={}", environment.id().uuid(),
                 environment.status(), updateResult.environment().status());
     }

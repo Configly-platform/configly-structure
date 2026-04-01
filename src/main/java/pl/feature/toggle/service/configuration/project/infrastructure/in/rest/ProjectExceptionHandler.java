@@ -3,8 +3,8 @@ package pl.feature.toggle.service.configuration.project.infrastructure.in.rest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import pl.feature.toggle.service.configuration.project.domain.exception.CannotOperateOnArchivedProjectException;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectAlreadyExistsException;
 import pl.feature.toggle.service.configuration.project.domain.exception.ProjectNotFoundException;
@@ -15,7 +15,7 @@ import pl.feature.toggle.service.web.correlation.CorrelationProvider;
 
 import static pl.feature.toggle.service.web.ErrorCode.*;
 
-@ControllerAdvice
+@RestControllerAdvice
 @AllArgsConstructor
 class ProjectExceptionHandler {
 
