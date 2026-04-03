@@ -1,0 +1,165 @@
+package com.configly.structure.environment.infrastructure.out.db;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import com.configly.structure.AbstractITTest;
+import com.configly.structure.environment.application.port.out.EnvironmentCommandRepository;
+import com.configly.structure.environment.application.port.out.EnvironmentQueryRepository;
+import com.configly.structure.environment.domain.Environment;
+import com.configly.structure.environment.domain.EnvironmentType;
+import com.configly.structure.environment.domain.EnvironmentUpdateResult;
+import com.configly.structure.environment.domain.exception.EnvironmentAlreadyExistsException;
+import com.configly.structure.environment.domain.exception.EnvironmentUpdateFailedException;
+import com.configly.structure.project.application.port.out.ProjectCommandRepository;
+import com.configly.structure.project.domain.Project;
+import com.configly.model.environment.EnvironmentName;
+import com.configly.model.environment.EnvironmentStatus;
+import com.configly.model.project.ProjectDescription;
+import com.configly.model.project.ProjectId;
+import com.configly.model.project.ProjectName;
+
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.*;
+import static com.configly.structure.builder.FakeEnvironmentBuilder.fakeEnvironmentBuilder;
+
+class EnvironmentCommandRepositoryIT extends AbstractITTest {
+
+    @Autowired
+    private EnvironmentCommandRepository sut;
+
+    @Autowired
+    private EnvironmentQueryRepository queryRepository;
+
+    @Autowired
+    private ProjectCommandRepository projectRepository;
+
+    private ProjectId projectId_1;
+    private ProjectId projectId_2;
+
+    @BeforeEach
+    void setUp() {
+        projectId_1 = createProject();
+        projectId_2 = createProject();
+    }
+
+    @Test
+    void should_save_new_environment() {
+        // given
+        var environment = createEnvironment("TEST", projectId_1);
+
+        // when
+        sut.save(environment);
+
+        // then
+        var result = queryRepository.getOrThrow(environment.projectId(), environment.id());
+        assertThat(result.name()).isEqualTo(environment.name());
+        assertThat(result.projectId()).isEqualTo(environment.projectId());
+        assertThat(result.id()).isEqualTo(environment.id());
+    }
+
+    @Test
+    void should_update_environment() {
+        // given
+        var environment = createEnvironment("TEST", projectId_1);
+        sut.save(environment);
+        var updated = environment.changeType(EnvironmentType.PROD);
+
+        // when
+        sut.update(updated);
+
+        // then
+        var expected = updated.environment();
+        var actual = queryRepository.getOrThrow(expected.projectId(), expected.id());
+        assertThat(actual.name()).isEqualTo(expected.name());
+        assertThat(actual.type()).isEqualTo(expected.type());
+        assertThat(actual.status()).isEqualTo(expected.status());
+        assertThat(actual.projectId()).isEqualTo(expected.projectId());
+        assertThat(actual.id()).isEqualTo(expected.id());
+        assertThat(actual.revision()).isEqualTo(expected.revision());
+    }
+
+    @Test
+    void should_throw_exception_when_update_and_environment_not_exists() {
+        // given
+        var environment = createEnvironment("TEST", projectId_1);
+
+        // when
+        var exception = catchException(() -> sut.update(EnvironmentUpdateResult.noChanges(environment)));
+
+        // then
+        assertThat(exception).isInstanceOf(EnvironmentUpdateFailedException.class);
+    }
+
+    @Test
+    void should_throw_exception_when_create_and_environment_already_exists() {
+        // given
+        var environment = createEnvironment("TEST", projectId_1);
+        sut.save(environment);
+
+        // when
+        var exception = catchException(() -> sut.save(environment));
+
+        // then
+        assertThat(exception).isInstanceOf(EnvironmentAlreadyExistsException.class);
+    }
+
+    @Test
+    void should_archive_all_environments_by_project_id() {
+        // given
+        var firstEnvironment = createAndSaveEnvironment("TEST_1", projectId_1, EnvironmentStatus.ACTIVE);
+        var secondEnvironment = createAndSaveEnvironment("TEST_2", projectId_1, EnvironmentStatus.ACTIVE);
+        var thirdEnvironment = createAndSaveEnvironment("TEST_2", projectId_2, EnvironmentStatus.ACTIVE);
+
+        // when
+        sut.archiveAllByProjectId(projectId_1);
+
+        // then
+        var firstActual = queryRepository.getOrThrow(firstEnvironment.projectId(), firstEnvironment.id());
+        var secondActual = queryRepository.getOrThrow(secondEnvironment.projectId(), secondEnvironment.id());
+        var thirdActual = queryRepository.getOrThrow(thirdEnvironment.projectId(), thirdEnvironment.id());
+
+        assertThat(firstActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
+        assertThat(secondActual.status()).isEqualTo(EnvironmentStatus.ARCHIVED);
+        assertThat(thirdActual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
+        assertThat(firstActual.revision()).isEqualTo(firstEnvironment.revision().next());
+        assertThat(secondActual.revision()).isEqualTo(secondEnvironment.revision().next());
+        assertThat(thirdActual.revision()).isEqualTo(thirdEnvironment.revision());
+    }
+
+    @Test
+    void should_do_nothing_when_archive_environments_by_project_id_without_environments() {
+        // given
+        var environment = createAndSaveEnvironment("TEST_2", projectId_2, EnvironmentStatus.ACTIVE);
+
+        // when
+        assertThatCode(() -> sut.archiveAllByProjectId(projectId_1)).doesNotThrowAnyException();
+
+        // then
+        var actual = queryRepository.getOrThrow(environment.projectId(), environment.id());
+        assertThat(actual.status()).isEqualTo(EnvironmentStatus.ACTIVE);
+    }
+
+
+    private Environment createEnvironment(String name, ProjectId projectId) {
+        return Environment.create(projectId, EnvironmentName.create(name), EnvironmentType.DEV);
+    }
+
+    private Environment createAndSaveEnvironment(String name, ProjectId projectId, EnvironmentStatus status) {
+        var environment = fakeEnvironmentBuilder()
+                .withProjectId(projectId)
+                .withStatus(status)
+                .withName(name)
+                .build();
+        sut.save(environment);
+        return environment;
+    }
+
+    private ProjectId createProject() {
+        var project = Project.create(ProjectName.create(UUID.randomUUID().toString()), ProjectDescription.create("TEST"));
+        projectRepository.save(project);
+        return project.id();
+    }
+
+}
