@@ -51,22 +51,22 @@
         </dependency>
         <dependency>
             <groupId>com.configly</groupId>
-            <artifactId>configly-outbox</artifactId>
+            <artifactId>outbox</artifactId>
             <version>${outbox.version}</version>
         </dependency>
         <dependency>
             <groupId>com.configly</groupId>
-            <artifactId>configly-shared-web</artifactId>
+            <artifactId>shared-web</artifactId>
             <version>${shared-web.version}</version>
         </dependency>
         <dependency>
             <groupId>com.configly</groupId>
-            <artifactId>configly-model</artifactId>
+            <artifactId>model</artifactId>
             <version>${model.version}</version>
         </dependency>
         <dependency>
             <groupId>com.configly</groupId>
-            <artifactId>configly-contracts</artifactId>
+            <artifactId>contracts</artifactId>
             <version>${contracts.version}</version>
         </dependency>
         <dependency>
