@@ -4,9 +4,8 @@ import com.configly.structure.environment.application.port.in.command.ChangeEnvi
 import com.configly.structure.environment.domain.EnvironmentType;
 import com.configly.model.environment.EnvironmentId;
 import com.configly.model.project.ProjectId;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
-
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 public class FakeChangeEnvironmentTypeCommandBuilder {
     private ProjectId projectId;
     private EnvironmentId environmentId;

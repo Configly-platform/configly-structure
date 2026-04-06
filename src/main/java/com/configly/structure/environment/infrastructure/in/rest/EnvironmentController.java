@@ -14,8 +14,8 @@ import com.configly.structure.environment.infrastructure.in.rest.dto.CreateEnvir
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import com.configly.structure.environment.infrastructure.in.rest.dto.UpdateEnvironmentDto;
-import com.configly.web.actor.ActorProvider;
-import com.configly.web.correlation.CorrelationProvider;
+import com.configly.web.model.actor.ActorProvider;
+import com.configly.web.model.correlation.CorrelationProvider;
 
 import java.util.UUID;
 

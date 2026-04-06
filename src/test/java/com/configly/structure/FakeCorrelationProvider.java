@@ -1,7 +1,7 @@
 package com.configly.structure;
 
-import com.configly.web.correlation.CorrelationId;
-import com.configly.web.correlation.CorrelationProvider;
+import com.configly.web.model.correlation.CorrelationId;
+import com.configly.web.model.correlation.CorrelationProvider;
 
 public class FakeCorrelationProvider implements CorrelationProvider {
     @Override

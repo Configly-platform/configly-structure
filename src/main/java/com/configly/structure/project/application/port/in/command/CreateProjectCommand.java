@@ -3,8 +3,8 @@ package com.configly.structure.project.application.port.in.command;
 import com.configly.structure.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import com.configly.model.project.ProjectDescription;
 import com.configly.model.project.ProjectName;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 public record CreateProjectCommand(
         ProjectName name,

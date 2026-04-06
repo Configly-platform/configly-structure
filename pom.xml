@@ -18,7 +18,7 @@
         <outbox.version>1.0.0-SNAPSHOT</outbox.version>
         <contracts.version>1.0.0-SNAPSHOT</contracts.version>
         <model.version>1.0.0-SNAPSHOT</model.version>
-        <shared-web.version>1.0.0-SNAPSHOT</shared-web.version>
+        <web.version>1.0.0-SNAPSHOT</web.version>
     </properties>
     <dependencies>
         <dependency>
@@ -56,8 +56,8 @@
         </dependency>
         <dependency>
             <groupId>com.configly</groupId>
-            <artifactId>shared-web</artifactId>
-            <version>${shared-web.version}</version>
+            <artifactId>web</artifactId>
+            <version>${web.version}</version>
         </dependency>
         <dependency>
             <groupId>com.configly</groupId>

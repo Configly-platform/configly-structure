@@ -10,8 +10,8 @@ import com.configly.model.environment.EnvironmentId;
 import com.configly.model.environment.EnvironmentName;
 import com.configly.model.environment.EnvironmentStatus;
 import com.configly.model.project.ProjectId;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

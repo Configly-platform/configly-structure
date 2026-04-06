@@ -6,11 +6,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import com.configly.structure.environment.domain.exception.*;
-import com.configly.web.ErrorCode;
-import com.configly.web.ErrorResponse;
-import com.configly.web.correlation.CorrelationProvider;
+import com.configly.web.model.ErrorCode;
+import com.configly.web.model.ErrorResponse;
+import com.configly.web.model.correlation.CorrelationProvider;
 
-import static com.configly.web.ErrorCode.*;
+import static com.configly.web.model.ErrorCode.*;
 
 @RestControllerAdvice
 @AllArgsConstructor

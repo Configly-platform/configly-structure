@@ -13,8 +13,8 @@ import com.configly.structure.project.domain.Project;
 import com.configly.structure.project.domain.ProjectUpdateResult;
 import com.configly.model.project.ProjectStatus;
 import com.configly.outbox.api.OutboxEvent;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 import com.configly.outbox.api.OutboxWriter;
 
 import java.util.List;

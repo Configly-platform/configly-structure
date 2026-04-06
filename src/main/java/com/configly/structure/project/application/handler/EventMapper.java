@@ -14,8 +14,8 @@ import com.configly.contracts.shared.Metadata;
 import com.configly.model.project.ProjectDescription;
 import com.configly.model.project.ProjectName;
 import com.configly.model.project.ProjectStatus;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 import java.time.LocalDateTime;
 

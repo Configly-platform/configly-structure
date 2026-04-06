@@ -3,8 +3,8 @@ package com.configly.structure.builder;
 import com.configly.structure.project.application.port.in.command.ChangeProjectStatusCommand;
 import com.configly.model.project.ProjectId;
 import com.configly.model.project.ProjectStatus;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 public class FakeChangeProjectStatusCommandBuilder {
 

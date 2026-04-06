@@ -4,8 +4,8 @@ import com.configly.structure.environment.application.port.in.command.UpdateEnvi
 import com.configly.model.environment.EnvironmentId;
 import com.configly.model.environment.EnvironmentName;
 import com.configly.model.project.ProjectId;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 public class FakeUpdateEnvironmentCommandBuilder {
 

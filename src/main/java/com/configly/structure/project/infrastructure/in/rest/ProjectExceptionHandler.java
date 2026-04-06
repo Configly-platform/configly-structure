@@ -9,11 +9,11 @@ import com.configly.structure.project.domain.exception.CannotOperateOnArchivedPr
 import com.configly.structure.project.domain.exception.ProjectAlreadyExistsException;
 import com.configly.structure.project.domain.exception.ProjectNotFoundException;
 import com.configly.structure.project.domain.exception.ProjectUpdateFailedException;
-import com.configly.web.ErrorCode;
-import com.configly.web.ErrorResponse;
-import com.configly.web.correlation.CorrelationProvider;
+import com.configly.web.model.ErrorCode;
+import com.configly.web.model.ErrorResponse;
+import com.configly.web.model.correlation.CorrelationProvider;
 
-import static com.configly.web.ErrorCode.*;
+import static com.configly.web.model.ErrorCode.*;
 
 @RestControllerAdvice
 @AllArgsConstructor

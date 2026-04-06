@@ -10,8 +10,8 @@ import com.configly.contracts.shared.Metadata;
 import com.configly.model.environment.EnvironmentName;
 import com.configly.model.environment.EnvironmentStatus;
 import com.configly.model.project.ProjectId;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 import static com.configly.contracts.event.environment.EnvironmentCreated.environmentCreatedEventBuilder;
 import static com.configly.contracts.event.environment.EnvironmentStatusChanged.environmentStatusChangedEventBuilder;

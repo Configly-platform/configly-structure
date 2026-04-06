@@ -4,8 +4,8 @@ import com.configly.structure.environment.application.port.in.command.CreateEnvi
 import com.configly.structure.environment.domain.EnvironmentType;
 import com.configly.model.environment.EnvironmentName;
 import com.configly.model.project.ProjectId;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 import java.util.UUID;
 

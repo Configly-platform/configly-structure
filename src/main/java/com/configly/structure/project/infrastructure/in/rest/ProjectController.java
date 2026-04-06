@@ -10,8 +10,8 @@ import com.configly.structure.project.application.port.in.command.UpdateProjectC
 import com.configly.structure.project.infrastructure.in.rest.dto.ProjectSnapshotDto;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import com.configly.web.actor.ActorProvider;
-import com.configly.web.correlation.CorrelationProvider;
+import com.configly.web.model.actor.ActorProvider;
+import com.configly.web.model.correlation.CorrelationProvider;
 
 import java.util.UUID;
 

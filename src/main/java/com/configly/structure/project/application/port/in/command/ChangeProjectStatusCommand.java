@@ -2,8 +2,8 @@ package com.configly.structure.project.application.port.in.command;
 
 import com.configly.model.project.ProjectId;
 import com.configly.model.project.ProjectStatus;
-import com.configly.web.actor.Actor;
-import com.configly.web.correlation.CorrelationId;
+import com.configly.web.model.actor.Actor;
+import com.configly.web.model.correlation.CorrelationId;
 
 public record ChangeProjectStatusCommand(
         ProjectId projectId,
