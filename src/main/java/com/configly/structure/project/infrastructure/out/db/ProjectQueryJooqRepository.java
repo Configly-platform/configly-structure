@@ -1,14 +1,14 @@
 package com.configly.structure.project.infrastructure.out.db;
 
-import lombok.AllArgsConstructor;
-import org.jooq.DSLContext;
+import com.configly.model.project.ProjectId;
+import com.configly.model.project.ProjectStatus;
 import com.configly.structure.project.application.port.out.ProjectQueryRepository;
 import com.configly.structure.project.domain.Project;
 import com.configly.structure.project.domain.exception.ProjectNotFoundException;
-import com.configly.model.project.ProjectId;
-import com.configly.model.project.ProjectStatus;
+import lombok.AllArgsConstructor;
+import org.jooq.DSLContext;
 
-import static pl.feature.toggle.service.tables.Projects.PROJECTS;
+import static com.configly.structure.tables.Projects.PROJECTS;
 
 @AllArgsConstructor
 class ProjectQueryJooqRepository implements ProjectQueryRepository {

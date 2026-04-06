@@ -8,7 +8,7 @@ import com.configly.structure.environment.domain.exception.EnvironmentNotFoundEx
 import com.configly.model.environment.EnvironmentId;
 import com.configly.model.project.ProjectId;
 
-import static pl.feature.toggle.service.tables.Environments.ENVIRONMENTS;
+import static com.configly.structure.tables.Environments.ENVIRONMENTS;
 
 @AllArgsConstructor
 final class EnvironmentQueryJooqRepository implements EnvironmentQueryRepository {

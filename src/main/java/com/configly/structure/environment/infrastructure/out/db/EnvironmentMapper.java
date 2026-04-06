@@ -1,5 +1,6 @@
 package com.configly.structure.environment.infrastructure.out.db;
 
+import com.configly.structure.tables.records.EnvironmentsRecord;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import com.configly.structure.environment.domain.Environment;
@@ -11,7 +12,6 @@ import com.configly.model.environment.EnvironmentId;
 import com.configly.model.environment.EnvironmentName;
 import com.configly.model.environment.EnvironmentStatus;
 import com.configly.model.project.ProjectId;
-import pl.feature.toggle.service.tables.records.EnvironmentsRecord;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class EnvironmentMapper {

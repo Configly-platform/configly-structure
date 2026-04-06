@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://configly-structure-db:5432/configly_structure
+    username: admin
+    password: admin
+
+outbox:
+  kafka:
+    bootstrap-servers: kafka:29092

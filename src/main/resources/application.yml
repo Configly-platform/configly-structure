@@ -2,17 +2,17 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
   datasource:
-    url: jdbc:postgresql://localhost:5432/feature_toggle_configuration
+    url: jdbc:postgresql://localhost:5432/configly_structure
     username: admin
     password: admin
     driver-class-name: org.postgresql.Driver
   application:
-    name: feature-toggle-configuration
+    name: configly-structure
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/auth/realms/feature-toggle
+          issuer-uri: http://keycloak:8080/auth/realms/configly
 
 logging:
   pattern:
@@ -26,9 +26,9 @@ outbox:
   kafka:
     enabled: true
     bootstrap-servers: localhost:9092
-    client-id: feature-toggle-configuration-client
+    client-id: configly-structure-client
     topics:
-      - name: feature-toggle-configuration-events
+      - name: configly-structure-events
         partitions: 3
         replication-factor: 1
     props:

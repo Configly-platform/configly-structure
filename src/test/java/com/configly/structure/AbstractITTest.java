@@ -10,9 +10,9 @@ import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
+import static com.configly.structure.tables.Environments.ENVIRONMENTS;
+import static com.configly.structure.tables.Projects.PROJECTS;
 import static pl.feature.ftaas.outbox.jooq.tables.OutboxEvents.OUTBOX_EVENTS;
-import static pl.feature.toggle.service.tables.Environments.ENVIRONMENTS;
-import static pl.feature.toggle.service.tables.Projects.PROJECTS;
 
 
 @Testcontainers

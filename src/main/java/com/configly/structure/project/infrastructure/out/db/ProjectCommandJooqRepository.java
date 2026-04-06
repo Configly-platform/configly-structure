@@ -9,7 +9,7 @@ import com.configly.structure.project.domain.exception.ProjectUpdateFailedExcept
 
 import static com.configly.structure.project.infrastructure.out.db.DatabaseUniqueConstraintExceptionHandler.translateUniqueConstraintException;
 import static com.configly.structure.project.infrastructure.out.db.ProjectMapper.toRecord;
-import static pl.feature.toggle.service.tables.Projects.PROJECTS;
+import static com.configly.structure.tables.Projects.PROJECTS;
 
 @AllArgsConstructor
 final class ProjectCommandJooqRepository implements ProjectCommandRepository {

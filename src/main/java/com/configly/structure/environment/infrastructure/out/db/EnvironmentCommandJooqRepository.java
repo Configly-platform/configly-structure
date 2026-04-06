@@ -17,7 +17,7 @@ import java.util.List;
 
 import static com.configly.structure.environment.infrastructure.out.db.DatabaseUniqueConstraintExceptionHandler.translateUniqueConstraintException;
 import static com.configly.structure.environment.infrastructure.out.db.EnvironmentMapper.toRecord;
-import static pl.feature.toggle.service.tables.Environments.ENVIRONMENTS;
+import static com.configly.structure.tables.Environments.ENVIRONMENTS;
 
 @AllArgsConstructor
 class EnvironmentCommandJooqRepository implements EnvironmentCommandRepository {

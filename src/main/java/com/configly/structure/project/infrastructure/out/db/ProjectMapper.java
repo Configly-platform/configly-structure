@@ -1,5 +1,6 @@
 package com.configly.structure.project.infrastructure.out.db;
 
+import com.configly.structure.tables.records.ProjectsRecord;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import com.configly.structure.project.domain.Project;
@@ -10,7 +11,6 @@ import com.configly.model.project.ProjectDescription;
 import com.configly.model.project.ProjectId;
 import com.configly.model.project.ProjectName;
 import com.configly.model.project.ProjectStatus;
-import pl.feature.toggle.service.tables.records.ProjectsRecord;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 final class ProjectMapper {
